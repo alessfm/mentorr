@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mentorr</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.cdnfonts.com/css/sf-ui-display" rel="stylesheet">
+  <link rel="stylesheet" href="../css/custom.css">
+  <!-- <link rel="icon" type="image/x-icon" href="favicon.ico"> -->
+</head>
+
+<body>
+  <header>
+    <div class="flex p-6 justify-between items-center border-b-2 md:border-none">
+      <a class="flex-none relative" href="../index.html">
+        <img src="../img/logo-mentorr.svg" alt="Logotipo Mentorr">
+      </a>
+
+      <div class="flex items-center gap-12 hidden md:flex">
+        <div class="flex gap-1">
+          <a class="text-gray-600 font-bold hover:text-blue-700" href="#">Para mentores</a>
+          <svg class="w-5 text-gray-600 font-bold hover:text-blue-700" aria-colspan=""
+            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+            class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+          </svg>
+        </div>
+        <button class="bg-blue-600 text-white font-semibold rounded-lg px-4 py-2 hover:bg-blue-800">
+          Quero ser aluno
+        </button>
+        <a class="text-gray-600 font-bold hover:text-blue-700" href="./login.html">Login</a>
+      </div>
+
+      <div class="flex flex-col justify-center mobile-menu md:hidden">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+
+    <div class="flex p-4 items-center border-t-2 border-b-2 hidden md:flex">
+      <nav class="container mx-auto">
+        <ul class="flex justify-between">
+          <li>
+            <a class="font-light text-gray-600 hover:text-blue-600" href="#">UX/UI</a>
+          </li>
+          <li>
+            <a class="font-light text-gray-600 hover:text-blue-600" href="#">Front-end</a>
+          </li>
+          <li>
+            <a class="font-light text-gray-600 hover:text-blue-600" href="#">Back-end</a>
+          </li>
+          <li>
+            <a class="font-light text-gray-600 hover:text-blue-600" href="#">DevOps</a>
+          </li>
+          <li>
+            <a class="font-light text-gray-600 hover:text-blue-600" href="#">Agile</a>
+          </li>
+          <li>
+            <a class="font-light text-gray-600 hover:text-blue-600" href="#">Cloud Computing</a>
+          </li>
+          <li>
+            <a class="font-light text-gray-600 hover:text-blue-600" href="#">Inteligência Artificial</a>
+          </li>
+          <li>
+            <a class="font-light text-gray-600 hover:text-blue-600" href="#">Segurança da Informação</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <section class="flex flex-col md:flex-row">
+    <div class="flex flex-col gap-12 p-8 pt-12 w-full md:w-1/4 border-r-2">
+      <input type="text" class="font-light border p-2 rounded-lg w-full"
+        placeholder="Busque por habilidades, cargos..." />
+
+      <div class="flex flex-col gap-4 hidden md:flex">
+        <div class="flex flex-col gap-1">
+          <label class="font-bold text-lg">Habilidades</label>
+          <input type="text" class="font-light border p-2 rounded-lg w-full" placeholder="Busque..." />
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <div class="flex items-center gap-2">
+            <input type="checkbox" />
+            <label class="font-light">UX/UI Design</label>
+          </div>
+          <div class="flex items-center gap-2">
+            <input type="checkbox" />
+            <label class="font-light">Front-end</label>
+          </div>
+          <div class="flex items-center gap-2">
+            <input type="checkbox" />
+            <label class="font-light">Back-end</label>
+          </div>
+          <div class="flex items-center gap-2">
+            <input type="checkbox" />
+            <label class="font-light">DevOps</label>
+          </div>
+          <div class="flex items-center gap-2">
+            <input type="checkbox" />
+            <label class="font-light">Agile</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-4 hidden md:flex">
+        <div class="flex flex-col gap-1">
+          <label class="font-bold text-lg">Cargos</label>
+          <input type="text" class="font-light border p-2 rounded-lg w-full" placeholder="Busque..." />
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <div class="flex items-center gap-2">
+            <input type="checkbox" />
+            <label class="font-light">CEO</label>
+          </div>
+          <div class="flex items-center gap-2">
+            <input type="checkbox" />
+            <label class="font-light">CTO</label>
+          </div>
+          <div class="flex items-center gap-2">
+            <input type="checkbox" />
+            <label class="font-light">Gestor</label>
+          </div>
+          <div class="flex items-center gap-2">
+            <input type="checkbox" />
+            <label class="font-light">Consultor</label>
+          </div>
+          <div class="flex items-center gap-2">
+            <input type="checkbox" />
+            <label class="font-light">Professor</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-4 hidden md:flex">
+        <div class="flex flex-col gap-1">
+          <label class="font-bold text-lg">Empresas</label>
+          <input type="text" class="font-light border p-2 rounded-lg w-full" placeholder="Busque..." />
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <div class="flex items-center gap-2">
+            <input type="checkbox" />
+            <label class="font-light">Google</label>
+          </div>
+          <div class="flex items-center gap-2">
+            <input type="checkbox" />
+            <label class="font-light">Amazon</label>
+          </div>
+          <div class="flex items-center gap-2">
+            <input type="checkbox" />
+            <label class="font-light">Mercado Livre</label>
+          </div>
+          <div class="flex items-center gap-2">
+            <input type="checkbox" />
+            <label class="font-light">Instagram</label>
+          </div>
+          <div class="flex items-center gap-2">
+            <input type="checkbox" />
+            <label class="font-light">Delta Piscinas</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-8 p-6 md:p-16 md:pt-12 w-full md:w-3/4">
+      <div class="flex flex-col md:flex-row p-6 border rounded-lg hover:shadow">
+        <div class="flex-none mb-10 relative">
+          <img class="w-48" src="../img/jonh.png" alt="Foto do mentor" />
+        </div>
+        <div class="flex flex-col gap-6 pl-6">
+          <div class="flex flex-col gap-1">
+            <h1 class="font-bold text-2xl md:text-3xl">Jonh P. Santos</h1>
+            <h3 class="text-lg text-gray-600">Cientista de Dados Sênior na Amazon</h3>
+            <div class="flex gap-1 items-center">
+              <div class="flex-none w-24 relative">
+                <img src="../img/stars.svg" alt="5 Estrelas">
+              </div>
+              <p class="text-sm">
+                <strong>5.0</strong> <span class="font-light">(1231 avaliações)</span>
+              </p>
+            </div>
+          </div>
+
+          <p class="text-gray-800">
+            Sou John P. Santos, cientista de dados sênior na Amazon com mais de oito anos de experiêmia em
+            machine learning e análise. Ao longo da trajetória, tenho dedicado a transformar
+            dados em estratégias que impactam diretamente a experiência...
+          </p>
+
+          <ul class="flex flex-wrap gap-4 leading-8">
+            <li>
+              <a class="bg-gray-200 text-gray-800 py-1 px-3 rounded-full hover:bg-blue-600 hover:text-white" href="#">
+                tecnologia
+              </a>
+            </li>
+            <li>
+              <a class="bg-gray-200 text-gray-800 py-1 px-3 rounded-full hover:bg-blue-600 hover:text-white" href="#">
+                ux/ui design
+              </a>
+            </li>
+            <li>
+              <a class="bg-gray-200 text-gray-800 py-1 px-3 rounded-full hover:bg-blue-600 hover:text-white" href="#">
+                gestão
+              </a>
+            </li>
+            <li>
+              <a class="bg-gray-200 text-gray-800 py-1 px-3 rounded-full hover:bg-blue-600 hover:text-white" href="#">
+                negócios
+              </a>
+            </li>
+            <li>
+              <a class="bg-gray-200 text-gray-800 py-1 px-3 rounded-full hover:bg-blue-600 hover:text-white" href="#">
+                financeiro
+              </a>
+            </li>
+            <li>
+              <a class="bg-gray-200 text-gray-800 py-1 px-3 rounded-full hover:bg-blue-600 hover:text-white" href="#">
+                startups
+              </a>
+            </li>
+          </ul>
+
+          <div class="flex flex-col md:flex-row justify-between items-center gap-2 md:gap-0">
+            <h2 class="font-black text-xl md:text-2xl">R$ 500,00/mês</h2>
+            <button class="bg-blue-600 text-white font-semibold rounded-lg px-6 py-2 h-12 hover:bg-blue-800">
+              Ver perfil completo
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-col md:flex-row p-6 border rounded-lg hover:shadow">
+        <div class="flex-none mb-10 relative">
+          <img class="w-48" src="../img/jonh.png" alt="Foto do mentor" />
+        </div>
+        <div class="flex flex-col gap-6 pl-6">
+          <div class="flex flex-col gap-1">
+            <h1 class="font-bold text-2xl md:text-3xl">Jonh P. Santos</h1>
+            <h3 class="text-lg text-gray-600">Cientista de Dados Sênior na Amazon</h3>
+            <div class="flex gap-1 items-center">
+              <div class="flex-none w-24 relative">
+                <img src="../img/stars.svg" alt="5 Estrelas">
+              </div>
+              <p class="text-sm">
+                <strong>5.0</strong> <span class="font-light">(1231 avaliações)</span>
+              </p>
+            </div>
+          </div>
+
+          <p class="text-gray-800">
+            Sou John P. Santos, cientista de dados sênior na Amazon com mais de oito anos de experiêmia em
+            machine learning e análise. Ao longo da trajetória, tenho dedicado a transformar
+            dados em estratégias que impactam diretamente a experiência...
+          </p>
+
+          <ul class="flex flex-wrap gap-4 leading-8">
+            <li>
+              <a class="bg-gray-200 text-gray-800 py-1 px-3 rounded-full hover:bg-blue-600 hover:text-white" href="#">
+                tecnologia
+              </a>
+            </li>
+            <li>
+              <a class="bg-gray-200 text-gray-800 py-1 px-3 rounded-full hover:bg-blue-600 hover:text-white" href="#">
+                ux/ui design
+              </a>
+            </li>
+            <li>
+              <a class="bg-gray-200 text-gray-800 py-1 px-3 rounded-full hover:bg-blue-600 hover:text-white" href="#">
+                gestão
+              </a>
+            </li>
+            <li>
+              <a class="bg-gray-200 text-gray-800 py-1 px-3 rounded-full hover:bg-blue-600 hover:text-white" href="#">
+                negócios
+              </a>
+            </li>
+            <li>
+              <a class="bg-gray-200 text-gray-800 py-1 px-3 rounded-full hover:bg-blue-600 hover:text-white" href="#">
+                financeiro
+              </a>
+            </li>
+            <li>
+              <a class="bg-gray-200 text-gray-800 py-1 px-3 rounded-full hover:bg-blue-600 hover:text-white" href="#">
+                startups
+              </a>
+            </li>
+          </ul>
+
+          <div class="flex flex-col md:flex-row justify-between items-center gap-2 md:gap-0">
+            <h2 class="font-black text-xl md:text-2xl">R$ 500,00/mês</h2>
+            <button class="bg-blue-600 text-white font-semibold rounded-lg px-6 py-2 h-12 hover:bg-blue-800">
+              Ver perfil completo
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-col md:flex-row p-6 border rounded-lg hover:shadow">
+        <div class="flex-none mb-10 relative">
+          <img class="w-48" src="../img/jonh.png" alt="Foto do mentor" />
+        </div>
+        <div class="flex flex-col gap-6 pl-6">
+          <div class="flex flex-col gap-1">
+            <h1 class="font-bold text-2xl md:text-3xl">Jonh P. Santos</h1>
+            <h3 class="text-lg text-gray-600">Cientista de Dados Sênior na Amazon</h3>
+            <div class="flex gap-1 items-center">
+              <div class="flex-none w-24 relative">
+                <img src="../img/stars.svg" alt="5 Estrelas">
+              </div>
+              <p class="text-sm">
+                <strong>5.0</strong> <span class="font-light">(1231 avaliações)</span>
+              </p>
+            </div>
+          </div>
+
+          <p class="text-gray-800">
+            Sou John P. Santos, cientista de dados sênior na Amazon com mais de oito anos de experiêmia em
+            machine learning e análise. Ao longo da trajetória, tenho dedicado a transformar
+            dados em estratégias que impactam diretamente a experiência...
+          </p>
+
+          <ul class="flex flex-wrap gap-4 leading-8">
+            <li>
+              <a class="bg-gray-200 text-gray-800 py-1 px-3 rounded-full hover:bg-blue-600 hover:text-white" href="#">
+                tecnologia
+              </a>
+            </li>
+            <li>
+              <a class="bg-gray-200 text-gray-800 py-1 px-3 rounded-full hover:bg-blue-600 hover:text-white" href="#">
+                ux/ui design
+              </a>
+            </li>
+            <li>
+              <a class="bg-gray-200 text-gray-800 py-1 px-3 rounded-full hover:bg-blue-600 hover:text-white" href="#">
+                gestão
+              </a>
+            </li>
+            <li>
+              <a class="bg-gray-200 text-gray-800 py-1 px-3 rounded-full hover:bg-blue-600 hover:text-white" href="#">
+                negócios
+              </a>
+            </li>
+            <li>
+              <a class="bg-gray-200 text-gray-800 py-1 px-3 rounded-full hover:bg-blue-600 hover:text-white" href="#">
+                financeiro
+              </a>
+            </li>
+            <li>
+              <a class="bg-gray-200 text-gray-800 py-1 px-3 rounded-full hover:bg-blue-600 hover:text-white" href="#">
+                startups
+              </a>
+            </li>
+          </ul>
+
+          <div class="flex flex-col md:flex-row justify-between items-center gap-2 md:gap-0">
+            <h2 class="font-black text-xl md:text-2xl">R$ 500,00/mês</h2>
+            <button class="bg-blue-600 text-white font-semibold rounded-lg px-6 py-2 h-12 hover:bg-blue-800">
+              Ver perfil completo
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-slate-900 text-white px-6 md:px-24 py-8 md:py-12">
+    <div class="flex flex-col justify-center items-center gap-10">
+      <h4 class="md:text-2xl font-bold">
+        Pronto para dá o próximo passo na sua carreira?
+      </h4>
+      <h3 class="text-2xl md:text-4xl font-bold">
+        Não perca tempo! Crie sua conta já.
+      </h3>
+
+      <div class="flex flex-col md:flex-row gap-6">
+        <button class="bg-blue-600 font-bold px-12 py-4 rounded-lg hover:bg-blue-800">
+          Quero ser aluno
+        </button>
+        <button class="border border-blue-600 font-bold px-12 py-4 rounded-lg hover:bg-blue-800">
+          Quero ser mentor
+        </button>
+      </div>
+
+      <p class="text-slate-300">Não é necessário cartão de crédito.</p>
+    </div>
+  </section>
+
+  <footer class="bg-slate-950 text-white p-6 md:p-12">
+    <div class="flex flex-col md:flex-row gap-16 md:gap-40 items-center">
+      <a class="flex-none relative" href="./index.html">
+        <img src="../img/logo-white.svg" alt="Logo Mentorr">
+      </a>
+
+      <div class="flex flex-wrap flex-col md:flex-row items-center md:items-start gap-8 md:gap-32">
+        <div class="flex flex-col gap-1 items-center md:items-start">
+          <h5 class="text-blue-600 font-bold text-md mb-4">Plataforma</h5>
+          <a class="text-slate-300 text-md hover:text-blue-800 hover:underline" href="./busca.html">Busque
+            mentores</a>
+          <a class="text-slate-300 text-md hover:text-blue-800 hover:underline" href="#">Torne-se um mentor</a>
+        </div>
+
+        <div class="flex flex-col gap-1 items-center md:items-start">
+          <h5 class="text-blue-600 font-bold text-md mb-4">Sobre Nós</h5>
+          <a class="text-slate-300 text-md hover:text-blue-800 hover:underline" href="#">Como funciona</a>
+          <a class="text-slate-300 text-md hover:text-blue-800 hover:underline" href="#">Quem somos</a>
+          <a class="text-slate-300 text-md hover:text-blue-800 hover:underline" href="#">Investidores</a>
+          <a class="text-slate-300 text-md hover:text-blue-800 hover:underline" href="#">Política de Privacidade</a>
+        </div>
+
+        <div class="flex flex-col gap-1 items-center md:items-start">
+          <h5 class="text-blue-600 font-bold text-md mb-4">Suporte</h5>
+          <a class="text-slate-300 text-md hover:text-blue-800 hover:underline" href="#">FAQ</a>
+          <a class="text-slate-300 text-md hover:text-blue-800 hover:underline" href="#">Contatos</a>
+        </div>
+
+        <div class="flex flex-col gap-1 items-center md:items-start">
+          <h5 class="text-blue-600 font-bold text-md mb-4">Legislação</h5>
+          <a class="text-slate-300 text-md hover:text-blue-800 hover:underline" href="#">Código de Ética</a>
+          <a class="text-slate-300 text-md hover:text-blue-800 hover:underline" href="#">Adequação à LGPD</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>
