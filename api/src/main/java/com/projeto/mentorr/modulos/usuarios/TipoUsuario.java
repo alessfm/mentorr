@@ -2,7 +2,7 @@ package com.projeto.mentorr.modulos.usuarios;
 
 public enum TipoUsuario {
 	
-	ALUNO("Aluno"), MENTOR("Mentor"), ALUNO_MENTOR("Aluno/Mentor");
+	ALUNO("Aluno"), MENTOR("Mentor"), ALUNO_MENTOR("Aluno/Mentor"), GESTAO("Gestão");
 	
 	private String descricao;
 
