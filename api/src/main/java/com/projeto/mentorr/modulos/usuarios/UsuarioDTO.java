@@ -16,12 +16,13 @@ public class UsuarioDTO {
 	private String apelido;
 	private String email;
 	private String senha;
-	private TipoUsuario tipo;
+	private String tipo;
 	
-	public UsuarioDTO(String nome, String apelido, String email) {
+	public UsuarioDTO(String nome, String apelido, String email, TipoUsuario tipo) {
 		this.nome = nome;
 		this.apelido = apelido;
 		this.email = email;
+		this.tipo = tipo.getDescricao();
 	}
 
 }

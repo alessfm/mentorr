@@ -25,11 +25,13 @@ public class UsuarioController {
 	@GetMapping
 	public ListaPaginacaoDTO buscarUsuarios(
 		@RequestParam(required = false) String nome,
+		@RequestParam(required = false) String apelido,
+		@RequestParam(required = false) TipoUsuario tipo,
 		@RequestParam(required = false) Boolean ativo,
         @RequestParam(defaultValue = "1") Integer pagina,
         @RequestParam(defaultValue = "10") Integer totalPorPagina
 	) {	
-		return usuarioService.buscarUsuarios(nome, ativo, pagina, totalPorPagina);
+		return usuarioService.buscarUsuarios(nome, apelido, tipo, ativo, pagina, totalPorPagina);
 	}
 
 	@PreAuthorize("hasAnyRole('ROLE_GESTAO', 'ROLE_ALUNO', 'ROLE_MENTOR')")

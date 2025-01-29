@@ -16,13 +16,15 @@ public class ListaUsuariosDTO {
 	private String apelido;
 	private String email;
 	private String tipo;
+	private Boolean ativo;
 	
-	public ListaUsuariosDTO(Long id, String nome, String apelido, String email, TipoUsuario tipo) {
+	public ListaUsuariosDTO(Long id, String nome, String apelido, String email, TipoUsuario tipo, Boolean ativo) {
 		this.id = id;
 		this.nome = nome;
 		this.apelido = apelido;
 		this.email = email;
 		this.tipo = tipo.getDescricao();
+		this.ativo = ativo;
 	}
 
 }

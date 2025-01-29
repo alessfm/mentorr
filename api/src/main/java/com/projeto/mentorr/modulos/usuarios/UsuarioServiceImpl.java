@@ -24,25 +24,20 @@ public class UsuarioServiceImpl implements UsuarioService {
 	private final UsuarioRepository usuarioRepository;
 
 	@Override
-	public ListaPaginacaoDTO buscarUsuarios(String nome, Boolean ativo, Integer pagina, Integer totalPorPagina) {
-		return usuarioRepository.buscarUsuarios(nome, ativo, pagina, totalPorPagina);
+	public ListaPaginacaoDTO buscarUsuarios(String nome, String apelido, TipoUsuario tipo, Boolean ativo, Integer pagina, Integer totalPorPagina) {
+		return usuarioRepository.buscarUsuarios(nome, apelido, tipo, ativo, pagina, totalPorPagina);
 	}
 
 	@Override
 	public UsuarioDTO buscarUsuarioLogado() {
 		return usuarioRepository.buscarUsuarioPorApelido(UserUtil.retornarApelidoUsuarioLogado());
 	}
-	
-	@Override
-	public Usuario buscarUsuarioLogadoPorApelido() {
-		return usuarioRepository.findFirstByApelido(UserUtil.retornarApelidoUsuarioLogado()).orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
-	}
 
 	@Override
 	public Usuario salvar(CadastrarUsuarioDTO DTO) {
-		UsuarioDTO usuarioCadastrado = usuarioRepository.buscarUsuarioPorApelido(DTO.getApelido());
+		UsuarioDTO usuarioComApelido = usuarioRepository.buscarUsuarioPorApelido(DTO.getApelido());
 
-		if (usuarioCadastrado != null) {
+		if (usuarioComApelido != null) {
 			throw new BadRequestException("Já existe um usuário cadastrado com esse apelido, digite um diferente");
 		}
 		
@@ -76,6 +71,11 @@ public class UsuarioServiceImpl implements UsuarioService {
 		}
 		
 		return usuarioRepository.save(usuario);
+	}
+	
+	@Override
+	public Usuario buscarUsuarioLogadoPorApelido() {
+		return usuarioRepository.findFirstByApelido(UserUtil.retornarApelidoUsuarioLogado()).orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
 	}
 	
 	private BCryptPasswordEncoder bCryptPasswordEncoder() {
