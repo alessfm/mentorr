@@ -10,7 +10,7 @@ public interface MentorService {
 
 	MentorDTO buscarPorApelido(String apelido);
 	
-	Mentor buscarMentorLogado();
+	MentorDTO buscarMentorLogado();
 	
 	Mentor salvar(CadastroMentorDTO DTO);
 	

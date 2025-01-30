@@ -20,7 +20,9 @@ public class UsuarioRepositoryImpl implements UsuarioRepositoryCustom {
 	private final EntityManager entityManager;
 
 	@Override
-	public ListaPaginacaoDTO buscarUsuarios(String nome, String apelido, TipoUsuario tipo, Boolean ativo, Integer pagina, Integer totalPorPagina) {
+	public ListaPaginacaoDTO buscarUsuarios(
+		String nome, String apelido, TipoUsuario tipo, Boolean ativo, Integer pagina, Integer totalPorPagina
+	) {
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 		CriteriaQuery<ListaUsuariosDTO> cq = cb.createQuery(ListaUsuariosDTO.class);
 		Root<Usuario> usuario = cq.from(Usuario.class);
@@ -51,7 +53,9 @@ public class UsuarioRepositoryImpl implements UsuarioRepositoryCustom {
 		return new ListaPaginacaoDTO(pagina, totalRegistros.intValue(), totalPorPagina, usuarios);
 	}
 	
-	private List<Predicate> criarFiltroBuscarUsuarios(CriteriaBuilder cb, Root<Usuario> usuario, String nome, String apelido, TipoUsuario tipo, Boolean ativo) {
+	private List<Predicate> criarFiltroBuscarUsuarios(
+		CriteriaBuilder cb, Root<Usuario> usuario, String nome, String apelido, TipoUsuario tipo, Boolean ativo
+	) {
 		List<Predicate> predicates = new ArrayList<>();
 
 		if (nome != null) {

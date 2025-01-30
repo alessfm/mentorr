@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.projeto.mentorr.modulos.mentores.horarios.HorarioMentorDTO;
 import com.projeto.mentorr.modulos.mentores.planos.PlanoMentorDTO;
-import com.projeto.mentorr.modulos.mentores.tags.Tag;
+import com.projeto.mentorr.modulos.tags.Tag;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,6 +29,14 @@ public class MentorDTO {
 	private List<HorarioMentorDTO> horarios;
 	private List<Tag> tags;
 	
+	public MentorDTO(Long id, String descricao, String cargo, String empresa, LocalDate dataInicio) {
+		this.id = id;
+		this.descricao = descricao;
+		this.cargo = cargo;
+		this.empresa = empresa;
+		this.dataInicio = dataInicio;
+	}
+	
 	public MentorDTO(String nome, String apelido, String cargo, String empresa) {
 		this.nome = nome;
 		this.apelido = apelido;
@@ -45,8 +53,9 @@ public class MentorDTO {
 		this.dataInicio = dataInicio;
 	}
 	
-	public MentorDTO(String nome, String apelido, String descricao, String cargo, String empresa, LocalDate dataInicio, 
-			List<PlanoMentorDTO> planos, List<HorarioMentorDTO> horarios, List<Tag> tags
+	public MentorDTO(
+		String nome, String apelido, String descricao, String cargo, String empresa, 
+		LocalDate dataInicio, List<PlanoMentorDTO> planos, List<HorarioMentorDTO> horarios, List<Tag> tags
 	) {
 		this.nome = nome;
 		this.apelido = apelido;

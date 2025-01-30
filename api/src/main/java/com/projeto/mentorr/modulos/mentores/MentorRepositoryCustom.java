@@ -9,5 +9,7 @@ public interface MentorRepositoryCustom {
 	ListaPaginacaoDTO buscarMentores(String cargo, String empresa, List<Long> tags, Integer pagina, Integer totalPorPagina);
 
 	MentorDTO buscarPorApelido(String apelido);
+	
+	MentorDTO buscarMentorLogado(String apelido);
 
 }

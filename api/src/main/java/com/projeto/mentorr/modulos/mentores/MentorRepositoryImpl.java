@@ -133,5 +133,33 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom {
 			throw new InternalErrorException("Não foi possível exibir os dados do mentor. Erro: " + e.getLocalizedMessage());
 		}
 	}
+	
+	@Override
+	public MentorDTO buscarMentorLogado(String apelido) {
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		CriteriaQuery<MentorDTO> cq = cb.createQuery(MentorDTO.class);
+		Root<Mentor> mentor = cq.from(Mentor.class);
+		
+		Join<Usuario, Mentor> usuario = mentor.join("usuario", JoinType.INNER);
+
+		cq.multiselect(
+			mentor.get("id"),
+			mentor.get("descricao"),
+			mentor.get("cargo"),
+			mentor.get("empresa"),
+			mentor.get("dataInicio")
+		);
+		
+		cq.where(cb.equal(usuario.get("apelido"), apelido));
+		
+		try {
+			return entityManager.createQuery(cq).getSingleResult();
+		} catch (NoResultException e) {
+			throw new NotFoundException("Mentor não encontrado");
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new InternalErrorException("Não foi possível exibir os dados do mentor. Erro: " + e.getLocalizedMessage());
+		}
+	}
 
 }
