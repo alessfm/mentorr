@@ -7,7 +7,8 @@ import org.springframework.stereotype.Repository;
 
 import com.projeto.mentorr.core.exception.InternalErrorException;
 import com.projeto.mentorr.core.exception.NotFoundException;
-import com.projeto.mentorr.modulos.mentores.tags.Tag;
+import com.projeto.mentorr.modulos.mentores.tags.TagMentor;
+import com.projeto.mentorr.modulos.tags.Tag;
 import com.projeto.mentorr.modulos.usuarios.Usuario;
 import com.projeto.mentorr.util.ListaPaginacaoDTO;
 
@@ -31,11 +32,13 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom {
 	public ListaPaginacaoDTO buscarMentores(String cargo, String empresa, List<Long> tags, Integer pagina, Integer totalPorPagina) {
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 		CriteriaQuery<ListaMentoresDTO> cq = cb.createQuery(ListaMentoresDTO.class);
-		Root<Mentor> mentor = cq.from(Mentor.class);
+		Root<TagMentor> tagMentor = cq.from(TagMentor.class);
 		
+		Join<TagMentor, Tag> tag = tagMentor.join("tag", JoinType.INNER);
+		Join<TagMentor, Mentor> mentor = tagMentor.join("mentor", JoinType.INNER);
 		Join<Mentor, Usuario> usuario = mentor.join("usuario", JoinType.INNER);
 
-		List<Predicate> predicates = criarFiltroBuscarMentores(cb, mentor, cargo, empresa, tags);
+		List<Predicate> predicates = criarFiltroBuscarMentores(cb, tag, mentor, cargo, empresa, tags);
 		
 		cq.multiselect(
 			usuario.get("nome"),
@@ -44,7 +47,7 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom {
 			mentor.get("cargo"),
 			mentor.get("empresa"),
 			mentor.get("dataInicio")
-		);
+		).distinct(true);
 		
 		cq.where(predicates.toArray(new Predicate[0]));
         cq.orderBy(cb.asc(usuario.get("nome")));
@@ -61,7 +64,10 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom {
 		return new ListaPaginacaoDTO(pagina, totalRegistros.intValue(), totalPorPagina, mentores);
 	}
 	
-	private List<Predicate> criarFiltroBuscarMentores(CriteriaBuilder cb, Root<Mentor> mentor, String cargo, String empresa, List<Long> tags) {
+	private List<Predicate> criarFiltroBuscarMentores(
+		CriteriaBuilder cb, Join<TagMentor, Tag> tag, Join<TagMentor, Mentor> mentor, 
+		String cargo, String empresa, List<Long> tags
+	) {
 		List<Predicate> predicates = new ArrayList<>();
 
 		if (cargo != null) {
@@ -73,7 +79,6 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom {
 		}
 		
 		if (tags != null) {
-			Join<Mentor, Tag> tag = mentor.join("tags", JoinType.INNER);
         	predicates.add(tag.get("id").in(tags));
         }
 		
@@ -83,11 +88,14 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom {
 	private Long totalMentores(String cargo, String empresa, List<Long> tags) {
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Long> cq = cb.createQuery(Long.class);
-		Root<Mentor> mentor = cq.from(Mentor.class);
+		Root<TagMentor> tagMentor = cq.from(TagMentor.class);
 		
-		List<Predicate> predicates = criarFiltroBuscarMentores(cb, mentor, cargo, empresa, tags);
-		
-        cq.select(cb.count(mentor));
+		Join<TagMentor, Tag> tag = tagMentor.join("tag", JoinType.INNER);
+		Join<TagMentor, Mentor> mentor = tagMentor.join("mentor", JoinType.INNER);
+
+		List<Predicate> predicates = criarFiltroBuscarMentores(cb, tag, mentor, cargo, empresa, tags);
+
+        cq.select(cb.countDistinct(mentor));
         cq.where(predicates.toArray(new Predicate[0]));
         
         try {

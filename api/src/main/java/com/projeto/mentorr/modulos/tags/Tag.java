@@ -1,4 +1,4 @@
-package com.projeto.mentorr.modulos.mentores.tags;
+package com.projeto.mentorr.modulos.tags;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
