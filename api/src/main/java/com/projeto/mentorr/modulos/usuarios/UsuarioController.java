@@ -22,7 +22,7 @@ public class UsuarioController {
 	private final UsuarioService usuarioService;
 
 	@PreAuthorize("hasAnyRole('ROLE_GESTAO')")
-	@GetMapping
+	@GetMapping("/busca")
 	public ListaPaginacaoDTO buscarUsuarios(
 		@RequestParam(required = false) String nome,
 		@RequestParam(required = false) String apelido,
@@ -35,7 +35,7 @@ public class UsuarioController {
 	}
 
 	@PreAuthorize("hasAnyRole('ROLE_GESTAO', 'ROLE_ALUNO', 'ROLE_MENTOR')")
-	@GetMapping("/logado")
+	@GetMapping
 	public UsuarioDTO buscarUsuarioLogado() {	
 		return usuarioService.buscarUsuarioLogado();
 	}

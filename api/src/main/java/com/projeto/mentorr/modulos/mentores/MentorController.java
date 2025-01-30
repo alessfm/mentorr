@@ -41,8 +41,8 @@ public class MentorController {
 	}
 	
 	@PreAuthorize("hasAnyRole('ROLE_MENTOR')")
-	@GetMapping("/logado")
-	public Mentor buscarMentorLogado() {	
+	@GetMapping
+	public MentorDTO buscarMentorLogado() {	
 		return mentorService.buscarMentorLogado();
 	}
 

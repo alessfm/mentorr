@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
-@PreAuthorize("hasAnyRole('ROLE_MENTOR')")
+@PreAuthorize("hasAnyRole('ROLE_GESTAO', 'ROLE_MENTOR')")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/mentores/{idMentor}/horarios")
