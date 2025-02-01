@@ -1,5 +1,6 @@
 package com.projeto.mentorr.modulos.usuarios;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -60,6 +61,12 @@ public class Usuario implements UserDetails {
 
 	@Column(name = "FLAG_ATIVO", columnDefinition = "boolean default false", nullable = false)
 	private Boolean ativo;
+	
+	@Column(name = "DATA_EXCLUSAO")
+	private LocalDateTime dataExclusao;
+	
+	@Column(name = "FLAG_EXCLUIDO")
+	private Boolean excluido;
 	
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "roles_usuario", joinColumns = @JoinColumn(name = "id_usuario", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "id_role", referencedColumnName = "id"))

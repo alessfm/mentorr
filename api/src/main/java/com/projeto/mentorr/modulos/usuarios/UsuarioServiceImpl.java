@@ -1,5 +1,6 @@
 package com.projeto.mentorr.modulos.usuarios;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -27,6 +28,11 @@ public class UsuarioServiceImpl implements UsuarioService {
 	public ListaPaginacaoDTO buscarUsuarios(String nome, String apelido, TipoUsuario tipo, Boolean ativo, Integer pagina, Integer totalPorPagina) {
 		return usuarioRepository.buscarUsuarios(nome, apelido, tipo, ativo, pagina, totalPorPagina);
 	}
+	
+	@Override
+	public Usuario buscarPorId(Long idUsuario) {
+		return usuarioRepository.findById(idUsuario).orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
+	}
 
 	@Override
 	public UsuarioDTO buscarUsuarioLogado() {
@@ -53,6 +59,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 				.senha(bCryptPasswordEncoder().encode(DTO.getSenha()))
 				.tipo(DTO.getTipo())
 				.ativo(true)
+				.excluido(false)
 				.roles(roles)
 				.build();
 		
@@ -62,6 +69,16 @@ public class UsuarioServiceImpl implements UsuarioService {
 	@Override
 	public Usuario atualizar(EditarUsuarioDTO DTO) {
 		Usuario usuario = buscarUsuarioLogadoPorApelido();
+		
+		if (DTO.getApelido() != null) {
+			UsuarioDTO usuarioComApelido = usuarioRepository.buscarUsuarioPorApelido(DTO.getApelido());
+			
+			if (usuarioComApelido.getId() != usuario.getId()) {
+				throw new BadRequestException("Já existe um usuário cadastrado com esse apelido, digite um diferente");
+			}
+			
+			usuario.setApelido(DTO.getApelido());
+		}
 
 		usuario.setNome(DTO.getNome());
 		usuario.setEmail(DTO.getEmail());
@@ -71,6 +88,23 @@ public class UsuarioServiceImpl implements UsuarioService {
 		}
 		
 		return usuarioRepository.save(usuario);
+	}
+	
+	@Override
+	public void excluirRestaurar() {
+		Usuario usuario = buscarUsuarioLogadoPorApelido();
+		
+		usuario.setDataExclusao(!usuario.getExcluido() ? LocalDateTime.now() : null);
+		usuario.setExcluido(!usuario.getExcluido());
+		
+		usuarioRepository.save(usuario);
+	}
+	
+	@Override
+	public void alterarStatus(Long idUsuario) {
+		Usuario usuario = buscarPorId(idUsuario);
+		usuario.setAtivo(!usuario.getAtivo());
+		usuarioRepository.save(usuario);
 	}
 	
 	@Override

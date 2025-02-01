@@ -1,7 +1,9 @@
 package com.projeto.mentorr.modulos.usuarios;
 
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,6 +35,12 @@ public class UsuarioController {
 	) {	
 		return usuarioService.buscarUsuarios(nome, apelido, tipo, ativo, pagina, totalPorPagina);
 	}
+	
+	@PreAuthorize("hasAnyRole('ROLE_GESTAO')")
+	@GetMapping("/{idUsuario}")
+	public Usuario buscarPorId(@PathVariable Long idUsuario) {	
+		return usuarioService.buscarPorId(idUsuario);
+	}
 
 	@PreAuthorize("hasAnyRole('ROLE_GESTAO', 'ROLE_ALUNO', 'ROLE_MENTOR')")
 	@GetMapping
@@ -49,6 +57,18 @@ public class UsuarioController {
 	@PutMapping
 	public Usuario atualizar(@RequestBody @Valid EditarUsuarioDTO DTO) {
 		return usuarioService.atualizar(DTO);
+	}
+	
+	@PreAuthorize("hasAnyRole('ROLE_ALUNO', 'ROLE_MENTOR')")
+	@DeleteMapping
+	public void excluirRestaurar() {
+		usuarioService.excluirRestaurar();
+	}
+	
+	@PreAuthorize("hasAnyRole('ROLE_GESTAO')")
+	@PutMapping("/{idUsuario}/status")
+	public void alterarStatus(@PathVariable Long idUsuario) {
+		usuarioService.alterarStatus(idUsuario);
 	}
 	
 }

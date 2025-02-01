@@ -36,7 +36,7 @@ public class AuthController {
 		Usuario usuario = (Usuario) authentication.getPrincipal();
 		
 		if (!usuario.getAtivo()) {
-			return ResponseEntity.badRequest().body(new BadRequestException("Esta conta está bloqueada"));
+			return ResponseEntity.badRequest().body(new BadRequestException("Esta conta está desativada"));
 		}
 		
 		String tokenJWT = tokenService.gerarToken(usuario);
