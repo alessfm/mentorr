@@ -19,23 +19,23 @@ import lombok.RequiredArgsConstructor;
 public class HorarioMentorServiceImpl implements HorarioMentorService {
 	
 	private final MentorService mentorService;
-	private final HorarioMentorRepository HorarioMentorRepository;
+	private final HorarioMentorRepository horarioMentorRepository;
 
 	@Override
 	public List<HorarioMentorDTO> buscarHorariosPorMentor(Long idMentor) {
-		return HorarioMentorRepository.buscarHorariosPorMentor(idMentor);
+		return horarioMentorRepository.buscarHorariosPorMentor(idMentor);
 	}
 	
 	@Override
 	public HorarioMentor buscarPorId(Long idMentor, Long idHorario) {
-		return HorarioMentorRepository.findByIdAndMentor_Id(idHorario, idMentor).orElseThrow(() -> new NotFoundException("Horário não encontrado"));
+		return horarioMentorRepository.findByIdAndMentor_Id(idHorario, idMentor).orElseThrow(() -> new NotFoundException("Horário não encontrado"));
 	}
 
 	@Override
 	public HorarioMentor salvar(Long idMentor, CadastroHorarioMentorDTO DTO) {
 		Mentor mentor = mentorService.buscarPorId(idMentor);
 		
-		Optional<HorarioMentor> horarioExistente = HorarioMentorRepository.findByDiaAndMentor_Id(DTO.getDia(), idMentor);
+		Optional<HorarioMentor> horarioExistente = horarioMentorRepository.findByDiaAndMentor_Id(DTO.getDia(), idMentor);
 		
 		if (horarioExistente.isPresent()) {
 			throw new BadRequestException("Já existe um horário cadastrado para o mesmo dia");
@@ -48,14 +48,14 @@ public class HorarioMentorServiceImpl implements HorarioMentorService {
 				.mentor(mentor)
 				.build();
 		
-		return HorarioMentorRepository.saveAndFlush(horarioMentor);
+		return horarioMentorRepository.saveAndFlush(horarioMentor);
 	}
 
 	@Override
 	public HorarioMentor atualizar(Long idMentor, Long idHorario, CadastroHorarioMentorDTO DTO) {
 		HorarioMentor horarioMentor = buscarPorId(idMentor, idHorario);
 		
-		Optional<HorarioMentor> horarioExistente = HorarioMentorRepository.findByDiaAndMentor_Id(DTO.getDia(), idMentor);
+		Optional<HorarioMentor> horarioExistente = horarioMentorRepository.findByDiaAndMentor_Id(DTO.getDia(), idMentor);
 		
 		if (horarioExistente.isPresent() && !horarioExistente.get().getId().equals(idHorario)) {
 			throw new BadRequestException("Já existe um horário cadastrado para o mesmo dia");
@@ -65,7 +65,7 @@ public class HorarioMentorServiceImpl implements HorarioMentorService {
 		horarioMentor.setHoraInicio(DTO.getHoraInicio());
 		horarioMentor.setHoraFim(DTO.getHoraFim());
 		
-		return HorarioMentorRepository.saveAndFlush(horarioMentor);
+		return horarioMentorRepository.saveAndFlush(horarioMentor);
 	}
 
 	@Override
@@ -73,7 +73,7 @@ public class HorarioMentorServiceImpl implements HorarioMentorService {
 		HorarioMentor horarioMentor = buscarPorId(idMentor, idHorario);
 		
 		try {
-			HorarioMentorRepository.delete(horarioMentor);
+			horarioMentorRepository.delete(horarioMentor);
 		} catch (Exception e) {
 			throw new InternalErrorException("Não foi possivel excluir o horário");
 		}
@@ -82,7 +82,7 @@ public class HorarioMentorServiceImpl implements HorarioMentorService {
 	
 	@Override
 	public List<HorarioMentorDTO> buscarHorariosPorApelidoMentor(String apelido) {
-		return HorarioMentorRepository.buscarHorariosPorApelidoMentor(apelido);
+		return horarioMentorRepository.buscarHorariosPorApelidoMentor(apelido);
 	}
 
 }

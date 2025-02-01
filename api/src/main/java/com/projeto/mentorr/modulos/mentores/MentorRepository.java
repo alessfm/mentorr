@@ -9,6 +9,6 @@ public interface MentorRepository extends JpaRepository<Mentor, Long>, MentorRep
 
 	Mentor findByUsuario_Id(Long id);
 	
-//	Long countById();
+	Long countByUsuario_AtivoIsTrue();
 	
 }

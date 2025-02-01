@@ -46,6 +46,11 @@ public class MentorServiceImpl implements MentorService {
 	}
 	
 	@Override
+	public Mentor buscarPorId(Long id) {
+		return mentorRepository.findById(id).orElseThrow(() -> new NotFoundException("Mentor não encontrado"));
+	}
+	
+	@Override
 	public MentorDTO buscarMentorLogado() {
 		String apelido = UserUtil.retornarApelidoUsuarioLogado();
 		
@@ -91,16 +96,10 @@ public class MentorServiceImpl implements MentorService {
 		
 		return mentor;
 	}
-	
-	@Override
-	public Mentor buscarPorId(Long id) {
-		return mentorRepository.findById(id).orElseThrow(() -> new NotFoundException("Mentor não encontrado"));
-	}
 
 	@Override
 	public Long buscarTotalMentores() {
-		return 0L;
-//		return mentorRepository.countById();
+		return mentorRepository.countByUsuario_AtivoIsTrue();
 	}
 	
 	public void salvarTags(Mentor mentor, List<Long> tags) {

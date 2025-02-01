@@ -35,9 +35,15 @@ public class MentorController {
 		return mentorService.buscarMentores(cargo, empresa, tags, pagina, totalPorPagina);
 	}
 
-	@GetMapping("/{apelido}")
+	@GetMapping("/apelido/{apelido}")
 	public MentorDTO buscarPorApelido(@PathVariable String apelido) {	
 		return mentorService.buscarPorApelido(apelido);
+	}
+	
+	@PreAuthorize("hasAnyRole('ROLE_GESTAO')")
+	@GetMapping("/{idMentor}")
+	public Mentor buscarPorId(@PathVariable Long idMentor) {	
+		return mentorService.buscarPorId(idMentor);
 	}
 	
 	@PreAuthorize("hasAnyRole('ROLE_MENTOR')")

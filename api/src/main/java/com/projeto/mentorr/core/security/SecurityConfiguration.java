@@ -43,7 +43,9 @@ public class SecurityConfiguration {
             		"/actuator/health",
             		"/swagger-ui/**",
             		"/v3/api-docs/**",
-            		"/api/mentores/**"
+            		"/api/mentores/busca",
+            		"/api/mentores/apelido/**",
+            		"/api/tags/busca"
         		).permitAll();
 	            req.requestMatchers(HttpMethod.POST, "/api/usuarios").permitAll();
 	            req.anyRequest().authenticated();
