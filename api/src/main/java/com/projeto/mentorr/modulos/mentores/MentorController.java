@@ -40,12 +40,6 @@ public class MentorController {
 		return mentorService.buscarPorApelido(apelido);
 	}
 	
-	@PreAuthorize("hasAnyRole('ROLE_GESTAO')")
-	@GetMapping("/{idMentor}")
-	public Mentor buscarPorId(@PathVariable Long idMentor) {	
-		return mentorService.buscarPorId(idMentor);
-	}
-	
 	@PreAuthorize("hasAnyRole('ROLE_MENTOR')")
 	@GetMapping
 	public MentorDTO buscarMentorLogado() {	
@@ -62,6 +56,12 @@ public class MentorController {
 	@PutMapping
 	public Mentor atualizar(@RequestBody @Valid CadastroMentorDTO DTO) {
 		return mentorService.atualizar(DTO);
+	}
+	
+	@PreAuthorize("hasAnyRole('ROLE_MENTOR')")
+	@PutMapping("/status")
+	public void alterarStatus() {
+		mentorService.alterarStatus();
 	}
 	
 }

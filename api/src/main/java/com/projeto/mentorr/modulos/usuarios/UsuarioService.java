@@ -9,15 +9,17 @@ public interface UsuarioService {
 	Usuario buscarPorId(Long idUsuario);
 	
 	UsuarioDTO buscarUsuarioLogado();
+	
+	Usuario buscarUsuarioLogadoPorApelido();
 
 	Usuario salvar(CadastrarUsuarioDTO DTO);
 
 	Usuario atualizar(EditarUsuarioDTO DTO);
 	
+	Usuario atualizarPorId(Long idUsuario, EditarUsuarioDTO DTO);
+	
 	void excluirRestaurar();
 	
 	void alterarStatus(Long idUsuario);
-	
-	Usuario buscarUsuarioLogadoPorApelido();
 
 }

@@ -7,8 +7,10 @@ import com.projeto.mentorr.util.ListaPaginacaoDTO;
 public interface MentorService {
 
 	ListaPaginacaoDTO buscarMentores(String cargo, String empresa, List<Long> tags, Integer pagina, Integer totalPorPagina);
-
+	
 	MentorDTO buscarPorApelido(String apelido);
+	
+	Mentor buscarPorId(Long idMentor);
 	
 	MentorDTO buscarMentorLogado();
 	
@@ -16,7 +18,11 @@ public interface MentorService {
 	
 	Mentor atualizar(CadastroMentorDTO DTO);
 	
-	Mentor buscarPorId(Long idMentor);
+	Mentor atualizarPorId(Long idMentor, CadastroMentorDTO DTO);
+	
+	void alterarStatus();
+	
+	void alterarStatusPorId(Long idMentor);
 	
 	Long buscarTotalMentores();
 
