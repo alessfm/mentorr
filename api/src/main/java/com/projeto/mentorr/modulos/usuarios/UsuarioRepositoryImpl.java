@@ -102,6 +102,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepositoryCustom {
 		Root<Usuario> usuario = cq.from(Usuario.class);
 
 		cq.multiselect(
+			usuario.get("id"),
 			usuario.get("nome"),
 			usuario.get("apelido"),
 			usuario.get("email"),

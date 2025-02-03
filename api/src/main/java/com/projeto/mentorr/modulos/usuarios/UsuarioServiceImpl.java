@@ -38,6 +38,11 @@ public class UsuarioServiceImpl implements UsuarioService {
 	public UsuarioDTO buscarUsuarioLogado() {
 		return usuarioRepository.buscarUsuarioPorApelido(UserUtil.retornarApelidoUsuarioLogado());
 	}
+	
+	@Override
+	public Usuario buscarUsuarioLogadoPorApelido() {
+		return usuarioRepository.findFirstByApelido(UserUtil.retornarApelidoUsuarioLogado()).orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
+	}
 
 	@Override
 	public Usuario salvar(CadastrarUsuarioDTO DTO) {
@@ -70,24 +75,14 @@ public class UsuarioServiceImpl implements UsuarioService {
 	public Usuario atualizar(EditarUsuarioDTO DTO) {
 		Usuario usuario = buscarUsuarioLogadoPorApelido();
 		
-		if (DTO.getApelido() != null) {
-			UsuarioDTO usuarioComApelido = usuarioRepository.buscarUsuarioPorApelido(DTO.getApelido());
-			
-			if (usuarioComApelido.getId() != usuario.getId()) {
-				throw new BadRequestException("Já existe um usuário cadastrado com esse apelido, digite um diferente");
-			}
-			
-			usuario.setApelido(DTO.getApelido());
-		}
-
-		usuario.setNome(DTO.getNome());
-		usuario.setEmail(DTO.getEmail());
+		return atualizacaoUsuario(usuario, DTO);
+	}
+	
+	@Override
+	public Usuario atualizarPorId(Long idUsuario, EditarUsuarioDTO DTO) {
+		Usuario usuario = buscarPorId(idUsuario);
 		
-		if (DTO.getSenha() != null) {
-			usuario.setSenha(bCryptPasswordEncoder().encode(DTO.getSenha()));
-		}
-		
-		return usuarioRepository.save(usuario);
+		return atualizacaoUsuario(usuario, DTO);
 	}
 	
 	@Override
@@ -107,9 +102,27 @@ public class UsuarioServiceImpl implements UsuarioService {
 		usuarioRepository.save(usuario);
 	}
 	
-	@Override
-	public Usuario buscarUsuarioLogadoPorApelido() {
-		return usuarioRepository.findFirstByApelido(UserUtil.retornarApelidoUsuarioLogado()).orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
+	private Usuario atualizacaoUsuario(Usuario usuario, EditarUsuarioDTO DTO) {
+		if (DTO.getApelido() != null) {
+			UsuarioDTO usuarioComApelido = usuarioRepository.buscarUsuarioPorApelido(DTO.getApelido());
+			
+			if (usuarioComApelido != null) {
+				if (usuarioComApelido.getId() != usuario.getId()) {
+					throw new BadRequestException("Já existe um usuário cadastrado com esse apelido, digite um diferente");					
+				}
+			}
+			
+			usuario.setApelido(DTO.getApelido());
+		}
+
+		usuario.setNome(DTO.getNome());
+		usuario.setEmail(DTO.getEmail());
+		
+		if (DTO.getSenha() != null) {
+			usuario.setSenha(bCryptPasswordEncoder().encode(DTO.getSenha()));
+		}
+		
+		return usuarioRepository.save(usuario);
 	}
 	
 	private BCryptPasswordEncoder bCryptPasswordEncoder() {
