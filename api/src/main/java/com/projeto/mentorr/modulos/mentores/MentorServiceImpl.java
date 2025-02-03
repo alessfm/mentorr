@@ -69,6 +69,7 @@ public class MentorServiceImpl implements MentorService {
 				.cargo(DTO.getCargo())
 				.empresa(DTO.getEmpresa())
 				.dataInicio(DTO.getDataInicio())
+				.ativo(true)
 				.usuario(usuario)
 				.build();
 		
@@ -83,7 +84,40 @@ public class MentorServiceImpl implements MentorService {
 	public Mentor atualizar(CadastroMentorDTO DTO) {
 		Usuario usuario = usuarioService.buscarUsuarioLogadoPorApelido();
 		Mentor mentor = mentorRepository.findByUsuario_Id(usuario.getId());
+		
+		return atualizacaoMentor(mentor, DTO);
+	}
+	
+	@Override
+	public Mentor atualizarPorId(Long idMentor, CadastroMentorDTO DTO) {
+		Mentor mentor = buscarPorId(idMentor);
+		
+		return atualizacaoMentor(mentor, DTO);
+	}
+	
+	@Override
+	public void alterarStatus() {
+		Usuario usuario = usuarioService.buscarUsuarioLogadoPorApelido();
+		Mentor mentor = mentorRepository.findByUsuario_Id(usuario.getId());
+		
+		mentor.setAtivo(!mentor.getAtivo());
+		mentorRepository.save(mentor);
+	}
+	
+	@Override
+	public void alterarStatusPorId(Long idMentor) {
+		Mentor mentor = buscarPorId(idMentor);
+		
+		mentor.setAtivo(!mentor.getAtivo());
+		mentorRepository.save(mentor);
+	}
 
+	@Override
+	public Long buscarTotalMentores() {
+		return mentorRepository.countByUsuario_AtivoIsTrue();
+	}
+	
+	private Mentor atualizacaoMentor(Mentor mentor, CadastroMentorDTO DTO) {
 		mentor.setDescricao(DTO.getDescricao());
 		mentor.setCargo(DTO.getCargo());
 		mentor.setEmpresa(DTO.getEmpresa());
@@ -96,13 +130,8 @@ public class MentorServiceImpl implements MentorService {
 		
 		return mentor;
 	}
-
-	@Override
-	public Long buscarTotalMentores() {
-		return mentorRepository.countByUsuario_AtivoIsTrue();
-	}
 	
-	public void salvarTags(Mentor mentor, List<Long> tags) {
+	private void salvarTags(Mentor mentor, List<Long> tags) {
 		Long ordem = 0L;
 		
 		for (Long idTag: tags) {
@@ -119,7 +148,7 @@ public class MentorServiceImpl implements MentorService {
 		}
 	}
 	
-	public void deletarTags(Mentor mentor) {
+	private void deletarTags(Mentor mentor) {
 		List<TagMentor> tags = tagMentorRepository.findByMentor_Id(mentor.getId());
 		tagMentorRepository.deleteAll(tags);
 	}

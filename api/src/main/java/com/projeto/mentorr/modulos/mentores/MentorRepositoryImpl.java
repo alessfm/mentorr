@@ -119,7 +119,8 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom {
 			mentor.get("descricao"),
 			mentor.get("cargo"),
 			mentor.get("empresa"),
-			mentor.get("dataInicio")
+			mentor.get("dataInicio"),
+			mentor.get("ativo")
 		);
 		
 		cq.where(cb.equal(usuario.get("apelido"), apelido));
@@ -147,7 +148,8 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom {
 			mentor.get("descricao"),
 			mentor.get("cargo"),
 			mentor.get("empresa"),
-			mentor.get("dataInicio")
+			mentor.get("dataInicio"),
+			mentor.get("ativo")
 		);
 		
 		cq.where(cb.equal(usuario.get("apelido"), apelido));
@@ -155,10 +157,10 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom {
 		try {
 			return entityManager.createQuery(cq).getSingleResult();
 		} catch (NoResultException e) {
-			throw new NotFoundException("Mentor não encontrado");
+			throw new NotFoundException("Seus dados não foram encontrados");
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new InternalErrorException("Não foi possível exibir os dados do mentor. Erro: " + e.getLocalizedMessage());
+			throw new InternalErrorException("Não foi possível exibir os seus dados. Erro: " + e.getLocalizedMessage());
 		}
 	}
 

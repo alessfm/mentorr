@@ -25,47 +25,28 @@ public class MentorDTO {
 	private String cargo;
 	private String empresa;
 	private LocalDate dataInicio;
+	private Boolean ativo;
 	private List<PlanoMentorDTO> planos;
 	private List<HorarioMentorDTO> horarios;
 	private List<Tag> tags;
 	
-	public MentorDTO(Long id, String descricao, String cargo, String empresa, LocalDate dataInicio) {
+	public MentorDTO(Long id, String descricao, String cargo, String empresa, LocalDate dataInicio, Boolean ativo) {
 		this.id = id;
 		this.descricao = descricao;
 		this.cargo = cargo;
 		this.empresa = empresa;
 		this.dataInicio = dataInicio;
+		this.ativo = ativo;
 	}
 	
-	public MentorDTO(String nome, String apelido, String cargo, String empresa) {
-		this.nome = nome;
-		this.apelido = apelido;
-		this.cargo = cargo;
-		this.empresa = empresa;
-	}
-	
-	public MentorDTO(String nome, String apelido, String descricao, String cargo, String empresa, LocalDate dataInicio) {
+	public MentorDTO(String nome, String apelido, String descricao, String cargo, String empresa, LocalDate dataInicio, Boolean ativo) {
 		this.nome = nome;
 		this.apelido = apelido;
 		this.descricao = descricao;
 		this.cargo = cargo;
 		this.empresa = empresa;
 		this.dataInicio = dataInicio;
-	}
-	
-	public MentorDTO(
-		String nome, String apelido, String descricao, String cargo, String empresa, 
-		LocalDate dataInicio, List<PlanoMentorDTO> planos, List<HorarioMentorDTO> horarios, List<Tag> tags
-	) {
-		this.nome = nome;
-		this.apelido = apelido;
-		this.descricao = descricao;
-		this.cargo = cargo;
-		this.empresa = empresa;
-		this.dataInicio = dataInicio;
-		this.planos = planos;
-		this.horarios = horarios;
-		this.tags = tags;
+		this.ativo = ativo;
 	}
 
 }

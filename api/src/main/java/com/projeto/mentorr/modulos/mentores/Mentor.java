@@ -7,6 +7,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.projeto.mentorr.modulos.mentores.horarios.HorarioMentor;
 import com.projeto.mentorr.modulos.mentores.planos.PlanoMentor;
 import com.projeto.mentorr.modulos.usuarios.Usuario;
@@ -50,15 +51,20 @@ public class Mentor {
 	@Column(name = "DATA_INICIO", nullable = false)
 	private LocalDate dataInicio;
 	
+	@Column(name = "FLAG_ATIVO", columnDefinition = "boolean default false", nullable = false)
+	private Boolean ativo;
+	
 	@JsonBackReference
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ID_USUARIO", unique = true)
 	private Usuario usuario;
 	
+	@JsonIgnore
 	@Fetch(FetchMode.SUBSELECT)
 	@OneToMany(mappedBy = "mentor", fetch = FetchType.LAZY)
 	private List<PlanoMentor> planos;
 	
+	@JsonIgnore
 	@Fetch(FetchMode.SUBSELECT)
 	@OneToMany(mappedBy = "mentor", fetch = FetchType.LAZY)
 	private List<HorarioMentor> horarios;
