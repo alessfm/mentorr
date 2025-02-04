@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 
 import { NgxLoadingXConfig, SPINNER, POSITION, NgxLoadingXModule } from 'ngx-loading-x';
 
+import { BotoesModule } from '@shared/components/botoes/botoes.module';
 import { FooterModule } from '@shared/components/footer/footer.module';
 import { HeaderModule } from '@shared/components/header/header.module';
 
@@ -12,8 +13,7 @@ import { PublicService } from './services/public.service';
 
 import { PublicRoutingModule } from './public.routing';
 import { ApresentacaoComponent } from './pages/apresentacao/apresentacao.component';
-// import { Erro404Component } from './pages/erro-404/erro-404.component';
-// import { Erro500Component } from './pages/erro-500/erro-500.component';
+import { Erro404Component } from './pages/erro-404/erro-404.component';
 import { LoginComponent } from './pages/login/login.component';
 
 const spinnerConfig: NgxLoadingXConfig = {
@@ -29,6 +29,7 @@ const spinnerConfig: NgxLoadingXConfig = {
 
 @NgModule({
   imports: [
+    BotoesModule,
     CommonModule,
     FormsModule,
     FooterModule,
@@ -39,8 +40,7 @@ const spinnerConfig: NgxLoadingXConfig = {
   ],
   declarations: [
     ApresentacaoComponent,
-    // Erro404Component,
-    // Erro500Component,
+    Erro404Component,
     LoginComponent
   ],
   providers: [
