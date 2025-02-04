@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-// import { LogadoGuard } from '@app/core/guards/logado.guard';
-// import { PublicModule } from '@modules/public/public.module';
+import { LogadoGuard } from '@app/core/guards/logado.guard';
+import { PublicModule } from '@modules/public/public.module';
 
 const routes: Routes = [
   // {
@@ -18,7 +18,7 @@ const routes: Routes = [
 @NgModule({
   imports: [
     RouterModule.forRoot(routes),
-    // PublicModule
+    PublicModule
   ],
   exports: [RouterModule]
 })

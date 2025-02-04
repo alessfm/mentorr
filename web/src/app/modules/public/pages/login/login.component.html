@@ -1,0 +1,53 @@
+<main NgxLoadingXBlur [show]="carregar.load || false">
+  <section class="flex justify-center items-center">
+    <div class="flex bg-blue-600 justify-center items-center h-screen w-1/3 hidden md:flex">
+      <a href="/">
+        <img src="assets/images/logo-m.svg">
+      </a>
+    </div>
+
+    <div class="flex flex-col gap-6 p-6 md:p-0 md:px-32 w-full md:w-2/3">
+      <h1 class="text-2xl md:text-5xl font-bold">Login</h1>
+
+      <div class="flex flex-col gap-1">
+        <label class="font-light">E-mail ou nome de usuário</label>
+        <input type="text" class="font-light border p-2 rounded-lg w-full" />
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label class="font-light">Senha de acesso</label>
+        <input type="password" class="font-light border p-2 rounded-lg w-full" />
+      </div>
+
+      <button class="bg-blue-600 text-white font-semibold rounded-lg py-2 w-full hover:bg-blue-800">
+        Entrar
+      </button>
+
+      <span class="text-center">ou</span>
+
+      <div class="">
+        <script src="https://accounts.google.com/gsi/client" async></script>
+        <div id="g_id_onload" data-client_id="YOUR_GOOGLE_CLIENT_ID"
+          data-login_uri="https://your.domain/your_login_endpoint" data-auto_prompt="false">
+        </div>
+        <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="sign_in_with"
+          data-shape="rectangular" data-logo_alignment="left">
+        </div>
+      </div>
+
+      <a class="text-blue-600 underline font-semibold" href="#">Esqueceu a senha?</a>
+
+      <p class="font-semibold">
+        Não tem uma conta?
+        <br />
+        <span>
+          Cadastre-se como
+          <a class="text-blue-600 underline" href="#">aluno</a> ou
+          <a class="text-blue-600 underline" href="#">mentor</a>.
+        </span>
+      </p>
+    </div>
+  </section>
+</main>
+
+<ngx-loading-x [show]="carregar.load || false"></ngx-loading-x>
