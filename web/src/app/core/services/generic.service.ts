@@ -5,9 +5,10 @@ import { MonoTypeOperatorFunction, Observable, pipe, UnaryFunction } from 'rxjs'
 
 import { configMap } from '@core/utils/config-map';
 import { AddHttpParams } from '@core/utils/add-http-params';
+import { environment } from '@environments/environment';
 
 import { Loading } from '@core/models/loading.model';
-import { environment } from '@environments/environment';
+import { Paginacao } from '@shared/models/paginacao.model';
 
 export abstract class GenericService<T> {
 
@@ -29,11 +30,11 @@ export abstract class GenericService<T> {
       .pipe(this.configMapAndLoading(loading));
   }
 
-  getWithParams(filter: T, loading?: Loading): Observable<T[]> {
+  getWithParams(filter?: {}, loading?: Loading): Observable<Paginacao<T>> {
     this.startLoading(loading);
     const params = new AddHttpParams(filter).createParams();
     return this.getHttpClient()
-      .get<T[]>(`${this._api}`, { params })
+      .get<T[]>(`${this._api}/busca`, { params })
       .pipe(this.configMapAndLoading(loading));
   }
 
@@ -51,14 +52,28 @@ export abstract class GenericService<T> {
       .pipe(this.configMapAndLoading(loading));
   }
 
-  update(id: number, entity: T, loading?: Loading): Observable<T> {
+  update(entity: T, loading?: Loading): Observable<T> {
+    this.startLoading(loading);
+    return this.getHttpClient()
+      .put(`${this._api}`, entity)
+      .pipe(this.configMapAndLoading(loading));
+  }
+
+  updateById(id: number, entity: T, loading?: Loading): Observable<T> {
     this.startLoading(loading);
     return this.getHttpClient()
       .put(`${this._api}/${id}`, entity)
       .pipe(this.configMapAndLoading(loading));
   }
 
-  delete(id: number, entity?: T, loading?: Loading): Observable<void> {
+  delete(loading?: Loading): Observable<void> {
+    this.startLoading(loading);
+    return this.getHttpClient()
+      .delete(`${this._api}`)
+      .pipe(this.configMapAndLoading(loading));
+  }
+
+  deleteById(id: number, entity?: T, loading?: Loading): Observable<void> {
     this.startLoading(loading);
     return this.getHttpClient()
       .request('DELETE', `${this._api}/${id}`, { body: entity })

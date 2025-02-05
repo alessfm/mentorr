@@ -1,56 +1,24 @@
 <header>
-  <div class="flex p-6 justify-between items-center">
+  <div class="flex justify-between items-center p-6">
     <a class="flex-none relative" href="/">
       <img src="assets/images/logo-mentorr.svg" alt="Logotipo Mentorr">
     </a>
 
-    <div class="flex items-center gap-12 hidden md:flex">
-      <div class="flex gap-1">
-        <a class="text-gray-600 font-bold hover:text-blue-700" href="#">Para mentores</a>
-        <svg class="w-5 text-gray-600 font-bold hover:text-blue-700" aria-colspan="" xmlns="http://www.w3.org/2000/svg"
-          fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-          <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-        </svg>
-      </div>
-      <button class="bg-blue-600 text-white font-semibold rounded-lg px-4 py-2 hover:bg-blue-800">
-        Quero ser aluno
-      </button>
-      <a class="text-gray-600 font-bold hover:text-blue-700" href="/entrar">Login</a>
+    <div class="hidden md:flex items-center gap-12" *ngIf="!usuario; else mostrarConta">
+      <app-botao-azul label="Quero ser aluno" (func)="irPara('/cadastro')"></app-botao-azul>
+      <a class="text-gray-600 font-bold hover:text-blue-700" href="/login">Entrar</a>
     </div>
 
-    <div class="flex flex-col justify-center mobile-menu md:hidden">
-      <div></div>
-      <div></div>
-      <div></div>
-    </div>
+    <ng-template #mostrarConta>
+      <span class="text-md text-gray-600 hover:text-blue-600">Olá, {{ usuario?.apelido }}!</span>
+    </ng-template>
   </div>
 
-  <div class="flex p-4 items-center border-t-2 border-b-2 hidden md:flex">
+  <div class="hidden md:flex items-center p-4 border-t-2 border-b-2">
     <nav class="container mx-auto">
       <ul class="flex justify-between">
-        <li>
-          <a class="font-light text-gray-600 hover:text-blue-600" href="#">UX/UI</a>
-        </li>
-        <li>
-          <a class="font-light text-gray-600 hover:text-blue-600" href="#">Front-end</a>
-        </li>
-        <li>
-          <a class="font-light text-gray-600 hover:text-blue-600" href="#">Back-end</a>
-        </li>
-        <li>
-          <a class="font-light text-gray-600 hover:text-blue-600" href="#">DevOps</a>
-        </li>
-        <li>
-          <a class="font-light text-gray-600 hover:text-blue-600" href="#">Agile</a>
-        </li>
-        <li>
-          <a class="font-light text-gray-600 hover:text-blue-600" href="#">Cloud Computing</a>
-        </li>
-        <li>
-          <a class="font-light text-gray-600 hover:text-blue-600" href="#">Inteligência Artificial</a>
-        </li>
-        <li>
-          <a class="font-light text-gray-600 hover:text-blue-600" href="#">Segurança da Informação</a>
+        <li *ngFor="let tag of tags?.lista">
+          <a class="font-light text-gray-600 hover:text-blue-600" href="#">{{tag.nome}}</a>
         </li>
       </ul>
     </nav>

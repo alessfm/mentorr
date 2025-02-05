@@ -5,31 +5,13 @@
     </a>
 
     <div class="flex flex-wrap flex-col md:flex-row items-center md:items-start gap-8 md:gap-32">
-      <div class="flex flex-col gap-1 items-center md:items-start">
-        <h5 class="text-blue-600 font-bold text-md mb-4">Plataforma</h5>
-        <a class="text-slate-300 text-md hover:text-blue-800 hover:underline" href="./pages/busca.html">Busque
-          mentores</a>
-        <a class="text-slate-300 text-md hover:text-blue-800 hover:underline" href="#">Torne-se um mentor</a>
-      </div>
-
-      <div class="flex flex-col gap-1 items-center md:items-start">
-        <h5 class="text-blue-600 font-bold text-md mb-4">Sobre Nós</h5>
-        <a class="text-slate-300 text-md hover:text-blue-800 hover:underline" href="#">Como funciona</a>
-        <a class="text-slate-300 text-md hover:text-blue-800 hover:underline" href="#">Quem somos</a>
-        <a class="text-slate-300 text-md hover:text-blue-800 hover:underline" href="#">Investidores</a>
-        <a class="text-slate-300 text-md hover:text-blue-800 hover:underline" href="#">Política de Privacidade</a>
-      </div>
-
-      <div class="flex flex-col gap-1 items-center md:items-start">
-        <h5 class="text-blue-600 font-bold text-md mb-4">Suporte</h5>
-        <a class="text-slate-300 text-md hover:text-blue-800 hover:underline" href="#">FAQ</a>
-        <a class="text-slate-300 text-md hover:text-blue-800 hover:underline" href="#">Contatos</a>
-      </div>
-
-      <div class="flex flex-col gap-1 items-center md:items-start">
-        <h5 class="text-blue-600 font-bold text-md mb-4">Legislação</h5>
-        <a class="text-slate-300 text-md hover:text-blue-800 hover:underline" href="#">Código de Ética</a>
-        <a class="text-slate-300 text-md hover:text-blue-800 hover:underline" href="#">Adequação à LGPD</a>
+      <div class="flex flex-col gap-1 items-center md:items-start" *ngFor="let texto of textos">
+        <h5 class="text-blue-600 font-bold text-md mb-4">{{ texto.titulo }}</h5>
+        <ng-container *ngFor="let link of texto.links">
+          <a class="text-slate-300 text-md hover:text-blue-800 hover:underline" [href]="link.rota">
+            {{ link.descricao }}
+          </a>
+        </ng-container>
       </div>
     </div>
   </div>

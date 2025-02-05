@@ -9,16 +9,26 @@ import { UtilService } from '@core/services/util.service';
 })
 export class FooterComponent {
 
-  constructor(
-    private utilService: UtilService
-  ) { }
+  textos = [
+    {
+      titulo: 'Plataforma',
+      links: [
+        {
+          descricao: 'Busque Mentores',
+          rota: '/mentores/busca'
+        },
+        {
+          descricao: 'Torne-se um mentor',
+          rota: '/cadastro'
+        }
+      ]
+    }
+  ];
+
+  constructor(private utilService: UtilService) { }
 
   irPara(rota: string): void {
     this.utilService.redirecionar(`/${rota}`);
-  }
-
-  get versao() {
-    return null;
   }
 
 }
