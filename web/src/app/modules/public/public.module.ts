@@ -9,7 +9,7 @@ import { FooterModule } from '@shared/components/footer/footer.module';
 import { HeaderModule } from '@shared/components/header/header.module';
 
 import { AuthService } from '@shared/services/auth.service';
-import { PublicService } from './services/public.service';
+import { UsuarioService } from '@shared/services/usuario.service';
 
 import { PublicRoutingModule } from './public.routing';
 import { ApresentacaoComponent } from './pages/apresentacao/apresentacao.component';
@@ -45,7 +45,7 @@ const spinnerConfig: NgxLoadingXConfig = {
   ],
   providers: [
     AuthService,
-    PublicService
+    UsuarioService
   ]
 })
 export class PublicModule { }

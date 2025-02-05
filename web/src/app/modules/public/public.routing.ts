@@ -13,7 +13,7 @@ const routes: Routes = [
     path: '404', component: Erro404Component
   },
   {
-    path: 'entrar', component: LoginComponent
+    path: 'login', component: LoginComponent
   }
 ];
 
