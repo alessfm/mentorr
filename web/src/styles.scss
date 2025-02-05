@@ -1,9 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /*** 1.0 - Variáveis ***/
 $primary: #386ef1;
-$inverse: #d946ef;
 $primary-darker: darken($primary, 10%);
 
-$black: #0f162a;
+$black: #0f172a;
 $black-darker: darken($black, 10%);
 
 $gray: #cbd5e1;
@@ -35,15 +38,6 @@ p {
   color: $black;
 }
 
-button {
-  background-color: $primary !important;
-}
-
-button:hover,
-button:focus {
-  background-color: $primary-darker !important;
-}
-
 button:disabled {
   color: $gray-darker;
   cursor: not-allowed;
@@ -56,6 +50,19 @@ textarea {
 /*** 4.0 - Global ***/
 .text-primary {
   color: $primary;
+}
+
+.bg-primary {
+  background-color: $primary;
+}
+
+button.bg-primary:hover,
+button.bg-primary:focus {
+  background-color: $primary-darker;
+}
+
+.bg-black {
+  background-color: $black;
 }
 
 .paginacao {
@@ -86,6 +93,16 @@ textarea {
   .ng-select-container {
     border-color: red !important;
   }
+}
+
+.form-control {
+  @apply font-light border p-2 rounded-lg w-full;
+}
+
+[required]::after {
+  content: "*";
+  color: red;
+  margin-left: 2px;
 }
 
 /*** 5.0 - Modal ***/

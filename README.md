@@ -59,19 +59,19 @@ Um MVP de uma plataforma web que possibilita a conexão entre alunos e mentores.
 > Eu ainda vou adicionar um arquivo de importação para auxiliar nessa etapa...
 
 1. Popule a tabela `roles`, com os dados:
-    | id | name        |   |   |   |
-    |----|-------------|---|---|---|
-    | 1  | ROLE_GESTAO |   |   |   |
-    | 2  | ROLE_ALUNO  |   |   |   |
-    | 3  | ROLE_MENTOR |   |   |   |
+    | id | name        |
+    |----|-------------|
+    | 1  | ROLE_GESTAO |
+    | 2  | ROLE_ALUNO  |
+    | 3  | ROLE_MENTOR |
 
 2. Popule a tabela `tags`, com alguns dados. Exemplos:
-    | id | nome         |   |   |   |
-    |----|--------------|---|---|---|
-    | 1  | ux/ui design |   |   |   |
-    | 2  | back-end     |   |   |   |
-    | 3  | front-end    |   |   |   |
-    | 4  | devops       |   |   |   |
-    | 5  | agile        |   |   |   |
+    | id | nome         |
+    |----|--------------|
+    | 1  | ux/ui design |
+    | 2  | back-end     |
+    | 3  | front-end    |
+    | 4  | devops       |
+    | 5  | agile        |
 
 3. **Pronto!** Agora você pode criar contas de usuários, como aluno ou mentor e explorar o sistema. **Valeu!!!**
