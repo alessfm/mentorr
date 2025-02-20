@@ -1,0 +1,19 @@
+.form {
+  @apply flex flex-col md:flex-row mx-auto gap-4 w-full md:w-1/2;
+}
+
+.campo-busca {
+  @apply font-light bg-slate-100 border p-4 rounded-lg w-full md:w-3/4;
+}
+
+.btn-buscar {
+  @apply text-white font-semibold rounded-lg px-6 py-2 w-full md:w-1/4;
+}
+
+.total {
+  @apply flex flex-wrap flex-col md:flex-row items-center justify-center gap-16 md:gap-32;
+}
+
+.card {
+  @apply col-span-1 border border-gray-300 rounded-lg p-4 hover:shadow;
+}
