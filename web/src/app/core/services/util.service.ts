@@ -19,8 +19,8 @@ export class UtilService implements UtilInterface {
     this.location.back();
   }
 
-  redirecionar(link: string): void {
-    this.router.navigate([link]);
+  redirecionar(link: string, params?: {}): void {
+    this.router.navigate([link], { queryParams: params });
   }
 
   recarregar(): void {

@@ -34,8 +34,12 @@ export class HeaderComponent implements OnInit {
     this.tagService.getWithParams(params, this.carregar).subscribe(_ => this.tags = _);
   }
 
-  irPara(rota: string): void {
-    this.utilService.redirecionar(rota);
+  irParaCadastro(): void {
+    this.utilService.redirecionar('/cadastro');
+  }
+
+  buscarMentoresPorTag(idTag: number): void {
+    this.utilService.redirecionar('/mentores/busca', { tags: idTag });
   }
 
   get usuario() {

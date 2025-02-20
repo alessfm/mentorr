@@ -56,9 +56,21 @@ textarea {
   background-color: $primary;
 }
 
+.border-primary {
+  border-color: $primary;
+}
+
 button.bg-primary:hover,
 button.bg-primary:focus {
   background-color: $primary-darker;
+}
+
+.badge {
+  @apply bg-gray-200 text-gray-800 py-1 px-3 rounded-full hover:bg-blue-600 hover:text-white;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 
 .paginacao {
@@ -67,10 +79,6 @@ button.bg-primary:focus {
   justify-content: center;
 }
 
-// .ngx-pagination li {
-//   font-size: floor(($font-size-base * 1.2));
-// }
-
 .ngx-pagination .current {
   background: $primary !important;
   border-radius: $border-radius-base;
@@ -78,10 +86,8 @@ button.bg-primary:focus {
 
 .ng-select {
   .ng-select-container {
-    padding: 8px;
+    background-color: #f1f5f9 !important;
     border-radius: $border-radius-base !important;
-    border: 2px solid $gray-darker !important;
-    height: 44px !important;
   }
 }
 
@@ -92,7 +98,7 @@ button.bg-primary:focus {
 }
 
 .form-control {
-  @apply font-light border p-2 rounded-lg w-full;
+  @apply font-light bg-slate-100 border p-2 rounded-lg w-full focus:outline-none focus:border-blue-600 hover:bg-slate-200;
 }
 
 [required]::after {
