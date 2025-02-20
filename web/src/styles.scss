@@ -161,6 +161,20 @@ button.bg-primary:focus {
   }
 }
 
+.fade-in-out {
+  animation: fade-in-out 1s linear infinite alternate;
+}
+
+@keyframes fade-in-out {
+  0% {
+    filter: opacity(1)
+  }
+
+  100% {
+    filter: opacity(0)
+  }
+}
+
 @media (min-width: 1200px) {
   .modal-content {
     width: 50%;
