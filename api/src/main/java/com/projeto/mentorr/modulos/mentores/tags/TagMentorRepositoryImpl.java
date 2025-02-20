@@ -26,7 +26,7 @@ public class TagMentorRepositoryImpl implements TagMentorRepositoryCustom {
 	private final EntityManager entityManager;
 
 	@Override
-	public List<Tag> buscarTagsPorApelidoMentor(String apelido) {
+	public List<Tag> buscarTagsPorApelidoMentor(String apelido, Integer qtdTags) {
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Tag> cq = cb.createQuery(Tag.class);
 		Root<TagMentor> tagMentor = cq.from(TagMentor.class);
@@ -45,7 +45,7 @@ public class TagMentorRepositoryImpl implements TagMentorRepositoryCustom {
 		cq.orderBy(cb.asc(tagMentor.get("ordem")));
 		
 		try {
-			return entityManager.createQuery(cq).getResultList();
+			return entityManager.createQuery(cq).setMaxResults(qtdTags).getResultList();
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new InternalErrorException("Não foi possível exibir as tags do mentor. Erro: " + e.getLocalizedMessage());

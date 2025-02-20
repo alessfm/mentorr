@@ -45,7 +45,7 @@ public class MentorServiceImpl implements MentorService {
 		@SuppressWarnings("unchecked")
 		List<ListaMentoresDTO> mentores = (List<ListaMentoresDTO>) busca.getLista();
 		for(ListaMentoresDTO mentor: mentores) {
-			mentor.setTags(tagMentorRepository.buscarTagsPorApelidoMentor(mentor.getApelido()));
+			mentor.setTags(tagMentorRepository.buscarTagsPorApelidoMentor(mentor.getApelido(), 12));
 		}
 		
 		return busca;
@@ -56,7 +56,7 @@ public class MentorServiceImpl implements MentorService {
 		List<MentorDTO> mentores = mentorRepository.buscarMentoresRecomendados();
 		
 		for(MentorDTO mentor: mentores) {
-			mentor.setTags(tagMentorRepository.buscarTagsPorApelidoMentor(mentor.getApelido()));
+			mentor.setTags(tagMentorRepository.buscarTagsPorApelidoMentor(mentor.getApelido(), 6));
 		}
 		
 		return mentores;
@@ -68,7 +68,7 @@ public class MentorServiceImpl implements MentorService {
 		
 		mentorDTO.setHorarios(horarioMentorService.buscarHorariosPorApelidoMentor(apelido));
 		mentorDTO.setPlanos(planoMentorService.buscarPlanosPorApelidoMentor(apelido));
-		mentorDTO.setTags(tagMentorRepository.buscarTagsPorApelidoMentor(apelido));
+		mentorDTO.setTags(tagMentorRepository.buscarTagsPorApelidoMentor(apelido, 999));
 		
 		return mentorDTO;
 	}
@@ -83,7 +83,7 @@ public class MentorServiceImpl implements MentorService {
 		String apelido = UserUtil.retornarApelidoUsuarioLogado();
 		
 		MentorDTO mentorDTO = mentorRepository.buscarMentorLogado(apelido);
-		mentorDTO.setTags(tagMentorRepository.buscarTagsPorApelidoMentor(apelido));
+		mentorDTO.setTags(tagMentorRepository.buscarTagsPorApelidoMentor(apelido, 999));
 		
 		return mentorDTO;
 	}
