@@ -38,6 +38,9 @@ public class Mentor {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@Column(name = "FOTO_URL", nullable = false)
+	private String foto;
 
 	@Column(name = "DESCRICAO", nullable = false)
 	private String descricao;
