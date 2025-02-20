@@ -1,0 +1,66 @@
+<app-header></app-header>
+
+<main NgxLoadingXBlur [show]="carregar.load || false">
+  <section class="flex flex-col md:flex-row">
+    <form class="busca" [formGroup]="form" (submit)="atualizarParams()">
+      <div class="flex flex-col">
+        <input type="text" class="form-control" placeholder="Busque por habilidades, cargos..."
+          formControlName="texto" />
+        <em class="text-sm text-gray-600">Digite para buscar automaticamente</em>
+      </div>
+      <hr />
+      <div class="flex flex-col gap-4 hidden md:flex">
+        <div class="flex flex-col gap-1">
+          <label class="font-bold text-lg">Habilidades</label>
+          <ng-select [multiple]="true" [closeOnSelect]="false" [clearSearchOnAdd]="true" [hideSelected]="true"
+            [virtualScroll]="true" [items]="tags.lista" bindValue="id" bindLabel="nome" formControlName="tags"
+            [loading]="carregarTags.load || false">
+          </ng-select>
+        </div>
+      </div>
+      <div class="flex flex-col gap-4 hidden md:flex">
+        <div class="flex flex-col gap-1">
+          <label class="font-bold text-lg">Cargos</label>
+          <input type="text" class="form-control" placeholder="Digite..." formControlName="cargo" />
+        </div>
+      </div>
+      <div class="flex flex-col gap-4 hidden md:flex">
+        <div class="flex flex-col gap-1">
+          <label class="font-bold text-lg">Empresas</label>
+          <input type="text" class="form-control" placeholder="Digite..." formControlName="empresa" />
+        </div>
+      </div>
+      <div class="flex flex-col gap-4 hidden md:flex">
+        <button class="button-primary bg-primary" [disabled]="carregar.load" type="submit">Pesquisar</button>
+      </div>
+    </form>
+
+    <div class="cards" *ngIf="mentores.lista.length; else semDados">
+      <ng-container
+        *ngFor="let mentor of mentores.lista | paginate: {itemsPerPage: totalPorPagina, currentPage: mentores.pagina, totalItems: mentores.totalRegistros}">
+        <app-card-mentor [mentor]="mentor"></app-card-mentor>
+      </ng-container>
+
+      <div class="paginacao">
+        <pagination-controls (pageChange)="trocarPagina($event)" previousLabel="Anteriores" nextLabel="Próximos">
+        </pagination-controls>
+      </div>
+    </div>
+  </section>
+
+  <app-secao-propaganda></app-secao-propaganda>
+</main>
+
+<app-footer></app-footer>
+
+<ngx-loading-x [show]="carregar.load || false"></ngx-loading-x>
+
+<ng-template #semDados>
+  <div class="cards">
+    <div class="flex flex-col items-center gap-2">
+      <img class="w-icone center" src="assets/images/busca.svg" />
+      <h3 class="text-md md:text-xl font-bold">Ops, nenhum mentor encontrado</h3>
+      <p class="text-gray-600">Edite os filtros para realizar uma nova pesquisa</p>
+    </div>
+  </div>
+</ng-template>

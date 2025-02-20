@@ -6,6 +6,6 @@ import com.projeto.mentorr.modulos.tags.Tag;
 
 public interface TagMentorRepositoryCustom {
 	
-	List<Tag> buscarTagsPorApelidoMentor(String apelido);
+	List<Tag> buscarTagsPorApelidoMentor(String apelido, Integer qtdTags);
 
 }

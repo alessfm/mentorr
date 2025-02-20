@@ -1,5 +1,7 @@
 package com.projeto.mentorr.modulos.tags;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,6 +34,11 @@ public class TagController {
         @RequestParam(defaultValue = "10") Integer totalPorPagina
     ) {
         return tagService.buscarTags(nome, pagina, totalPorPagina);
+    }
+	
+	@GetMapping("/destaque")
+    public List<Tag> buscarTagsDestaque() {
+        return tagService.buscarTagsDestaque();
     }
 	
 	@PreAuthorize("hasAnyRole('ROLE_GESTAO')")

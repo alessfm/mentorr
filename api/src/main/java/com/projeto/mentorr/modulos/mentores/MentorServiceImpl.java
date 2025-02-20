@@ -28,10 +28,38 @@ public class MentorServiceImpl implements MentorService {
 	private final TagService tagService;
 	private final HorarioMentorService horarioMentorService;
 	private final PlanoMentorService planoMentorService;
+	
+	@Override
+	public TotaisMentoresDTO buscarTotais() {
+		Long qtdMentores = mentorRepository.countByUsuario_AtivoIsTrue();
+		Long qtdMentorias  = 0L;
+		Long qtdPaises = 1L;
+		
+		return new TotaisMentoresDTO(qtdMentores, qtdMentorias, qtdPaises);
+	}
 
 	@Override
-	public ListaPaginacaoDTO buscarMentores(String cargo, String empresa, List<Long> tags, Integer pagina, Integer totalPorPagina) {
-		return mentorRepository.buscarMentores(cargo, empresa, tags, pagina, totalPorPagina);
+	public ListaPaginacaoDTO buscarMentores(String texto, String cargo, String empresa, List<Long> tags, Integer pagina, Integer totalPorPagina) {
+		ListaPaginacaoDTO busca = mentorRepository.buscarMentores(texto, cargo, empresa, tags, pagina, totalPorPagina);
+		
+		@SuppressWarnings("unchecked")
+		List<ListaMentoresDTO> mentores = (List<ListaMentoresDTO>) busca.getLista();
+		for(ListaMentoresDTO mentor: mentores) {
+			mentor.setTags(tagMentorRepository.buscarTagsPorApelidoMentor(mentor.getApelido(), 12));
+		}
+		
+		return busca;
+	}
+	
+	@Override
+	public List<MentorDTO> buscarRecomendados() {
+		List<MentorDTO> mentores = mentorRepository.buscarMentoresRecomendados();
+		
+		for(MentorDTO mentor: mentores) {
+			mentor.setTags(tagMentorRepository.buscarTagsPorApelidoMentor(mentor.getApelido(), 6));
+		}
+		
+		return mentores;
 	}
 
 	@Override
@@ -40,7 +68,7 @@ public class MentorServiceImpl implements MentorService {
 		
 		mentorDTO.setHorarios(horarioMentorService.buscarHorariosPorApelidoMentor(apelido));
 		mentorDTO.setPlanos(planoMentorService.buscarPlanosPorApelidoMentor(apelido));
-		mentorDTO.setTags(tagMentorRepository.buscarTagsPorApelidoMentor(apelido));
+		mentorDTO.setTags(tagMentorRepository.buscarTagsPorApelidoMentor(apelido, 999));
 		
 		return mentorDTO;
 	}
@@ -55,7 +83,7 @@ public class MentorServiceImpl implements MentorService {
 		String apelido = UserUtil.retornarApelidoUsuarioLogado();
 		
 		MentorDTO mentorDTO = mentorRepository.buscarMentorLogado(apelido);
-		mentorDTO.setTags(tagMentorRepository.buscarTagsPorApelidoMentor(apelido));
+		mentorDTO.setTags(tagMentorRepository.buscarTagsPorApelidoMentor(apelido, 999));
 		
 		return mentorDTO;
 	}
@@ -65,6 +93,7 @@ public class MentorServiceImpl implements MentorService {
 		Usuario usuario = usuarioService.buscarUsuarioLogadoPorApelido();
 		
 		Mentor mentor = Mentor.builder()
+				.foto(DTO.getFoto())
 				.descricao(DTO.getDescricao())
 				.cargo(DTO.getCargo())
 				.empresa(DTO.getEmpresa())
@@ -111,13 +140,9 @@ public class MentorServiceImpl implements MentorService {
 		mentor.setAtivo(!mentor.getAtivo());
 		mentorRepository.save(mentor);
 	}
-
-	@Override
-	public Long buscarTotalMentores() {
-		return mentorRepository.countByUsuario_AtivoIsTrue();
-	}
 	
 	private Mentor atualizacaoMentor(Mentor mentor, CadastroMentorDTO DTO) {
+		mentor.setFoto(DTO.getFoto());
 		mentor.setDescricao(DTO.getDescricao());
 		mentor.setCargo(DTO.getCargo());
 		mentor.setEmpresa(DTO.getEmpresa());

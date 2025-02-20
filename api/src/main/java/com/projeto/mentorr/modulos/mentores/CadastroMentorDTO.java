@@ -13,6 +13,9 @@ import lombok.Data;
 @Data
 public class CadastroMentorDTO {
 
+	@NotBlank(message = "A foto é obrigatória")
+	private String foto;
+	
 	@NotBlank(message = "A descrição(bio) é obrigatória")
 	private String descricao;
 	

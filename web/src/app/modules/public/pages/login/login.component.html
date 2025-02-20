@@ -1,0 +1,55 @@
+<main NgxLoadingXBlur [show]="carregar.load || false">
+  <section class="flex justify-center items-center">
+    <div class="logo bg-slate-950">
+      <a href="/">
+        <img src="assets/images/logo-m.svg">
+      </a>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="entrar()" class="form">
+      <h1 class="text-2xl md:text-4xl font-bold">Entrar</h1>
+
+      <div class="flex flex-col gap-1">
+        <label class="font-light" required>Nome de usuário</label>
+        <input id="apelido" type="text" class="form-control" formControlName="apelido" required />
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label class="font-light" required>Senha de acesso</label>
+        <input id="senha" type="password" class="form-control" formControlName="senha" required />
+      </div>
+
+      <app-botao-azul label="Entrar" (func)="entrar()" estilo="w-full" type="submit"></app-botao-azul>
+
+      <hr />
+
+      <div class="google hidden">
+        <div id="g_id_onload" data-client_id="1" data-context="signup" data-ux_mode="popup"
+          data-login_uri="localhost:8780/login" data-auto_prompt="false">
+        </div>
+        <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="filled_black"
+          data-text="continue_with" data-size="large" data-logo_alignment="left">
+        </div>
+      </div>
+
+      <a class="text-blue-600 underline font-semibold" href="/rec-senha">Esqueceu a senha?</a>
+
+      <p class="font-semibold">
+        Não tem uma conta?
+        <br />
+        <span>
+          Cadastre-se
+          <a class="text-blue-600 underline" href="/criar-conta">
+            como aluno
+          </a>
+          ou
+          <a class="text-blue-600 underline" href="/criar-conta">
+            como mentor
+          </a>
+        </span>
+      </p>
+    </form>
+  </section>
+</main>
+
+<ngx-loading-x [show]="carregar.load || false"></ngx-loading-x>

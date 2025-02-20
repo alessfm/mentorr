@@ -1,5 +1,7 @@
 package com.projeto.mentorr.modulos.tags;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.projeto.mentorr.core.exception.InternalErrorException;
@@ -17,6 +19,11 @@ public class TagServiceImpl implements TagService {
 	@Override
 	public ListaPaginacaoDTO buscarTags(String nome, Integer pagina, Integer totalPorPagina) {
 		return tagRepository.buscarTags(nome, pagina, totalPorPagina);
+	}
+	
+	@Override
+	public List<Tag> buscarTagsDestaque(){
+		return tagRepository.buscarTagsDestaque();
 	}
 	
 	@Override

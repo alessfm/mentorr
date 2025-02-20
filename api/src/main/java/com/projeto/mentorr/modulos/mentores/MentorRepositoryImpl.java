@@ -29,7 +29,7 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom {
 	private final EntityManager entityManager;
 
 	@Override
-	public ListaPaginacaoDTO buscarMentores(String cargo, String empresa, List<Long> tags, Integer pagina, Integer totalPorPagina) {
+	public ListaPaginacaoDTO buscarMentores(String texto, String cargo, String empresa, List<Long> tags, Integer pagina, Integer totalPorPagina) {
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 		CriteriaQuery<ListaMentoresDTO> cq = cb.createQuery(ListaMentoresDTO.class);
 		Root<TagMentor> tagMentor = cq.from(TagMentor.class);
@@ -37,12 +37,19 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom {
 		Join<TagMentor, Tag> tag = tagMentor.join("tag", JoinType.INNER);
 		Join<TagMentor, Mentor> mentor = tagMentor.join("mentor", JoinType.INNER);
 		Join<Mentor, Usuario> usuario = mentor.join("usuario", JoinType.INNER);
+		
+		List<Predicate> predicates = new ArrayList<Predicate>();
 
-		List<Predicate> predicates = criarFiltroBuscarMentores(cb, tag, mentor, cargo, empresa, tags);
+		if (texto != null) {
+			predicates = criarFiltroGlobal(cb, tag, mentor, texto);
+		} else {
+			predicates = criarFiltroPorParametros(cb, tag, mentor, cargo, empresa, tags);			
+		}
 		
 		cq.multiselect(
 			usuario.get("nome"),
 			usuario.get("apelido"),
+			mentor.get("foto"),
 			mentor.get("descricao"),
 			mentor.get("cargo"),
 			mentor.get("empresa"),
@@ -52,7 +59,7 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom {
 		cq.where(predicates.toArray(new Predicate[0]));
         cq.orderBy(cb.asc(usuario.get("nome")));
 		
-		Long totalRegistros = totalMentores(cargo, empresa, tags);
+		Long totalRegistros = totalMentores(texto, cargo, empresa, tags);
 		
 		Integer offset = (totalRegistros < totalPorPagina) ? 0 : totalPorPagina * (pagina - 1);
 		
@@ -64,7 +71,7 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom {
 		return new ListaPaginacaoDTO(pagina, totalRegistros.intValue(), totalPorPagina, mentores);
 	}
 	
-	private List<Predicate> criarFiltroBuscarMentores(
+	private List<Predicate> criarFiltroPorParametros(
 		CriteriaBuilder cb, Join<TagMentor, Tag> tag, Join<TagMentor, Mentor> mentor, 
 		String cargo, String empresa, List<Long> tags
 	) {
@@ -82,10 +89,30 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom {
         	predicates.add(tag.get("id").in(tags));
         }
 		
+		predicates.add(cb.isTrue(mentor.get("ativo")));
+		
 		return predicates;
 	}
 	
-	private Long totalMentores(String cargo, String empresa, List<Long> tags) {
+	private List<Predicate> criarFiltroGlobal(
+		CriteriaBuilder cb, Join<TagMentor, Tag> tag, Join<TagMentor, Mentor> mentor, String texto
+	) {
+		List<Predicate> predicates = new ArrayList<>();
+
+		predicates.add(
+			cb.or(
+				cb.like(cb.lower(mentor.get("cargo")), "%" + texto.toLowerCase() + "%"),
+				cb.like(cb.lower(mentor.get("empresa")), "%" + texto.toLowerCase() + "%"),
+				cb.like(cb.lower(tag.get("nome")),  "%" + texto.toLowerCase() + "%")
+			)
+		);
+		
+		predicates.add(cb.isTrue(mentor.get("ativo")));
+		
+		return predicates;
+	}
+	
+	private Long totalMentores(String texto, String cargo, String empresa, List<Long> tags) {
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Long> cq = cb.createQuery(Long.class);
 		Root<TagMentor> tagMentor = cq.from(TagMentor.class);
@@ -93,7 +120,13 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom {
 		Join<TagMentor, Tag> tag = tagMentor.join("tag", JoinType.INNER);
 		Join<TagMentor, Mentor> mentor = tagMentor.join("mentor", JoinType.INNER);
 
-		List<Predicate> predicates = criarFiltroBuscarMentores(cb, tag, mentor, cargo, empresa, tags);
+		List<Predicate> predicates = new ArrayList<Predicate>();
+
+		if (texto != null) {
+			predicates = criarFiltroGlobal(cb, tag, mentor, texto);
+		} else {
+			predicates = criarFiltroPorParametros(cb, tag, mentor, cargo, empresa, tags);			
+		}
 
         cq.select(cb.countDistinct(mentor));
         cq.where(predicates.toArray(new Predicate[0]));
@@ -116,6 +149,7 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom {
 		cq.multiselect(
 			usuario.get("nome"),
 			usuario.get("apelido"),
+			mentor.get("foto"),
 			mentor.get("descricao"),
 			mentor.get("cargo"),
 			mentor.get("empresa"),
@@ -145,6 +179,7 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom {
 
 		cq.multiselect(
 			mentor.get("id"),
+			mentor.get("foto"),
 			mentor.get("descricao"),
 			mentor.get("cargo"),
 			mentor.get("empresa"),
@@ -162,6 +197,26 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom {
 			e.printStackTrace();
 			throw new InternalErrorException("Não foi possível exibir os seus dados. Erro: " + e.getLocalizedMessage());
 		}
+	}
+	
+	@Override
+	public List<MentorDTO> buscarMentoresRecomendados() {
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		CriteriaQuery<MentorDTO> cq = cb.createQuery(MentorDTO.class);
+		Root<Mentor> mentor = cq.from(Mentor.class);
+		
+		Join<Usuario, Mentor> usuario = mentor.join("usuario", JoinType.INNER);
+
+		cq.multiselect(
+			usuario.get("nome"),
+			usuario.get("apelido"),
+			mentor.get("foto"),
+			mentor.get("cargo")
+		);
+		
+		cq.where(cb.isTrue(mentor.get("ativo")));
+		
+		return entityManager.createQuery(cq).setMaxResults(6).getResultList();
 	}
 
 }

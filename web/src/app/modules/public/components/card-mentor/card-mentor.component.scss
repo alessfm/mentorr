@@ -1,0 +1,7 @@
+.card {
+  @apply flex flex-col md:flex-row p-6 border rounded-lg hover:shadow;
+}
+
+.btn-perfil {
+  @apply text-white font-semibold rounded-lg px-6 py-2 h-12;
+}

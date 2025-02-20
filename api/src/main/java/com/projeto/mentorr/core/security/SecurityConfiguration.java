@@ -44,8 +44,11 @@ public class SecurityConfiguration {
             		"/swagger-ui/**",
             		"/v3/api-docs/**",
             		"/api/mentores/busca",
+            		"/api/mentores/totais",
+            		"/api/mentores/recomendados",
             		"/api/mentores/apelido/**",
-            		"/api/tags/busca"
+            		"/api/tags/busca",
+            		"/api/tags/destaque"
         		).permitAll();
 	            req.requestMatchers(HttpMethod.POST, "/api/usuarios").permitAll();
 	            req.anyRequest().authenticated();

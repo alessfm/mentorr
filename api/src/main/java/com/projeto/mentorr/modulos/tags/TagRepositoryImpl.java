@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
+
 import com.projeto.mentorr.util.ListaPaginacaoDTO;
 
 import jakarta.persistence.EntityManager;
@@ -20,14 +21,12 @@ public class TagRepositoryImpl implements TagRepositoryCustom {
 	private final EntityManager entityManager;
 
 	@Override
-	public ListaPaginacaoDTO buscarTags(
-		String nome, Integer pagina, Integer totalPorPagina
-	) {
+	public ListaPaginacaoDTO buscarTags(String nome, Integer pagina, Integer totalPorPagina) {
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Tag> cq = cb.createQuery(Tag.class);
 		Root<Tag> tag = cq.from(Tag.class);
 
-		List<Predicate> predicates = criarFiltroBuscarTags(cb, tag, nome);
+		List<Predicate> predicates = criarFiltroPorParametros(cb, tag, nome);
 		
 		cq.select(tag);
 		
@@ -46,9 +45,7 @@ public class TagRepositoryImpl implements TagRepositoryCustom {
 		return new ListaPaginacaoDTO(pagina, totalRegistros.intValue(), totalPorPagina, tags);
 	}
 	
-	private List<Predicate> criarFiltroBuscarTags(
-		CriteriaBuilder cb, Root<Tag> tag, String nome
-	) {
+	private List<Predicate> criarFiltroPorParametros(CriteriaBuilder cb, Root<Tag> tag, String nome) {
 		List<Predicate> predicates = new ArrayList<>();
 
 		if (nome != null) {
@@ -63,7 +60,7 @@ public class TagRepositoryImpl implements TagRepositoryCustom {
 		CriteriaQuery<Long> cq = cb.createQuery(Long.class);
 		Root<Tag> tag = cq.from(Tag.class);
 		
-		List<Predicate> predicates = criarFiltroBuscarTags(cb, tag, nome);
+		List<Predicate> predicates = criarFiltroPorParametros(cb, tag, nome);
 		
         cq.select(cb.count(tag));
         cq.where(predicates.toArray(new Predicate[0]));
@@ -73,6 +70,18 @@ public class TagRepositoryImpl implements TagRepositoryCustom {
 		} catch (Exception e) {
 			return 0L;
 		}
+	}
+	
+	public List<Tag> buscarTagsDestaque() {
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Tag> cq = cb.createQuery(Tag.class);
+		Root<Tag> tag = cq.from(Tag.class);
+		
+//		Join<TagMentor, Tag> tag = tagMentor.join("tag", JoinType.INNER);
+		
+        cq.select(tag);
+        
+        return entityManager.createQuery(cq).setMaxResults(5).getResultList();
 	}
 
 }

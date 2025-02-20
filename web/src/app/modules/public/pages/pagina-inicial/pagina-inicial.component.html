@@ -1,0 +1,114 @@
+<app-header></app-header>
+
+<main NgxLoadingXBlur [show]="carregar.load || false">
+  <section class="p-6 md:p-14">
+    <div class="flex flex-col text-center gap-6">
+      <h3 class="text-md md:text-xl">
+        Aprenda uma nova habilidade, lance um projeto, alcance a carreira dos seus sonhos
+      </h3>
+      <h1 class="text-4xl md:text-6xl font-bold">
+        Mentoria <span class="text-primary">especializada</span> 1 para 1
+      </h1>
+
+      <!-- Formulário -->
+      <h2 class="text-md md:text-xl text-gray-600">Encontre um mentor hoje:</h2>
+      <form class="form" [formGroup]="form" (submit)="buscarMentores()">
+        <input type="text" class="campo-busca" placeholder="Busque por habilidades, cargos ou empresas"
+          formControlName="texto">
+        <button class="bg-primary btn-buscar" type="submit">Buscar</button>
+      </form>
+
+      <!-- Tags em Destaque -->
+      <div class="mx-auto w-full md:w-1/2">
+        <ul class="flex flex-wrap justify-center gap-2 leading-8">
+          <li *ngFor="let tag of tags">
+            <a class="badge cursor-pointer" (click)="buscarMentoresPorTag(tag.id)">
+              {{ tag.nome }}
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Totais -->
+      <div class="mx-auto py-6">
+        <div class="total">
+          <div class="flex gap-3" *ngFor="let total of totais">
+            <div class="flex-none relative">
+              <img [src]="total?.icone" alt="Ícone" class="w-16 md:w-24" />
+            </div>
+            <div class="flex-auto p-2">
+              <div class="text-3xl md:text-5xl font-bold">{{ total.valor }}+</div>
+              <div class="text-md md:text-lg text-gray-600">{{ total.descricao }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-slate-200 px-6 md:px-24 py-8">
+    <div class="flex flex-col gap-6" *ngFor="let item of avaliacoes">
+      <div class="flex-none w-40 relative">
+        <img src="assets/images/icons/icon-stars.svg" alt="Estrelas">
+      </div>
+      <p class="text-gray-600 font-400 w-full md:w-1/2">{{ item.comentario }}</p>
+      <div class="flex gap-4 items-center">
+        <div class="flex-none relative">
+          <img class="w-16 rounded-full" [src]="item.fotoUsuario" alt="Foto">
+        </div>
+        <div class="flex flex-col">
+          <p class="font-bold text-slate-600 text-lg">{{ item.nomeUsuario }}</p>
+          <p class="text-slate-600">{{ item.cargoUsuario }}</p>
+        </div>
+      </div>
+      <div class="flex justify-end gap-2">
+        <input type="radio" checked />
+        <input type="radio" />
+        <input type="radio" />
+      </div>
+    </div>
+  </section>
+
+  <section class="px-6 md:px-24 py-8">
+    <div class="py-6">
+      <h2 class="text-3xl font-bold text-slate-900">
+        Busque em {{ totais[0]?.valor }}+<span class="block">mentores disponíveis</span>
+      </h2>
+    </div>
+
+    <div class="py-6">
+      <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <ng-container *ngFor="let mentor of mentores">
+          <div class="card cursor-pointer" (click)="verMentor(mentor.apelido)">
+            <div class="flex gap-4">
+              <div class="relative flex-none">
+                <img class="w-16 rounded-lg" [src]="mentor.foto" alt="Foto" loading="lazy">
+              </div>
+              <div class="flex flex-col gap-1">
+                <div class="flex justify-between">
+                  <h4 class="font-bold text-slate-900 text-lg">{{ mentor.nome }}</h4>
+                  <div class="flex items-center gap-1">
+                    <img class="w-4" src="assets/images/icons/icon-star.svg" alt="*">
+                    <span class="text-slate-900 font-bold">{{ mentor.nota || '0.0' }}</span>
+                  </div>
+                </div>
+                <span class="text-gray-600">{{ mentor.cargo }}</span>
+                <ul class="flex flex-wrap gap-2 leading-6 text-sm mt-4">
+                  <li *ngFor="let tag of mentor?.tags">
+                    <a class="badge">{{ tag.nome }}</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </section>
+
+  <app-secao-propaganda></app-secao-propaganda>
+</main>
+
+<app-footer></app-footer>
+
+<ngx-loading-x [show]="carregar.load || false"></ngx-loading-x>
