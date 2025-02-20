@@ -1,0 +1,9 @@
+<app-header></app-header>
+
+<main NgxLoadingXBlur [show]="carregar.load || false">
+  <h1>{{ mentor?.nome }}</h1>
+</main>
+
+<app-footer></app-footer>
+
+<ngx-loading-x [show]="carregar.load || false"></ngx-loading-x>
