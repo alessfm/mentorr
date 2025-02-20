@@ -23,16 +23,27 @@ import lombok.RequiredArgsConstructor;
 public class MentorController {
 	
 	private final MentorService mentorService;
+	
+	@GetMapping("/totais")
+	public TotaisMentoresDTO buscarTotais() {	
+		return mentorService.buscarTotais();
+	}
 
 	@GetMapping("/busca")
 	public ListaPaginacaoDTO buscarMentores(
+		@RequestParam(required = false) String texto,
 		@RequestParam(required = false) String cargo,
 		@RequestParam(required = false) String empresa,
 		@RequestParam(required = false) List<Long> tags,
         @RequestParam(defaultValue = "1") Integer pagina,
         @RequestParam(defaultValue = "10") Integer totalPorPagina
 	) {	
-		return mentorService.buscarMentores(cargo, empresa, tags, pagina, totalPorPagina);
+		return mentorService.buscarMentores(texto, cargo, empresa, tags, pagina, totalPorPagina);
+	}
+	
+	@GetMapping("/recomendados")
+	public List<MentorDTO> buscarRecomendados() {	
+		return mentorService.buscarRecomendados();
 	}
 
 	@GetMapping("/apelido/{apelido}")

@@ -5,8 +5,12 @@ import java.util.List;
 import com.projeto.mentorr.util.ListaPaginacaoDTO;
 
 public interface MentorService {
+	
+	TotaisMentoresDTO buscarTotais();
 
-	ListaPaginacaoDTO buscarMentores(String cargo, String empresa, List<Long> tags, Integer pagina, Integer totalPorPagina);
+	ListaPaginacaoDTO buscarMentores(String texto, String cargo, String empresa, List<Long> tags, Integer pagina, Integer totalPorPagina);
+	
+	List<MentorDTO> buscarRecomendados();
 	
 	MentorDTO buscarPorApelido(String apelido);
 	
@@ -23,7 +27,5 @@ public interface MentorService {
 	void alterarStatus();
 	
 	void alterarStatusPorId(Long idMentor);
-	
-	Long buscarTotalMentores();
 
 }
