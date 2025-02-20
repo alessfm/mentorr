@@ -5,7 +5,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { debounceTime, filter, distinctUntilChanged } from 'rxjs/operators';
 
 import { MentorPublicService } from '../../services/mentor-public.service';
-import { TagService } from '@app/shared/services/tag.service';
+import { TagService } from '@shared/services/tag.service';
+import { UtilService } from '@core/services/util.service';
 
 import { Loading } from '@core/models/loading.model';
 import { MentorBusca } from '../../models/mentor-public.model';
@@ -42,7 +43,8 @@ export class ListaMentoresComponent implements OnInit {
     private formBuilder: FormBuilder,
     private mentorPublicService: MentorPublicService,
     private router: Router,
-    private tagService: TagService
+    private tagService: TagService,
+    private utilService: UtilService
   ) {
     this.form = this.formBuilder.group({
       texto: [null],
@@ -98,11 +100,17 @@ export class ListaMentoresComponent implements OnInit {
       this.form.get('texto')?.reset();
     }
 
+    for (const c in this.form.controls) {
+      const campo = this.form.controls[c];
+      const valor = this.utilService.validarNull(campo.value) ? null : campo.value;
+      campo.setValue(valor);
+    }
+
+    const tags: string[] | null = this.form.get('tags')?.value;
+
     const params = {
-      texto: texto || null,
-      cargo: !texto ? this.form.value.cargo : null,
-      empresa: !texto ? this.form.value.empresa : null,
-      tags: !texto ? this.tagsFormValue : null
+      ...this.form.value,
+      tags: tags ? tags.length ? tags.toString() : null : null
     };
 
     this.router.navigate([],
@@ -112,11 +120,6 @@ export class ListaMentoresComponent implements OnInit {
         queryParamsHandling: 'merge'
       }
     );
-  }
-
-  get tagsFormValue(): string {
-    const tags = this.form.get('tags')?.value;
-    return tags ? tags.toString() : null;
   }
 
   get totalPorPagina() {
