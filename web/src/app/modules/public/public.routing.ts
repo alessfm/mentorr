@@ -15,7 +15,7 @@ const routes: Routes = [
     path: '404', component: Erro404Component
   },
   {
-    path: 'login', component: LoginComponent
+    path: 'entrar', component: LoginComponent
   },
   {
     path: 'mentores/busca', component: ListaMentoresComponent

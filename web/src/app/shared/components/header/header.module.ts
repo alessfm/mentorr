@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 import { BotoesModule } from '@shared/components/botoes/botoes.module';
 
@@ -10,7 +11,8 @@ import { HeaderComponent } from './header.component';
 @NgModule({
   imports: [
     CommonModule,
-    BotoesModule
+    BotoesModule,
+    RouterModule
   ],
   declarations: [
     HeaderComponent

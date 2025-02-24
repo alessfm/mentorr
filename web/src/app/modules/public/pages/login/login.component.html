@@ -1,7 +1,7 @@
 <main NgxLoadingXBlur [show]="carregar.load || false">
   <section class="flex justify-center items-center">
     <div class="logo bg-slate-950">
-      <a href="/">
+      <a routerLink="/">
         <img src="assets/images/logo-m.svg">
       </a>
     </div>
@@ -32,18 +32,18 @@
         </div>
       </div>
 
-      <a class="text-blue-600 underline font-semibold" href="/rec-senha">Esqueceu a senha?</a>
+      <a class="text-blue-600 underline font-semibold" routerLink="/rec-senha">Esqueceu a senha?</a>
 
       <p class="font-semibold">
         Não tem uma conta?
         <br />
         <span>
           Cadastre-se
-          <a class="text-blue-600 underline" href="/criar-conta">
+          <a class="text-blue-600 underline" routerLink="/criar-conta">
             como aluno
           </a>
           ou
-          <a class="text-blue-600 underline" href="/criar-conta">
+          <a class="text-blue-600 underline" routerLink="/criar-conta">
             como mentor
           </a>
         </span>

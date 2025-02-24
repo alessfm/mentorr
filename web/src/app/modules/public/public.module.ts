@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxMaskModule, IConfig } from 'ngx-mask';
@@ -53,7 +54,8 @@ const spinnerConfig: NgxLoadingXConfig = {
     NgxLoadingXModule.forRoot(spinnerConfig),
     NgxPaginationModule,
     PublicRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterModule
   ],
   declarations: [
     CardMentorComponent,

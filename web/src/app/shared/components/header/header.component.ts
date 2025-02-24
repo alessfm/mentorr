@@ -39,7 +39,7 @@ export class HeaderComponent implements OnInit {
   }
 
   buscarMentoresPorTag(idTag: number): void {
-    this.utilService.redirecionar('/mentores/busca', { tags: idTag });
+    this.utilService.redirecionar('/mentores/busca', { tags: idTag, pagina: 1, totalPorPagina: 6 });
   }
 
   get usuario() {
