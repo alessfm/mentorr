@@ -23,6 +23,7 @@ export class ListaMentoresComponent implements OnInit {
   carregar = new Loading();
   carregarTags = new Loading();
   form: FormGroup;
+  mostrarDrop = false;
 
   tags: Paginacao<Tag> = {
     lista: [],
@@ -84,6 +85,11 @@ export class ListaMentoresComponent implements OnInit {
 
   trocarPagina(numero: number): void {
     this.form.get('pagina')?.setValue(numero);
+    this.buscarMentores();
+  }
+
+  trocarTotalPorPagina(numero: number): void {
+    this.form.get('totalPorPagina')?.setValue(numero);
     this.buscarMentores();
   }
 

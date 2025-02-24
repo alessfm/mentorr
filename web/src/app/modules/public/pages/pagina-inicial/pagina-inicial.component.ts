@@ -46,7 +46,9 @@ export class PaginaInicialComponent implements OnInit {
     private utilService: UtilService
   ) {
     this.form = this.formBuilder.group({
-      texto: [null]
+      texto: [null],
+      pagina: [1],
+      totalPorPagina: [6]
     })
   }
 
@@ -59,7 +61,7 @@ export class PaginaInicialComponent implements OnInit {
   }
 
   buscarMentoresPorTag(idTag: number): void {
-    this.utilService.redirecionar('/mentores/busca', { tags: idTag });
+    this.utilService.redirecionar('/mentores/busca', { tags: idTag, pagina: 1, totalPorPagina: 6 });
   }
 
   verMentor(apelido: string): void {
