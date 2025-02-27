@@ -5,11 +5,14 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.projeto.mentorr.modulos.mentores.tags.TagMentor;
 import com.projeto.mentorr.util.ListaPaginacaoDTO;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import lombok.RequiredArgsConstructor;
@@ -75,11 +78,13 @@ public class TagRepositoryImpl implements TagRepositoryCustom {
 	public List<Tag> buscarTagsDestaque() {
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Tag> cq = cb.createQuery(Tag.class);
-		Root<Tag> tag = cq.from(Tag.class);
+		Root<TagMentor> tagMentor = cq.from(TagMentor.class);
 		
-//		Join<TagMentor, Tag> tag = tagMentor.join("tag", JoinType.INNER);
+		Join<TagMentor, Tag> tag = tagMentor.join("tag", JoinType.INNER);
 		
         cq.select(tag);
+        cq.groupBy(tag.get("id"));
+        cq.orderBy(cb.desc(cb.count(tag)));
         
         return entityManager.createQuery(cq).setMaxResults(5).getResultList();
 	}
