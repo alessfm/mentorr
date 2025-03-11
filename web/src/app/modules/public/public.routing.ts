@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { CadastroComponent } from './pages/cadastro/cadastro.component';
 import { Erro404Component } from './pages/erro-404/erro-404.component';
 import { ListaMentoresComponent } from './pages/lista-mentores/lista-mentores.component';
 import { LoginComponent } from './pages/login/login.component';
@@ -16,6 +17,9 @@ const routes: Routes = [
   },
   {
     path: 'entrar', component: LoginComponent
+  },
+  {
+    path: 'cadastro/:tipo', component: CadastroComponent
   },
   {
     path: 'mentores/busca', component: ListaMentoresComponent

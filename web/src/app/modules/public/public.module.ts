@@ -18,6 +18,7 @@ import { MentorPublicService } from './services/mentor-public.service';
 import { TagService } from '@shared/services/tag.service';
 
 import { PublicRoutingModule } from './public.routing';
+import { CadastroComponent } from './pages/cadastro/cadastro.component';
 import { CardMentorComponent } from './components/card-mentor/card-mentor.component';
 import { Erro404Component } from './pages/erro-404/erro-404.component';
 import { ListaMentoresComponent } from './pages/lista-mentores/lista-mentores.component';
@@ -58,6 +59,7 @@ const spinnerConfig: NgxLoadingXConfig = {
     RouterModule
   ],
   declarations: [
+    CadastroComponent,
     CardMentorComponent,
     Erro404Component,
     ListaMentoresComponent,

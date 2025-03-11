@@ -107,6 +107,10 @@ button.bg-primary:focus {
   margin-left: 2px;
 }
 
+.ng-invalid.ng-touched {
+  border-color: red;
+}
+
 .drop-btn {
   @apply bg-slate-100 font-semibold border rounded-lg px-4 py-2 hover:bg-slate-200;
 }
