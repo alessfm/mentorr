@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { CookiesService } from '@core/services/cookies.service';
+import { MensagemService } from '@core/services/mensagem.service';
 import { TagService } from '@shared/services/tag.service';
 import { UtilService } from '@core/services/util.service';
 
@@ -16,6 +17,7 @@ import { Tag } from '@shared/models/tag.model';
 export class HeaderComponent implements OnInit {
 
   carregar = new Loading();
+  mostrarDrop = false;
   tags: Paginacao<Tag> = {
     lista: [],
     pagina: 1,
@@ -25,6 +27,7 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private cookiesService: CookiesService,
+    private mensagemService: MensagemService,
     private tagService: TagService,
     private utilService: UtilService
   ) { }
@@ -35,11 +38,18 @@ export class HeaderComponent implements OnInit {
   }
 
   irParaCadastro(): void {
-    this.utilService.redirecionar('/cadastro');
+    this.utilService.redirecionar('/cadastro/aluno');
   }
 
   buscarMentoresPorTag(idTag: number): void {
     this.utilService.redirecionar('/mentores/busca', { tags: idTag, pagina: 1, totalPorPagina: 6 });
+  }
+
+  deslogar(): void {
+    this.mensagemService.confirmacaoAlerta({ titulo: 'Deseja sair da conta?' }, () => {
+      sessionStorage.clear();
+      this.utilService.redirecionar('entrar');
+    });
   }
 
   get usuario() {

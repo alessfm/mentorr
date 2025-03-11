@@ -10,7 +10,16 @@
     </div>
 
     <ng-template #mostrarConta>
-      <span class="text-md text-gray-600 hover:text-blue-600">Olá, {{ usuario?.apelido }}!</span>
+      <div class="drop">
+        <a class="drop-btn cursor-pointer" (click)="mostrarDrop = !mostrarDrop">
+          <i class="fa-solid fa-user-circle text-blue-600"></i>
+          <span class="text-md text-gray-600"> @{{ usuario?.apelido }} </span>
+        </a>
+        <div class="dropdown" [ngClass]="{'show':mostrarDrop}">
+          <a>Minha Conta</a>
+          <a (click)="deslogar()">Sair</a>
+        </div>
+      </div>
     </ng-template>
   </div>
 

@@ -11,7 +11,7 @@ export class SecaoPropagandaComponent {
 
   constructor(private utilService: UtilService) { }
 
-  irParaCadastro(): void {
-    this.utilService.redirecionar('/cadastro');
+  irParaCadastro(tipo: string): void {
+    this.utilService.redirecionar(`/cadastro/${tipo}`);
   }
 }

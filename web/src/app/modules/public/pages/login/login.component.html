@@ -19,7 +19,7 @@
         <input id="senha" type="password" class="form-control" formControlName="senha" required />
       </div>
 
-      <app-botao-azul label="Entrar" (func)="entrar()" estilo="w-full" type="submit"></app-botao-azul>
+      <app-botao-azul label="Entrar" estilo="w-full" type="submit"></app-botao-azul>
 
       <hr />
 
@@ -39,11 +39,11 @@
         <br />
         <span>
           Cadastre-se
-          <a class="text-blue-600 underline" routerLink="/criar-conta">
+          <a class="text-blue-600 underline" routerLink="/cadastro/aluno">
             como aluno
           </a>
           ou
-          <a class="text-blue-600 underline" routerLink="/criar-conta">
+          <a class="text-blue-600 underline" routerLink="/cadastro/mentor">
             como mentor
           </a>
         </span>
