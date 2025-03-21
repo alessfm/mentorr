@@ -16,6 +16,7 @@ export interface MentorBusca {
 export interface MentorPublic {
   nome: string;
   apelido: string;
+  foto: string;
   descricao: string;
   cargo: string;
   empresa: string;

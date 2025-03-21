@@ -40,9 +40,9 @@ export class ListaMentoresComponent implements OnInit {
   };
 
   constructor(
-    private activatedRoute: ActivatedRoute,
     private formBuilder: FormBuilder,
     private mentorPublicService: MentorPublicService,
+    private route: ActivatedRoute,
     private router: Router,
     private tagService: TagService,
     private utilService: UtilService
@@ -71,7 +71,7 @@ export class ListaMentoresComponent implements OnInit {
 
   ngOnInit(): void {
     this.buscarTags();
-    this.activatedRoute.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe(params => {
       const tags: string[] = params.tags ? params.tags.split(',') : [];
 
       this.form.patchValue({
@@ -121,7 +121,7 @@ export class ListaMentoresComponent implements OnInit {
 
     this.router.navigate([],
       {
-        relativeTo: this.activatedRoute,
+        relativeTo: this.route,
         queryParams: params,
         queryParamsHandling: 'merge'
       }

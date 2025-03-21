@@ -54,7 +54,7 @@ export class LoginComponent {
           this.utilService.redirecionar('/');
           break;
         case 'Mentor':
-          this.utilService.redirecionar('/');
+          this.utilService.redirecionar(`/mentores/${usuario.apelido}`);
           break;
         case 'Gestor':
           this.utilService.redirecionar('/');

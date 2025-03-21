@@ -42,7 +42,7 @@ export class PaginaInicialComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private mentorPublicService: MentorPublicService,
-    private tagsService: TagService,
+    private tagService: TagService,
     private utilService: UtilService
   ) {
     this.form = this.formBuilder.group({
@@ -69,7 +69,7 @@ export class PaginaInicialComponent implements OnInit {
   }
 
   private buscarDadosTela(): void {
-    const $tags = this.tagsService.buscarDestaques();
+    const $tags = this.tagService.buscarDestaques();
     const $totais = this.mentorPublicService.buscarTotais();
     const $mentores = this.mentorPublicService.buscarRecomendados();
 
