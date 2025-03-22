@@ -128,7 +128,11 @@ export class ListaMentoresComponent implements OnInit {
     );
   }
 
-  get totalPorPagina() {
+  get totalPorPagina(): number {
     return this.form.get('totalPorPagina')?.value;
+  }
+
+  get totalRegistros(): number {
+    return this.mentores.totalRegistros;
   }
 }
