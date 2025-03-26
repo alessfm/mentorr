@@ -87,17 +87,17 @@ export class PaginaInicialComponent implements OnInit {
       {
         valor: totais.qtdMentores,
         descricao: 'Mentores Disponíveis',
-        icone: 'assets/images/icons/icon-mentor.svg'
+        icone: 'fa-chalkboard-user'
       },
       {
         valor: totais.qtdMentorias,
         descricao: 'Parcerias Firmadas',
-        icone: 'assets/images/icons/icon-maos.svg'
+        icone: 'fa-handshake-angle'
       },
       {
         valor: totais.qtdPaises,
         descricao: 'Países Representados',
-        icone: 'assets/images/icons/icon-mundo.svg'
+        icone: 'fa-earth-americas'
       }
     ];
   }

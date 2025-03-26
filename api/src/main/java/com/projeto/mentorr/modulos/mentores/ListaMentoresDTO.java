@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.projeto.mentorr.modulos.tags.Tag;
+import com.projeto.mentorr.util.Util;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,7 +31,7 @@ public class ListaMentoresDTO {
 		this.nome = nome;
 		this.apelido = apelido;
 		this.foto = foto;
-		this.descricao = descricao;
+		this.descricao = Util.resumirTexto(descricao);
 		this.cargo = cargo;
 		this.empresa = empresa;
 		this.dataInicio = dataInicio;
