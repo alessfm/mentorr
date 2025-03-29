@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { CadastroMentorComponent } from './pages/cadastro-mentor/cadastro-mentor.component';
+// import { CadastroMentorComponent } from './pages/cadastro-mentor/cadastro-mentor.component';
 
 const routes: Routes = [
   {
-    path: 'cadastro', component: CadastroMentorComponent
+    // path: 'cadastro', component: CadastroMentorComponent
   }
 ];
 

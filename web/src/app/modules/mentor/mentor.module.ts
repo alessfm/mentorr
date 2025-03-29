@@ -12,11 +12,11 @@ import { BotoesModule } from '@shared/components/botoes/botoes.module';
 import { FooterModule } from '@shared/components/footer/footer.module';
 import { HeaderModule } from '@shared/components/header/header.module';
 
-import { MentorService } from './services/mentor.service';
+// import { MentorService } from './services/mentor.service';
 import { TagService } from '@shared/services/tag.service';
 
 import { MentorRoutingModule } from './mentor.routing';
-import { CadastroMentorComponent } from './pages/cadastro-mentor/cadastro-mentor.component';
+// import { CadastroMentorComponent } from './pages/cadastro-mentor/cadastro-mentor.component';
 
 const maskConfig: Partial<null | IConfig> | (() => Partial<IConfig>) = {
   validation: false,
@@ -50,10 +50,10 @@ const spinnerConfig: NgxLoadingXConfig = {
     RouterModule
   ],
   declarations: [
-    CadastroMentorComponent
+    // CadastroMentorComponent
   ],
   providers: [
-    MentorService,
+    // MentorService,
     TagService
   ]
 })
