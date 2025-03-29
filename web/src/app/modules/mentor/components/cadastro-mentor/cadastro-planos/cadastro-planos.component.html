@@ -1,0 +1,39 @@
+<div class="flex justify-between">
+  <h1 class="text-2xl md:text-3xl font-bold">
+    Crie planos de mentoria
+  </h1>
+  <app-botao-borda-azul label="Novo Plano" (func)="criarPlano()" [disabled]="planos.length == 4">
+  </app-botao-borda-azul>
+</div>
+<a class="text-md md:text-lg text-blue-600 underline" routerLink="/mentor/cadastro">
+  Voltar para Etapas
+</a>
+
+<form class="py-8" [formGroup]="form" (submit)="salvar()">
+  <ng-container formArrayName="planos">
+    <ng-container *ngFor="let plano of planos.controls; let index = index" [formGroupName]="index">
+      <hr />
+      <div class="flex justify-between items-center mt-4">
+        <h6 class="text-lg md:text-xl font-bold">
+          {{ index + 1 }}° Plano
+        </h6>
+        <app-botao-branco label="Remover" (func)="removerPlano(index)" [disabled]="planos.length == 1">
+        </app-botao-branco>
+      </div>
+      <div class="grid grid-cols-3 gap-6 py-4">
+        <div class="col-span-1">
+          <div class="form-group">
+            <label class="font-semibold text-md" required>Valor</label>
+            <input type="text" class="form-control" prefix="R$" mask="separator.2" separatorLimit="100"
+              thousandSeparator="." formControlName="valor" />
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </ng-container>
+
+  <hr />
+  <div class="flex justify-end mt-4">
+    <app-botao-azul label="Salvar Plano(s)" type="submit"></app-botao-azul>
+  </div>
+</form>

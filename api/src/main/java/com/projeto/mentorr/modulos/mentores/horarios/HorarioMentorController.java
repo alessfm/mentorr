@@ -23,33 +23,39 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/mentores/{idMentor}/horarios")
 public class HorarioMentorController {
 
-	private final HorarioMentorService HorarioMentorService;
+	private final HorarioMentorService horarioMentorService;
 	
 	@GetMapping
     public List<HorarioMentorDTO> buscarHorariosPorMentor(@PathVariable Long idMentor) {
-        return HorarioMentorService.buscarHorariosPorMentor(idMentor);
+        return horarioMentorService.buscarHorariosPorMentor(idMentor);
     }
 	
 	@GetMapping("/{idHorario}")
 	public HorarioMentor buscarPorId(@PathVariable Long idMentor, @PathVariable Long idHorario) {
-		return HorarioMentorService.buscarPorId(idMentor, idHorario);
+		return horarioMentorService.buscarPorId(idMentor, idHorario);
 	}
 	
 	@ResponseStatus(code = HttpStatus.CREATED)
 	@PostMapping
 	public HorarioMentor salvar(@PathVariable Long idMentor, @RequestBody @Valid CadastroHorarioMentorDTO DTO) {
-		return HorarioMentorService.salvar(idMentor, DTO);
+		return horarioMentorService.salvar(idMentor, DTO);
+	}
+	
+	@ResponseStatus(code = HttpStatus.CREATED)
+	@PostMapping("/lote")
+	public void salvarLote(@PathVariable Long idMentor, @RequestBody @Valid List<CadastroHorarioMentorDTO> DTO) {
+		horarioMentorService.salvarLote(idMentor, DTO);
 	}
 	
 	@PutMapping("/{idHorario}")
 	public HorarioMentor atualizar(@PathVariable Long idMentor, @PathVariable Long idHorario, @RequestBody @Valid CadastroHorarioMentorDTO DTO) {
-		return HorarioMentorService.atualizar(idMentor, idHorario, DTO);
+		return horarioMentorService.atualizar(idMentor, idHorario, DTO);
 	}
 	
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	@DeleteMapping("/{idHorario}")
 	public void excluir(@PathVariable Long idMentor, @PathVariable Long idHorario) {
-		HorarioMentorService.excluir(idMentor, idHorario);
+		horarioMentorService.excluir(idMentor, idHorario);
 	}
 	
 

@@ -9,6 +9,8 @@ public interface HorarioMentorService {
 	HorarioMentor buscarPorId(Long idMentor, Long idHorario);
 
 	HorarioMentor salvar(Long idMentor, CadastroHorarioMentorDTO DTO);
+	
+	void salvarLote(Long idMentor, List<CadastroHorarioMentorDTO> DTO);
 
 	HorarioMentor atualizar(Long idMentor, Long idHorario, CadastroHorarioMentorDTO DTO);
 

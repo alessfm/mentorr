@@ -9,6 +9,8 @@ public interface PlanoMentorService {
 	PlanoMentor buscarPorId(Long idMentor, Long idPlano);
 
 	PlanoMentor salvar(Long idMentor, CadastroPlanoMentorDTO DTO);
+	
+	void salvarLote(Long idMentor, List<CadastroPlanoMentorDTO> DTO);
 
 	PlanoMentor atualizar(Long idMentor, Long idPlano, CadastroPlanoMentorDTO DTO);
 

@@ -40,6 +40,20 @@ public class PlanoMentorServiceImpl implements PlanoMentorService {
 		
 		return planoMentorRepository.saveAndFlush(planoMentor);
 	}
+	
+	@Override
+	public void salvarLote(Long idMentor, List<CadastroPlanoMentorDTO> DTO) {
+		Mentor mentor = mentorService.buscarPorId(idMentor);
+		
+		for(CadastroPlanoMentorDTO item: DTO) {
+			PlanoMentor planoMentor = PlanoMentor.builder()
+					.valor(item.getValor())
+					.mentor(mentor)
+					.build();			
+
+			planoMentorRepository.saveAndFlush(planoMentor);			
+		}
+	}
 
 	@Override
 	public PlanoMentor atualizar(Long idMentor, Long idPlano, CadastroPlanoMentorDTO DTO) {
