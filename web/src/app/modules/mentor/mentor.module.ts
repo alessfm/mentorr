@@ -10,6 +10,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 
 import { BotoesModule } from '@shared/components/botoes/botoes.module';
 import { FooterModule } from '@shared/components/footer/footer.module';
+import { FormModule } from '@shared/components/form/form.module';
 import { HeaderModule } from '@shared/components/header/header.module';
 
 import { MentorService } from './services/mentor.service';
@@ -47,6 +48,7 @@ const spinnerConfig: NgxLoadingXConfig = {
   imports: [
     BotoesModule,
     CommonModule,
+    FormModule,
     FormsModule,
     FooterModule,
     HeaderModule,

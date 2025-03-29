@@ -1,0 +1,84 @@
+<h1 class="text-2xl md:text-3xl font-bold">
+  Formulário Básico
+</h1>
+<a class="text-md md:text-lg text-blue-600 underline" routerLink="/mentor/cadastro">
+  Voltar para Etapas
+</a>
+
+<form class="py-8" [formGroup]="form" (submit)="salvar()">
+  <div class="tabs">
+    <span class="tab" [ngClass]="{'active' : tab == 1}">Foto de Perfil</span>
+    <span class="tab" [ngClass]="{'active' : tab == 2}">Informações Principais</span>
+    <span class="tab" [ngClass]="{'active' : tab == 3}">Bio</span>
+  </div>
+
+  <div class="py-8">
+    <div class="grid grid-cols-1 gap-6" *ngIf="tab == 1">
+      <div class="col-span-1">
+        <div class="form-group">
+          <label class="font-semibold text-md" required>Link da Imagem</label>
+          <input type="url" class="form-control" placeholder="https://placehold.co/400" formControlName="foto" />
+        </div>
+      </div>
+      <div class="col-span-1">
+        <div class="flex justify-center">
+          <img class="w-48 rounded-lg" [src]="foto || 'https://placehold.co/400'" alt="Foto" loading="lazy" />
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 gap-6" *ngIf="tab == 2">
+      <div class="grid grid-cols-3 gap-6">
+        <div class="col-span-1">
+          <div class="form-group">
+            <label class="font-semibold text-md" required>Empresa Atual</label>
+            <input type="text" class="form-control" placeholder="Digite..." formControlName="empresa" />
+          </div>
+        </div>
+        <div class="col-span-1">
+          <div class="form-group">
+            <label class="font-semibold text-md" required>Cargo na Empresa</label>
+            <input type="text" class="form-control" placeholder="Digite..." formControlName="cargo" />
+          </div>
+        </div>
+        <div class="col-span-1">
+          <div class="form-group">
+            <label class="font-semibold text-md" required>Data de Início na Empresa</label>
+            <input type="date" class="form-control" placeholder="Digite..." formControlName="dataInicio" />
+          </div>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 gap-6">
+        <div class="cols-span-1">
+          <div class="form-group">
+            <label class="font-semibold text-md" required>Habilidades</label>
+            <ng-select [multiple]="true" [maxSelectedItems]="12" [closeOnSelect]="false" [clearSearchOnAdd]="true"
+              [hideSelected]="true" [virtualScroll]="true" [items]="tags.lista" bindValue="id" bindLabel="nome"
+              formControlName="tags" [loading]="carregarTags.load || false">
+            </ng-select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 gap-6" *ngIf="tab == 3">
+      <div class="grid grid-cols-1 gap-6">
+        <div class="cols-span-1">
+          <div class="form-group">
+            <label class="font-semibold text-md" required>Descrição(Bio)</label>
+            <textarea class="form-control" rows="12" placeholder="Apresente-se aos possíveis alunos..."
+              formControlName="descricao" maxlength="1000">
+            </textarea>
+            <app-contar-letras [form]="form" campo="descricao" [tamanhoMaximo]="1000"></app-contar-letras>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tabs-btn">
+    <app-botao-branco label="Voltar aba" (func)="tab = tab - 1" [disabled]="tab == 1"></app-botao-branco>
+    <app-botao-azul label="Próxima aba" (func)="tab = tab + 1" *ngIf="tab != 3"></app-botao-azul>
+    <app-botao-azul label="Finalizar" type="submit" *ngIf="tab == 3"></app-botao-azul>
+  </div>
+</form>
