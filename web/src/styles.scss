@@ -4,6 +4,7 @@
 
 /*** 1.0 - Variáveis ***/
 $primary: #386ef1;
+$primary-lighter: #e6f4ff;
 $primary-darker: darken($primary, 10%);
 
 $black: #0f172a;
@@ -57,6 +58,10 @@ textarea {
   resize: none;
 }
 
+.hover {
+  @apply hover:shadow-lg;
+}
+
 /*** 4.0 - Cores ***/
 .text-primary {
   color: $primary;
@@ -68,6 +73,10 @@ textarea {
 
 .bg-primary {
   background-color: $primary;
+}
+
+.bg-light {
+  background-color: $primary-lighter;
 }
 
 .border-primary {
@@ -93,14 +102,14 @@ textarea {
   }
 }
 
-.ng-select.ng-invalid.ng-dirty {
-  .ng-select-container {
-    border-color: red !important;
-  }
+ng-select.ng-invalid.ng-touched .ng-select-container {
+  border-color: #dc3545;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 0 3px #fde6e8;
 }
 
-.ng-invalid.ng-touched {
-  border-color: red;
+.form-control.ng-invalid.ng-touched {
+  border-color: #dc3545;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 0 3px #fde6e8;
 }
 
 .swal2-confirm.swal2-styled {
@@ -110,6 +119,11 @@ textarea {
 /*** 6.0 - Formulários ***/
 .form-control {
   @apply font-light bg-slate-100 border p-2 rounded-lg focus:outline-none focus:border-blue-600 hover:bg-slate-200;
+}
+
+.form-control:focus {
+  border-color: $primary;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 0 3px $primary-lighter;
 }
 
 .form-group {

@@ -99,7 +99,7 @@ public class MentorServiceImpl implements MentorService {
 				.cargo(DTO.getCargo())
 				.empresa(DTO.getEmpresa())
 				.dataInicio(DTO.getDataInicio())
-				.ativo(true)
+				.ativo(false)
 				.usuario(usuario)
 				.build();
 		
