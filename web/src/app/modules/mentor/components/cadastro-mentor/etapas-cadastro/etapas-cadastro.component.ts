@@ -88,6 +88,13 @@ export class EtapasCadastroComponent implements OnInit {
     this.utilService.redirecionar(`/mentores/${this.usuario.apelido}`);
   }
 
+  deslogar(): void {
+    this.mensagemService.confirmacaoAlerta({ titulo: 'Deseja sair da conta?' }, () => {
+      sessionStorage.clear();
+      this.utilService.redirecionar('entrar');
+    });
+  }
+
   get etapa(): string {
     return this.gerenciarService.etapa;
   }

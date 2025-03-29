@@ -31,8 +31,13 @@
       </div>
     </ng-container>
   </div>
-</div>
 
-<ng-container *ngIf="etapa == 'FINAL'">
-  <app-botao-azul label="Concluir cadastro" (func)="concluir()" estilo="w-full"></app-botao-azul>
-</ng-container>
+  <div class="flex justify-between mt-4">
+    <span class="text-md md:text-lg">
+      Deseja sair? <a class="text-blue-600 underline cursor-pointer" (click)="deslogar()">Clique aqui</a>
+    </span>
+    <ng-container *ngIf="etapa == 'FINAL'">
+      <app-botao-azul label="Concluir cadastro" (func)="concluir()"></app-botao-azul>
+    </ng-container>
+  </div>
+</div>
