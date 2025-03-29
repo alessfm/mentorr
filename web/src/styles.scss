@@ -44,6 +44,10 @@ button:disabled {
   cursor: not-allowed;
 }
 
+.btn {
+  @apply font-semibold rounded-lg px-4 py-2 shadow;
+}
+
 button.bg-primary:hover,
 button.bg-primary:focus {
   background-color: $primary-darker;
@@ -54,8 +58,17 @@ button.bg-slate-200:focus {
   background-color: $gray;
 }
 
+button.border-primary:hover,
+button.border-primary:focus {
+  background-color: $primary-lighter;
+}
+
 textarea {
   resize: none;
+}
+
+hr {
+  margin: 1rem 0rem;
 }
 
 .hover {
@@ -124,6 +137,11 @@ ng-select.ng-invalid.ng-touched .ng-select-container {
 .form-control:focus {
   border-color: $primary;
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 0 3px $primary-lighter;
+}
+
+.form-control:disabled {
+  cursor: not-allowed;
+  background-color: $gray;
 }
 
 .form-group {
@@ -207,6 +225,10 @@ ng-select.ng-invalid.ng-touched .ng-select-container {
 
 .cursor-not-allowed {
   cursor: not-allowed;
+}
+
+.border-2 {
+  border: 2px solid;
 }
 
 /*** 9.0 - Modal ***/

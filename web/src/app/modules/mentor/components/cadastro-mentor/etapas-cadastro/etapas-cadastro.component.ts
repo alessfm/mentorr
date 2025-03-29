@@ -29,21 +29,21 @@ export class EtapasCadastroComponent implements OnInit {
     {
       id: 'INICIAL',
       rota: 'dados',
-      titulo: 'Preencher formulário básico',
+      titulo: 'Conte-nos mais sobre você',
       descricao: 'Informe o seu cargo atual e habilidades.\
       Redija a sua bio e anexe uma foto que aparecerá no seu perfil.',
     },
     {
       id: 'PLANOS',
       rota: 'planos',
-      titulo: 'Criar planos de mentoria',
-      descricao: 'Estipule valores, limites e condições para cada um dos seus planos.'
+      titulo: 'Crie planos de mentoria',
+      descricao: 'Estipule valores, limites, condições e vagas para cada um.'
     },
     {
       id: 'HORARIOS',
       rota: 'horarios',
-      titulo: 'Definir horários disponíveis',
-      descricao: 'Indique os dias e horários que você estará disponível para prestar serviços.'
+      titulo: 'Selecione horários disponíveis',
+      descricao: 'Indique os dias e horários que você estará disponível.'
     }
   ];
 

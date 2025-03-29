@@ -1,5 +1,5 @@
 <h1 class="text-2xl md:text-3xl font-bold">
-  Formulário Básico
+  Conte-nos mais sobre você
 </h1>
 <a class="text-md md:text-lg text-blue-600 underline" routerLink="/mentor/cadastro">
   Voltar para Etapas
@@ -7,9 +7,9 @@
 
 <form class="py-8" [formGroup]="form" (submit)="salvar()">
   <div class="tabs">
-    <span class="tab" [ngClass]="{'active' : tab == 1}">Foto de Perfil</span>
-    <span class="tab" [ngClass]="{'active' : tab == 2}">Informações Principais</span>
-    <span class="tab" [ngClass]="{'active' : tab == 3}">Bio</span>
+    <span class="tab" [ngClass]="{'active' : tab == 1}">Anexe uma foto de perfil</span>
+    <span class="tab" [ngClass]="{'active' : tab == 2}">Descreva o seu cargo</span>
+    <span class="tab" [ngClass]="{'active' : tab == 3}">Apresente-se aos alunos</span>
   </div>
 
   <div class="py-8">
@@ -37,13 +37,13 @@
         </div>
         <div class="col-span-1">
           <div class="form-group">
-            <label class="font-semibold text-md" required>Cargo na Empresa</label>
+            <label class="font-semibold text-md" required>Cargo Atual</label>
             <input type="text" class="form-control" placeholder="Digite..." formControlName="cargo" />
           </div>
         </div>
         <div class="col-span-1">
           <div class="form-group">
-            <label class="font-semibold text-md" required>Data de Início na Empresa</label>
+            <label class="font-semibold text-md" required>Data de Início no Cargo</label>
             <input type="date" class="form-control" placeholder="Digite..." formControlName="dataInicio" />
           </div>
         </div>
@@ -66,8 +66,8 @@
         <div class="cols-span-1">
           <div class="form-group">
             <label class="font-semibold text-md" required>Descrição(Bio)</label>
-            <textarea class="form-control" rows="12" placeholder="Apresente-se aos possíveis alunos..."
-              formControlName="descricao" maxlength="1000">
+            <textarea class="form-control" rows="12" placeholder="Olá, meu nome é..." formControlName="descricao"
+              maxlength="1000">
             </textarea>
             <app-contar-letras [form]="form" campo="descricao" [tamanhoMaximo]="1000"></app-contar-letras>
           </div>
