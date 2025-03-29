@@ -32,7 +32,7 @@ export class MentorPublicService extends GenericService<MentorBusca> {
   buscarPorApelido(apelido: string, loading?: Loading): Observable<MentorPublic> {
     this.startLoading(loading);
     return this.getHttpClient()
-      .get<MentorPublic>(`${this.api}/apelido/${apelido}`)
+      .get<MentorPublic>(`${this.api}/apelido/${apelido}`, { headers: this.getHeadersPularErro() })
       .pipe(this.configMapAndLoading(loading));
   }
 }

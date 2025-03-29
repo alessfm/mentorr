@@ -1,15 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { LogadoGuard } from '@app/core/guards/logado.guard';
+import { LogadoGuard } from '@core/guards/logado.guard';
+import { RoleGuard } from '@core/guards/role.guard';
 import { PublicModule } from '@modules/public/public.module';
 
 const routes: Routes = [
-  // {
-  //   path: 'perfil',
-  //   canActivate: [LogadoGuard],
-  //   loadChildren: () => import('@modules/perfil/perfil.module').then(m => m.PerfilModule)
-  // },
+  {
+    path: 'mentor',
+    canActivate: [LogadoGuard, RoleGuard],
+    loadChildren: () => import('@app/modules/mentor/mentor.module').then(m => m.MentorModule),
+    data: { profile: 'MENTOR' }
+  },
   {
     path: '**', redirectTo: '404'
   }

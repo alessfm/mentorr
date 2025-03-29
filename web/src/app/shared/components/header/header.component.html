@@ -1,16 +1,25 @@
 <header>
   <div class="flex justify-between items-center p-6">
-    <a class="flex-none relative" href="/">
+    <a class="flex-none relative" routerLink="/">
       <img src="assets/images/logo-mentorr.svg" alt="Logotipo Mentorr">
     </a>
 
     <div class="hidden md:flex items-center gap-12" *ngIf="!usuario; else mostrarConta">
       <app-botao-azul label="Quero ser aluno" (func)="irParaCadastro()"></app-botao-azul>
-      <a class="text-gray-600 font-bold hover:text-blue-600" href="/login">Entrar</a>
+      <a class="text-gray-600 font-bold hover:text-blue-600" routerLink="/entrar">Entrar</a>
     </div>
 
     <ng-template #mostrarConta>
-      <span class="text-md text-gray-600 hover:text-blue-600">Olá, {{ usuario?.apelido }}!</span>
+      <div class="drop">
+        <a class="drop-btn cursor-pointer" (click)="mostrarDrop = !mostrarDrop">
+          <i class="fa-solid fa-user-circle text-blue-600"></i>
+          <span class="text-md text-gray-600"> @{{ usuario?.apelido }} </span>
+        </a>
+        <div class="dropdown" [ngClass]="{'show':mostrarDrop}">
+          <a>Minha Conta</a>
+          <a (click)="deslogar()">Sair</a>
+        </div>
+      </div>
     </ng-template>
   </div>
 

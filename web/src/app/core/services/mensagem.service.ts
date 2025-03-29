@@ -148,7 +148,7 @@ export class MensagemService implements MensagemInterface {
       showCancelButton: Boolean(mensagem.textoNao),
       cancelButtonText: mensagem.textoNao,
       confirmButtonText: mensagem.textoSim,
-      confirmButtonColor: mensagem.tipo == 'warning' ? '#D33' : '#026df9',
+      confirmButtonColor: mensagem.tipo == 'warning' ? '#D33' : '#386ef1',
       allowOutsideClick: false,
       allowEscapeKey: false,
     }).then(result => {

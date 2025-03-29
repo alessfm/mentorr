@@ -23,6 +23,7 @@ export class ListaMentoresComponent implements OnInit {
   carregar = new Loading();
   carregarTags = new Loading();
   form: FormGroup;
+  mostrarDrop = false;
 
   tags: Paginacao<Tag> = {
     lista: [],
@@ -39,9 +40,9 @@ export class ListaMentoresComponent implements OnInit {
   };
 
   constructor(
-    private activatedRoute: ActivatedRoute,
     private formBuilder: FormBuilder,
     private mentorPublicService: MentorPublicService,
+    private route: ActivatedRoute,
     private router: Router,
     private tagService: TagService,
     private utilService: UtilService
@@ -70,7 +71,7 @@ export class ListaMentoresComponent implements OnInit {
 
   ngOnInit(): void {
     this.buscarTags();
-    this.activatedRoute.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe(params => {
       const tags: string[] = params.tags ? params.tags.split(',') : [];
 
       this.form.patchValue({
@@ -84,6 +85,11 @@ export class ListaMentoresComponent implements OnInit {
 
   trocarPagina(numero: number): void {
     this.form.get('pagina')?.setValue(numero);
+    this.buscarMentores();
+  }
+
+  trocarTotalPorPagina(numero: number): void {
+    this.form.get('totalPorPagina')?.setValue(numero);
     this.buscarMentores();
   }
 
@@ -115,14 +121,18 @@ export class ListaMentoresComponent implements OnInit {
 
     this.router.navigate([],
       {
-        relativeTo: this.activatedRoute,
+        relativeTo: this.route,
         queryParams: params,
         queryParamsHandling: 'merge'
       }
     );
   }
 
-  get totalPorPagina() {
+  get totalPorPagina(): number {
     return this.form.get('totalPorPagina')?.value;
+  }
+
+  get totalRegistros(): number {
+    return this.mentores.totalRegistros;
   }
 }

@@ -42,7 +42,7 @@ public class Mentor {
 	@Column(name = "FOTO_URL", nullable = false)
 	private String foto;
 
-	@Column(name = "DESCRICAO", nullable = false)
+	@Column(name = "DESCRICAO", nullable = false, length = 1000)
 	private String descricao;
 	
 	@Column(name = "CARGO", nullable = false)

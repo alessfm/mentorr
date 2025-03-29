@@ -25,13 +25,13 @@ export class LogadoGuard implements CanActivate {
     const payload = this.decodarToken(token);
 
     if (!payload) {
-      this.router.navigate(['login']);
+      this.router.navigate(['entrar']);
       this.mensagemService.notificarErro('', 'Você não está autenticado no Mentorr');
       return false;
     }
 
     if (new Date() > new Date(payload.exp * 1000)) {
-      this.router.navigate(['login']);
+      this.router.navigate(['entrar']);
       this.mensagemService.notificarAlerta('', 'A sua sessão expirou...');
       return false;
     }

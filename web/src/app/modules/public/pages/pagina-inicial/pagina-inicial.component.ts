@@ -42,11 +42,13 @@ export class PaginaInicialComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private mentorPublicService: MentorPublicService,
-    private tagsService: TagService,
+    private tagService: TagService,
     private utilService: UtilService
   ) {
     this.form = this.formBuilder.group({
-      texto: [null]
+      texto: [null],
+      pagina: [1],
+      totalPorPagina: [6]
     })
   }
 
@@ -59,7 +61,7 @@ export class PaginaInicialComponent implements OnInit {
   }
 
   buscarMentoresPorTag(idTag: number): void {
-    this.utilService.redirecionar('/mentores/busca', { tags: idTag });
+    this.utilService.redirecionar('/mentores/busca', { tags: idTag, pagina: 1, totalPorPagina: 6 });
   }
 
   verMentor(apelido: string): void {
@@ -67,7 +69,7 @@ export class PaginaInicialComponent implements OnInit {
   }
 
   private buscarDadosTela(): void {
-    const $tags = this.tagsService.buscarDestaques();
+    const $tags = this.tagService.buscarDestaques();
     const $totais = this.mentorPublicService.buscarTotais();
     const $mentores = this.mentorPublicService.buscarRecomendados();
 
@@ -85,17 +87,17 @@ export class PaginaInicialComponent implements OnInit {
       {
         valor: totais.qtdMentores,
         descricao: 'Mentores Disponíveis',
-        icone: 'assets/images/icons/icon-mentor.svg'
+        icone: 'fa-chalkboard-user'
       },
       {
         valor: totais.qtdMentorias,
         descricao: 'Parcerias Firmadas',
-        icone: 'assets/images/icons/icon-maos.svg'
+        icone: 'fa-handshake-angle'
       },
       {
         valor: totais.qtdPaises,
         descricao: 'Países Representados',
-        icone: 'assets/images/icons/icon-mundo.svg'
+        icone: 'fa-earth-americas'
       }
     ];
   }

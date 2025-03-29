@@ -4,7 +4,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { CUSTOM_ELEMENTS_SCHEMA, DEFAULT_CURRENCY_CODE, LOCALE_ID, NgModule } from '@angular/core';
 
-import { LogadoGuard } from '@app/core/guards/logado.guard';
+import { LogadoGuard } from '@core/guards/logado.guard';
+import { RoleGuard } from '@core/guards/role.guard';
+
 import { TokenInterceptor } from '@core/middleware/token.interceptor';
 import { ErrorInterceptor } from '@core/middleware/error.interceptor';
 import { RequestInterceptor } from '@core/middleware/request.interceptor';
@@ -25,6 +27,7 @@ registerLocaleData(ptBr);
   ],
   providers: [
     LogadoGuard,
+    RoleGuard,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: RequestInterceptor,

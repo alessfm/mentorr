@@ -10,7 +10,7 @@
       </div>
       <hr />
       <div class="flex flex-col gap-4 hidden md:flex">
-        <div class="flex flex-col gap-1">
+        <div class="form-group">
           <label class="font-bold text-lg">Habilidades</label>
           <ng-select [multiple]="true" [closeOnSelect]="false" [clearSearchOnAdd]="true" [hideSelected]="true"
             [virtualScroll]="true" [items]="tags.lista" bindValue="id" bindLabel="nome" formControlName="tags"
@@ -19,32 +19,51 @@
         </div>
       </div>
       <div class="flex flex-col gap-4 hidden md:flex">
-        <div class="flex flex-col gap-1">
+        <div class="form-group">
           <label class="font-bold text-lg">Cargos</label>
           <input type="text" class="form-control" placeholder="Digite..." formControlName="cargo" />
         </div>
       </div>
       <div class="flex flex-col gap-4 hidden md:flex">
-        <div class="flex flex-col gap-1">
+        <div class="form-group">
           <label class="font-bold text-lg">Empresas</label>
           <input type="text" class="form-control" placeholder="Digite..." formControlName="empresa" />
         </div>
       </div>
       <div class="flex flex-col gap-4 hidden md:flex">
-        <button class="button-primary bg-primary" [disabled]="carregar.load" type="submit">Pesquisar</button>
+        <app-botao-azul label="Pesquisar" type="submit" estilo="w-full" [disabled]="carregar.load || false">
+        </app-botao-azul>
       </div>
     </form>
 
-    <div class="cards" *ngIf="mentores.lista.length; else semDados">
-      <ng-container
-        *ngFor="let mentor of mentores.lista | paginate: {itemsPerPage: totalPorPagina, currentPage: mentores.pagina, totalItems: mentores.totalRegistros}">
-        <app-card-mentor [mentor]="mentor"></app-card-mentor>
-      </ng-container>
-
-      <div class="paginacao">
-        <pagination-controls (pageChange)="trocarPagina($event)" previousLabel="Anteriores" nextLabel="Próximos">
-        </pagination-controls>
+    <div class="cards">
+      <div class="flex py-2 justify-between">
+        <h3 class="text-md md:text-xl">{{ totalRegistros }} mentor(es) encontrado(s)</h3>
+        <div class="drop">
+          <a class="drop-btn cursor-pointer" (click)="mostrarDrop = !mostrarDrop">
+            <i class="fa-solid fa-chevron-down"></i> Mostrando (máx.: {{totalPorPagina}})
+          </a>
+          <div class="dropdown" [ngClass]="{'show':mostrarDrop}">
+            <a [ngClass]="{'text-primary':totalPorPagina == 6}" (click)="trocarTotalPorPagina(6)">6 mentores</a>
+            <a [ngClass]="{'text-primary':totalPorPagina == 12}" (click)="trocarTotalPorPagina(12)">12 mentores</a>
+            <a [ngClass]="{'text-primary':totalPorPagina == 24}" (click)="trocarTotalPorPagina(24)">24 mentores</a>
+            <a [ngClass]="{'text-primary':totalPorPagina == totalRegistros}" (click)="trocarTotalPorPagina(totalRegistros)">
+              Todos os mentores
+            </a>
+          </div>
+        </div>
       </div>
+
+      <ng-container *ngIf="mentores.lista.length; else semDados">
+        <ng-container *ngFor="let mentor of mentores.lista | paginate: {itemsPerPage: totalPorPagina, currentPage: mentores.pagina, totalItems: totalRegistros}">
+          <app-card-mentor [mentor]="mentor"></app-card-mentor>
+        </ng-container>
+
+        <div class="paginacao">
+          <pagination-controls (pageChange)="trocarPagina($event)" previousLabel="Anteriores" nextLabel="Próximos">
+          </pagination-controls>
+        </div>
+      </ng-container>
     </div>
   </section>
 
@@ -56,11 +75,9 @@
 <ngx-loading-x [show]="carregar.load || false"></ngx-loading-x>
 
 <ng-template #semDados>
-  <div class="cards">
-    <div class="flex flex-col items-center gap-2">
-      <img class="w-icone center" src="assets/images/busca.svg" />
-      <h3 class="text-md md:text-xl font-bold">Ops, nenhum mentor encontrado</h3>
-      <p class="text-gray-600">Edite os filtros para realizar uma nova pesquisa</p>
-    </div>
+  <div class="flex flex-col items-center gap-2">
+    <img class="w-icone center" src="assets/images/busca.svg" />
+    <h3 class="text-md md:text-xl font-bold">Ops, nenhum mentor encontrado</h3>
+    <p class="text-gray-600">Edite os filtros para realizar uma nova pesquisa</p>
   </div>
 </ng-template>

@@ -1,5 +1,6 @@
 package com.projeto.mentorr.modulos.mentores;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -31,7 +32,7 @@ public class MentorServiceImpl implements MentorService {
 	
 	@Override
 	public TotaisMentoresDTO buscarTotais() {
-		Long qtdMentores = mentorRepository.countByUsuario_AtivoIsTrue();
+		Long qtdMentores = mentorRepository.countByAtivoIsTrue();
 		Long qtdMentorias  = 0L;
 		Long qtdPaises = 1L;
 		
@@ -45,7 +46,7 @@ public class MentorServiceImpl implements MentorService {
 		@SuppressWarnings("unchecked")
 		List<ListaMentoresDTO> mentores = (List<ListaMentoresDTO>) busca.getLista();
 		for(ListaMentoresDTO mentor: mentores) {
-			mentor.setTags(tagMentorRepository.buscarTagsPorApelidoMentor(mentor.getApelido(), 12));
+			mentor.setTags(tagMentorRepository.buscarTagsPorApelidoMentor(mentor.getApelido(), 8));
 		}
 		
 		return busca;
@@ -56,7 +57,7 @@ public class MentorServiceImpl implements MentorService {
 		List<MentorDTO> mentores = mentorRepository.buscarMentoresRecomendados();
 		
 		for(MentorDTO mentor: mentores) {
-			mentor.setTags(tagMentorRepository.buscarTagsPorApelidoMentor(mentor.getApelido(), 6));
+			mentor.setTags(tagMentorRepository.buscarTagsPorApelidoMentor(mentor.getApelido(), 4));
 		}
 		
 		return mentores;
@@ -68,7 +69,7 @@ public class MentorServiceImpl implements MentorService {
 		
 		mentorDTO.setHorarios(horarioMentorService.buscarHorariosPorApelidoMentor(apelido));
 		mentorDTO.setPlanos(planoMentorService.buscarPlanosPorApelidoMentor(apelido));
-		mentorDTO.setTags(tagMentorRepository.buscarTagsPorApelidoMentor(apelido, 999));
+		mentorDTO.setTags(tagMentorRepository.buscarTagsPorApelidoMentor(apelido, 12));
 		
 		return mentorDTO;
 	}
@@ -83,7 +84,7 @@ public class MentorServiceImpl implements MentorService {
 		String apelido = UserUtil.retornarApelidoUsuarioLogado();
 		
 		MentorDTO mentorDTO = mentorRepository.buscarMentorLogado(apelido);
-		mentorDTO.setTags(tagMentorRepository.buscarTagsPorApelidoMentor(apelido, 999));
+		mentorDTO.setTags(tagMentorRepository.buscarTagsPorApelidoMentor(apelido, 12));
 		
 		return mentorDTO;
 	}
@@ -150,32 +151,56 @@ public class MentorServiceImpl implements MentorService {
 		
 		mentor = mentorRepository.saveAndFlush(mentor);
 		
-		this.deletarTags(mentor);
-		this.salvarTags(mentor, DTO.getTags());
+		this.atualizarTags(mentor, DTO.getTags());
 		
 		return mentor;
 	}
 	
 	private void salvarTags(Mentor mentor, List<Long> tags) {
-		Long ordem = 0L;
-		
 		for (Long idTag: tags) {
 			Tag tag = tagService.buscarPorId(idTag);
 			
 			TagMentor tagMentor = TagMentor.builder()
 					.mentor(mentor)
 					.tag(tag)
-					.ordem(ordem)
+					.ordem((long) tags.indexOf(idTag))
 					.build();
 			
 			tagMentorRepository.saveAndFlush(tagMentor);
-			ordem++;
 		}
 	}
 	
-	private void deletarTags(Mentor mentor) {
-		List<TagMentor> tags = tagMentorRepository.findByMentor_Id(mentor.getId());
-		tagMentorRepository.deleteAll(tags);
+	private void atualizarTags(Mentor mentor, List<Long> tags) {
+		List<Long> ordens = new ArrayList<Long>(tags);
+		List<TagMentor> tagsMentor = tagMentorRepository.findByMentor_Id(mentor.getId());
+		
+//		Filtrar removidas e atualizar ordem das antigas
+		for (TagMentor tagMentor: tagsMentor) {
+			Long idTag = tagMentor.getTag().getId();
+			Boolean tagJaAdicionada = tags.contains(idTag);
+			
+			if (tagJaAdicionada) { 
+				tagMentor.setOrdem((long) ordens.indexOf(idTag));
+				tagMentorRepository.save(tagMentor);
+				
+				tags.remove(idTag);
+			} else {
+				tagMentorRepository.delete(tagMentor);
+			}
+		}
+		
+//		Adicionar novas
+		for (Long idTag: tags) {
+			Tag tag = tagService.buscarPorId(idTag);
+			
+			TagMentor tagMentor = TagMentor.builder()
+					.mentor(mentor)
+					.tag(tag)
+					.ordem((long) ordens.indexOf(idTag))
+					.build();
+			
+			tagMentorRepository.saveAndFlush(tagMentor);
+		}
 	}
 
 }

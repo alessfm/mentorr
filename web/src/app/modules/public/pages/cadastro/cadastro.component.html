@@ -1,0 +1,62 @@
+<main NgxLoadingXBlur [show]="carregar.load || false">
+  <section class="flex justify-center items-center">
+    <div class="logo bg-slate-950">
+      <a routerLink="/">
+        <img src="assets/images/logo-m.svg">
+      </a>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="criarConta()" class="form">
+      <h1 class="text-2xl md:text-4xl font-bold">Cadastre-se como {{tipoUsuario | titlecase}}</h1>
+
+      <div class="form-group">
+        <label class="font-light" required>Nome completo</label>
+        <input id="nome" type="text" class="form-control" formControlName="nome" maxlength="60" required />
+      </div>
+
+      <div class="form-group">
+        <label class="font-light" required>Apelido (nome de usuário)</label>
+        <input id="apelido" type="text" class="form-control" formControlName="apelido" maxlength="16"
+          placeholder="ex.: alessfm, ermesonSilva, jhonattaP, caetanoV" required />
+        <p class="text-sm text-slate-600">Como você deseja ser identificado, único para cada usuário</p>
+      </div>
+
+      <div class="form-group">
+        <label class="font-light" required>Email</label>
+        <input id="email" type="text" class="form-control" formControlName="email" required />
+      </div>
+
+      <div class="form-group">
+        <label class="font-light" required>Senha de acesso</label>
+        <input id="senha" type="password" class="form-control" formControlName="senha" required />
+        <p class="text-sm text-slate-600">
+          No mínimo 8 caracteres, com pelo menos: 1 letra maiúscula, 1 número e 1 símbolo
+        </p>
+      </div>
+
+      <app-botao-azul label="Criar conta" estilo="w-full" type="submit"></app-botao-azul>
+
+      <hr />
+
+      <div class="google hidden">
+        <div id="g_id_onload" data-client_id="1" data-context="signup" data-ux_mode="popup"
+          data-login_uri="localhost:8780/api/usuarios" data-auto_prompt="false">
+        </div>
+        <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="filled_black"
+          data-text="continue_with" data-size="large" data-logo_alignment="left">
+        </div>
+      </div>
+
+      <p class="font-semibold">
+        Já tem uma conta?
+        <span>
+          <a class="text-blue-600 underline" routerLink="/entrar">
+            Entrar
+          </a>
+        </span>
+      </p>
+    </form>
+  </section>
+</main>
+
+<ngx-loading-x [show]="carregar.load || false"></ngx-loading-x>

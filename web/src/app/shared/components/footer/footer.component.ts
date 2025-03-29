@@ -19,7 +19,7 @@ export class FooterComponent {
         },
         {
           descricao: 'Torne-se um mentor',
-          rota: '/cadastro'
+          rota: '/cadastro/mentor'
         }
       ]
     }
