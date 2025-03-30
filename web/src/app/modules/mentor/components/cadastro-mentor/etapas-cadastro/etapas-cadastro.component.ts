@@ -56,11 +56,19 @@ export class EtapasCadastroComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    if (this.etapa == 'FINAL' && this.mentor.ativo) {
+      this.redirecionar();
+    } else {
+      this.gerirEtapas();
+    }
+  }
+
+  private gerirEtapas(): void {
     const indexAtual = this.etapas.findIndex(e => e.id == this.etapa);
 
     this.etapas.map((e, index) => {
       e.ativa = (index == indexAtual);
-      e.concluida = (index < indexAtual || indexAtual == -1)
+      e.concluida = (index < indexAtual || indexAtual == -1);
     });
   }
 
@@ -71,10 +79,6 @@ export class EtapasCadastroComponent implements OnInit {
   }
 
   concluir(): void {
-    !this.mentor.ativo ? this.ativarMentor() : this.redirecionar();
-  }
-
-  private ativarMentor(): void {
     this.mentorService.alterarStatus(this.gerenciarService.carregar).subscribe(() => {
       this.mensagemService.popupInfo(
         `Bem-vindo(a) a sua página, ${this.usuario.nome}!`,
