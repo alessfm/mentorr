@@ -1,16 +1,16 @@
 import { Component, Output, Input, EventEmitter } from '@angular/core';
 
 @Component({
-  selector: 'app-botao-branco',
+  selector: 'app-botao-borda-azul',
   template: `<button
                 (click)="funcao()"
-                class="bg-slate-200 btn {{estilo}}"
+                class="border-2 border-primary text-primary btn {{estilo}}"
                 [disabled]="disabled"
                 type="button">
                 {{ label }}
               </button>`
 })
-export class BotaoBrancoComponent {
+export class BotaoBordaAzulComponent {
 
   @Output() func = new EventEmitter();
   @Input() label = '';

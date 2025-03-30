@@ -41,6 +41,12 @@ public class PlanoMentorController {
 		return planoMentorService.salvar(idMentor, DTO);
 	}
 	
+	@ResponseStatus(code = HttpStatus.CREATED)
+	@PostMapping("/lote")
+	public void salvarLote(@PathVariable Long idMentor, @RequestBody @Valid List<CadastroPlanoMentorDTO> DTO) {
+		planoMentorService.salvarLote(idMentor, DTO);
+	}
+	
 	@PutMapping("/{idPlano}")
 	public PlanoMentor atualizar(@PathVariable Long idMentor, @PathVariable Long idPlano, @RequestBody @Valid CadastroPlanoMentorDTO DTO) {
 		return planoMentorService.atualizar(idMentor, idPlano, DTO);

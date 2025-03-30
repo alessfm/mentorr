@@ -1,0 +1,43 @@
+<h1 class="text-2xl md:text-3xl font-bold">
+  Bem-vindo(a) ao Mentorr,
+  <span class="text-blue-600">{{ usuario?.nome }}.</span>
+</h1>
+<h3 class="text-md md:text-lg">
+  Siga as etapas abaixo, para concluir seu cadastro:
+</h3>
+
+<div class="py-8">
+  <div class="grid grid-cols-1 gap-8">
+    <ng-container *ngFor="let e of etapas">
+      <div class="card" (click)="acessar(e)" [ngClass]="{
+            'cursor-not-allowed' : !e.ativa && !e.concluida,
+            'bg-light cursor-pointer hover' : e.ativa, 
+            'bg-primary' : e.concluida
+          }">
+        <div class="flex gap-4">
+          <div class="relative flex-none">
+            <i class="fa-solid fa-2x" [ngClass]="{
+                'fa-file-circle-xmark text-blue-600' : !e.ativa && !e.concluida,
+                'fa-file-circle-exclamation text-primary' : e.ativa, 
+                'fa-file-circle-check text-white' : e.concluida
+              }">
+            </i>
+          </div>
+          <div class="flex flex-col gap-1">
+            <h4 class="font-bold text-slate-900 text-lg" [ngClass]="{'text-white' : e.concluida}">{{ e.titulo }}</h4>
+            <p class="text-gray-600" [ngClass]="{'text-white' : e.concluida}">{{ e.descricao }}</p>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+  <div class="flex justify-between mt-4">
+    <span class="text-md md:text-lg">
+      Deseja sair? <a class="text-blue-600 underline cursor-pointer" (click)="deslogar()">Clique aqui</a>
+    </span>
+    <ng-container *ngIf="etapa == 'FINAL'">
+      <app-botao-azul label="Concluir cadastro" (func)="concluir()"></app-botao-azul>
+    </ng-container>
+  </div>
+</div>
