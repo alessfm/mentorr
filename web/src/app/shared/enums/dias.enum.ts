@@ -1,6 +1,6 @@
 export class Dias {
 
-  lista: any[];
+  lista: Dia[];
 
   constructor() {
     this.lista = [
@@ -13,4 +13,9 @@ export class Dias {
       { codigo: 6, nome: 'Domingo' }
     ];
   }
+}
+
+interface Dia {
+  codigo: number;
+  nome: string;
 }
