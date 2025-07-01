@@ -13,7 +13,7 @@
       <!-- Formulário -->
       <h2 class="text-md md:text-xl text-gray-600">Encontre um mentor hoje:</h2>
       <form class="form" [formGroup]="form" (submit)="buscarMentores()">
-        <input type="text" class="campo-busca" placeholder="Busque por habilidades, cargos ou empresas"
+        <input id="busca" type="text" class="campo-busca" placeholder="Busque por habilidades, cargos ou empresas"
           formControlName="texto">
         <button class="bg-primary btn-buscar" type="submit">Buscar</button>
       </form>
@@ -21,8 +21,8 @@
       <!-- Tags em Destaque -->
       <div class="mx-auto w-full md:w-1/2">
         <ul class="flex flex-wrap justify-center gap-2 leading-8">
-          <li *ngFor="let tag of tags">
-            <a class="badge cursor-pointer" (click)="buscarMentoresPorTag(tag.id)">
+          <li *ngFor="let tag of tags; let i = index">
+            <a id="tag{{i}}" class="badge cursor-pointer" (click)="buscarMentoresPorTag(tag.id)">
               {{ tag.nome }}
             </a>
           </li>
