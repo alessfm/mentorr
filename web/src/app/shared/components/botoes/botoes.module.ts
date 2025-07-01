@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { BotaoAzulComponent } from './botao-azul.component';
 import { BotaoBrancoComponent } from './botao-branco.component';
+import { BotaoBordaAzulComponent } from './botao-borda-azul.component';
 
 @NgModule({
   imports: [
@@ -10,11 +11,13 @@ import { BotaoBrancoComponent } from './botao-branco.component';
   ],
   declarations: [
     BotaoAzulComponent,
-    BotaoBrancoComponent
+    BotaoBrancoComponent,
+    BotaoBordaAzulComponent
   ],
   exports: [
     BotaoAzulComponent,
-    BotaoBrancoComponent
+    BotaoBrancoComponent,
+    BotaoBordaAzulComponent
   ]
 })
 export class BotoesModule { }

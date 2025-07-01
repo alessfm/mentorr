@@ -50,6 +50,22 @@ public class HorarioMentorServiceImpl implements HorarioMentorService {
 		
 		return horarioMentorRepository.saveAndFlush(horarioMentor);
 	}
+	
+	@Override
+	public void salvarLote(Long idMentor, List<CadastroHorarioMentorDTO> DTO) {
+		Mentor mentor = mentorService.buscarPorId(idMentor);
+		
+		for(CadastroHorarioMentorDTO item: DTO) {
+			HorarioMentor horarioMentor = HorarioMentor.builder()
+					.dia(item.getDia())
+					.horaInicio(item.getHoraInicio())
+					.horaFim(item.getHoraFim())
+					.mentor(mentor)
+					.build();			
+
+			horarioMentorRepository.saveAndFlush(horarioMentor);			
+		}
+	}
 
 	@Override
 	public HorarioMentor atualizar(Long idMentor, Long idHorario, CadastroHorarioMentorDTO DTO) {

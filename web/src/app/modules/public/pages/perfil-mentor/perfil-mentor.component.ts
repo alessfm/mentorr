@@ -10,6 +10,7 @@ import { Loading } from '@core/models/loading.model';
 import { MentorBusca, MentorPublic } from '../../models/mentor-public.model';
 import { Paginacao } from '@shared/models/paginacao.model';
 import { Usuario } from '@shared/models/usuario.model';
+import { Dias } from '@shared/enums/dias.enum';
 
 @Component({
   selector: 'app-perfil-mentor',
@@ -21,6 +22,8 @@ export class PerfilMentorComponent {
   carregar = new Loading();
   mentor!: MentorPublic;
   private apelido = '';
+
+  enumDias = new Dias().lista;
 
   resumo: any[] = [];
   avaliacoes: any[] = [];
@@ -59,20 +62,29 @@ export class PerfilMentorComponent {
   }
 
   private gerarResumo(): void {
-    this.resumo = [
+    this.resumo = [];
+
+    const diaAtual = (new Date().getDay() - 1);
+    const nomeDia = this.enumDias.find(d => d.codigo == diaAtual)!.nome;
+    const horarioAtivo = this.mentor.horarios.find(h => h.dia == nomeDia);
+
+    this.resumo.push(
       {
         icone: 'fa-earth-americas',
         descricao: 'Brasil'
       },
       {
-        icone: 'fa-clock-rotate-left',
-        descricao: 'Ativo hoje'
-      },
-      {
         icone: 'fa-star',
         descricao: 'Novo Mentor!'
       }
-    ];
+    );
+
+    if (horarioAtivo) {
+      this.resumo.push({
+        icone: 'fa-clock-rotate-left',
+        descricao: 'Ativo hoje!'
+      });
+    }
   }
 
   private buscarAvaliacoes(): void {

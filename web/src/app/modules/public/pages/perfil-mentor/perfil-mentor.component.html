@@ -20,7 +20,7 @@
       <div class="flex flex-col gap-1">
         <p class="text-lg" *ngFor="let item of resumo">
           <i class="fa-solid text-primary {{item.icone}}"></i>
-          <span class="text-gray-200"> {{item.descricao}} </span>
+          <span class="text-gray-800"> {{item.descricao}} </span>
         </p>
       </div>
     </div>
@@ -35,29 +35,7 @@
         </ul>
       </div>
       <div class="flex flex-col gap-2">
-        <h3 class="font-bold text-md md:text-lg">Planos</h3>
-        <div class="grid grid-cols-2 gap-6">
-          <ng-container *ngFor="let plano of mentor?.planos">
-            <div class="card cursor-pointer">
-              <div class="flex justify-between">
-                <div class="flex gap-4">
-                  <i class="fa-2x fa-solid fa-briefcase text-primary"></i>
-                  <h4 class="font-bold text-xl">R$ {{ plano.valor }}/mês</h4>
-                </div>
-
-                <div class="flex gap-1">
-                  <i class="fa-solid fa-user-group text-primary"></i>
-                  <span class="font-bold">2 vagas</span>
-                </div>
-              </div>
-
-              <div class="flex flex-col gap-2">
-                <p>4 chamadas</p>
-                <p>Mensagens ilimitadas</p>
-              </div>
-            </div>
-          </ng-container>
-        </div>
+        <h3 class="font-bold text-md md:text-lg">Redes Sociais</h3>
       </div>
     </div>
   </div>
@@ -103,7 +81,29 @@
 
     <div class="aside">
       <div class="flex flex-col gap-6">
-        <!-- Planos -->
+        <h3 class="font-bold text-xl md:text-2xl">Planos</h3>
+        <div class="grid grid-cols-1 gap-6">
+          <ng-container *ngFor="let plano of mentor?.planos">
+            <div class="card cursor-pointer">
+              <div class="flex justify-between">
+                <div class="flex gap-4">
+                  <i class="fa-2x fa-solid fa-briefcase text-primary"></i>
+                  <h4 class="font-bold text-xl">R$ {{ plano.valor }}/mês</h4>
+                </div>
+
+                <div class="flex gap-1">
+                  <i class="fa-solid fa-user-group text-primary"></i>
+                  <span class="font-bold">2 vagas</span>
+                </div>
+              </div>
+
+              <div class="flex flex-col gap-2">
+                <p>4 chamadas</p>
+                <p>Mensagens ilimitadas</p>
+              </div>
+            </div>
+          </ng-container>
+        </div>
       </div>
       <div class="flex flex-col gap-6">
         <h3 class="font-bold text-xl md:text-2xl">Mentores Similares</h3>

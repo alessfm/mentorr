@@ -4,7 +4,7 @@ import { Component, Output, Input, EventEmitter } from '@angular/core';
   selector: 'app-botao-azul',
   template: `<button
                 (click)="funcao()"
-                class="bg-primary text-white font-semibold rounded-lg px-4 py-2 shadow {{estilo}}"
+                class="bg-primary text-white btn {{estilo}}"
                 [disabled]="disabled"
                 [type]="type">
                 {{ label }}
