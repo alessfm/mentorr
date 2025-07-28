@@ -6,10 +6,17 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:prod": "ng build --configuration production --base-href 'https://alessfm.github.io/mentorr/'",
+    "deploy": "npx angular-cli-ghpages --dir=dist",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint",
     "lint:fix": "ng lint --fix"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint"
+    }
   },
   "dependencies": {
     "@angular/animations": "~12.0.1",
@@ -42,6 +49,7 @@
     "@types/node": "^12.11.1",
     "@typescript-eslint/eslint-plugin": "4.28.2",
     "@typescript-eslint/parser": "4.28.2",
+    "angular-cli-ghpages": "^1.0.7",
     "autoprefixer": "^10.4.20",
     "cypress": "^12.17.4",
     "eslint": "^7.26.0",

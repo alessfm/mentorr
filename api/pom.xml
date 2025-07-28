@@ -99,6 +99,13 @@
 				<profileActive>dev</profileActive>
 			</properties>
 		</profile>
+		<profile>
+			<id>prod</id>
+			<properties>
+				<build.profile.id>prod</build.profile.id>
+				<profileActive>prod</profileActive>
+			</properties>
+		</profile>
 	</profiles>
 	<build>
 		<plugins>
@@ -113,6 +120,7 @@
 					</jvmArguments>
 					<profiles>
 						<profile>dev</profile>
+						<profile>prod</profile>
 					</profiles>
 					<excludes>
 						<exclude>
