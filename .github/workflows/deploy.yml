@@ -8,9 +8,6 @@ jobs:
   angular:
     name: Setup do Frontend
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [14.17.0]
     steps:
       # {1}
       - name: Validando código
@@ -19,23 +16,25 @@ jobs:
       - name: Validando cache do Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: $
+          node-version: 14.17.0
           cache: "npm"
-          cache-dependency-path: ./web/package-lock.json
+          cache-dependency-path: web/package-lock.json
       # {3}
       - name: Instalando dependências
-        run: |
-          cd web
-          npm ci
+        run: npm ci
+        working-directory: web
       # {4}
       - name: Executando lint
         run: npm run lint
+        working-directory: web
       # {5}
       - name: Executando build
         run: npm run build:prod
+        working-directory: web
       # {6}
       - name: Atualizando gh-pages
         run: npm run deploy
+        working-directory: web
 
   # maven:
   #   name: Setup do Backend
