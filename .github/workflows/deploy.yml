@@ -5,12 +5,27 @@ on:
     branches: ["main"]
 
 jobs:
+  maven:
+    name: Setup do Backend
+    runs-on: ubuntu-latest
+    steps:
+      # {1}
+      - name: Validando código
+        uses: actions/checkout@v3
+      # {2}
+      - name: Configurando JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: "11"
+          distribution: "temurin"
+          cache: maven
+      # {3}
+      - name: Executando build
+        run: mvn -B package --file api/pom.xml
+
   angular:
     name: Setup do Frontend
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [14.17.0]
     steps:
       # {1}
       - name: Validando código
@@ -19,38 +34,22 @@ jobs:
       - name: Validando cache do Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: $
+          node-version: 14.17.0
           cache: "npm"
-          cache-dependency-path: ./web/package-lock.json
+          cache-dependency-path: web/package-lock.json
       # {3}
       - name: Instalando dependências
-        run: |
-          cd web
-          npm ci
+        run: npm ci
+        working-directory: web
       # {4}
       - name: Executando lint
         run: npm run lint
+        working-directory: web
       # {5}
       - name: Executando build
         run: npm run build:prod
+        working-directory: web
       # {6}
       - name: Atualizando gh-pages
         run: npm run deploy
-
-  # maven:
-  #   name: Setup do Backend
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     # {1}
-  #     - name: Validando código
-  #       uses: actions/checkout@v4
-  #     # {2}
-  #     - name: Configurando JDK 11
-  #       uses: actions/setup-java@v4
-  #       with:
-  #         java-version: "11"
-  #         distribution: "temurin"
-  #         cache: maven
-  #     # {3}
-  #     - name: Executando Build
-  #       run: mvn -B package --file pom.xml
+        working-directory: web
