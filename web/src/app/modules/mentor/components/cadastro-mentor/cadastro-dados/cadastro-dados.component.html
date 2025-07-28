@@ -7,13 +7,13 @@
 
 <form class="py-8" [formGroup]="form" (submit)="salvar()">
   <div class="tabs">
-    <span class="tab" [ngClass]="{'active' : tab == 1}">Anexe uma foto de perfil</span>
-    <span class="tab" [ngClass]="{'active' : tab == 2}">Descreva o seu cargo</span>
-    <span class="tab" [ngClass]="{'active' : tab == 3}">Apresente-se aos alunos</span>
+    <span class="tab" [ngClass]="{'active' : tab === 1}">Anexe uma foto de perfil</span>
+    <span class="tab" [ngClass]="{'active' : tab === 2}">Descreva o seu cargo</span>
+    <span class="tab" [ngClass]="{'active' : tab === 3}">Apresente-se aos alunos</span>
   </div>
 
   <div class="py-8">
-    <div class="grid grid-cols-1 gap-6" *ngIf="tab == 1">
+    <div class="grid grid-cols-1 gap-6" *ngIf="tab === 1">
       <div class="col-span-1">
         <div class="form-group">
           <label class="font-semibold text-md" required>Link da Imagem</label>
@@ -27,7 +27,7 @@
       </div>
     </div>
 
-    <div class="grid grid-cols-1 gap-6" *ngIf="tab == 2">
+    <div class="grid grid-cols-1 gap-6" *ngIf="tab === 2">
       <div class="grid grid-cols-3 gap-6">
         <div class="col-span-1">
           <div class="form-group">
@@ -61,7 +61,7 @@
       </div>
     </div>
 
-    <div class="grid grid-cols-1 gap-6" *ngIf="tab == 3">
+    <div class="grid grid-cols-1 gap-6" *ngIf="tab === 3">
       <div class="grid grid-cols-1 gap-6">
         <div class="cols-span-1">
           <div class="form-group">
@@ -77,8 +77,8 @@
   </div>
 
   <div class="tabs-btn">
-    <app-botao-branco label="Voltar aba" (func)="tab = tab - 1" [disabled]="tab == 1"></app-botao-branco>
-    <app-botao-azul label="Próxima aba" (func)="tab = tab + 1" *ngIf="tab != 3"></app-botao-azul>
-    <app-botao-azul label="Finalizar" type="submit" *ngIf="tab == 3"></app-botao-azul>
+    <app-botao-branco label="Voltar aba" (func)="tab = tab - 1" [disabled]="tab === 1"></app-botao-branco>
+    <app-botao-azul label="Próxima aba" (func)="tab = tab + 1" *ngIf="tab !== 3"></app-botao-azul>
+    <app-botao-azul label="Finalizar" type="submit" *ngIf="tab === 3"></app-botao-azul>
   </div>
 </form>

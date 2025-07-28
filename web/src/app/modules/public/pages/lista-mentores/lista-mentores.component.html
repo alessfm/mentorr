@@ -44,10 +44,10 @@
             <i class="fa-solid fa-chevron-down"></i> Mostrando (máx.: {{totalPorPagina}})
           </a>
           <div class="dropdown" [ngClass]="{'show':mostrarDrop}">
-            <a [ngClass]="{'text-primary':totalPorPagina == 6}" (click)="trocarTotalPorPagina(6)">6 mentores</a>
-            <a [ngClass]="{'text-primary':totalPorPagina == 12}" (click)="trocarTotalPorPagina(12)">12 mentores</a>
-            <a [ngClass]="{'text-primary':totalPorPagina == 24}" (click)="trocarTotalPorPagina(24)">24 mentores</a>
-            <a [ngClass]="{'text-primary':totalPorPagina == totalRegistros}"
+            <a [ngClass]="{'text-primary':totalPorPagina === 6}" (click)="trocarTotalPorPagina(6)">6 mentores</a>
+            <a [ngClass]="{'text-primary':totalPorPagina === 12}" (click)="trocarTotalPorPagina(12)">12 mentores</a>
+            <a [ngClass]="{'text-primary':totalPorPagina === 24}" (click)="trocarTotalPorPagina(24)">24 mentores</a>
+            <a [ngClass]="{'text-primary':totalPorPagina === totalRegistros}"
               (click)="trocarTotalPorPagina(totalRegistros)">
               Todos os mentores
             </a>
