@@ -41,9 +41,9 @@ public class MentorController {
 		return mentorService.buscarMentores(texto, cargo, empresa, tags, pagina, totalPorPagina);
 	}
 	
-	@GetMapping("/recomendados")
-	public List<MentorDTO> buscarRecomendados() {	
-		return mentorService.buscarRecomendados();
+	@GetMapping("/destaque")
+	public List<MentorDTO> buscarMentoresDestaque() {	
+		return mentorService.buscarMentoresDestaque();
 	}
 
 	@GetMapping("/apelido/{apelido}")

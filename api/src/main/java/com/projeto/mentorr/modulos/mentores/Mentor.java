@@ -57,6 +57,9 @@ public class Mentor {
 	@Column(name = "FLAG_ATIVO", columnDefinition = "boolean default false", nullable = false)
 	private Boolean ativo;
 	
+	@Column(name = "NOTA")
+	private Float nota;
+	
 	@JsonBackReference
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ID_USUARIO", unique = true)

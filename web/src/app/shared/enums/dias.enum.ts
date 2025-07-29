@@ -1,21 +1,21 @@
-export class Dias {
+import { Enum } from '../models/enum.model';
 
-  lista: Dia[];
-
-  constructor() {
-    this.lista = [
-      { codigo: 0, nome: 'Segunda-feira' },
-      { codigo: 1, nome: 'Terça-feira' },
-      { codigo: 2, nome: 'Quarta-feira' },
-      { codigo: 3, nome: 'Quinta-feira' },
-      { codigo: 4, nome: 'Sexta-feira' },
-      { codigo: 5, nome: 'Sábado' },
-      { codigo: 6, nome: 'Domingo' }
-    ];
-  }
+enum Dias {
+  SEGUNDA = 'SEGUNDA',
+  TERCA = 'TERCA',
+  QUARTA = 'QUARTA',
+  QUINTA = 'QUINTA',
+  SEXTA = 'SEXTA',
+  SABADO = 'SABADO',
+  DOMINGO = 'DOMINGO'
 }
 
-interface Dia {
-  codigo: number;
-  nome: string;
-}
+export const EnumDias: Enum[] = [
+  { valor: Dias.SEGUNDA, label: 'Segunda-feira', codigo: 0 },
+  { valor: Dias.TERCA, label: 'Terça-feira', codigo: 1 },
+  { valor: Dias.QUARTA, label: 'Quarta-feira', codigo: 2 },
+  { valor: Dias.QUINTA, label: 'Quinta-feira', codigo: 3 },
+  { valor: Dias.SEXTA, label: 'Sexta-feira', codigo: 4 },
+  { valor: Dias.SABADO, label: 'Sábado', codigo: 5 },
+  { valor: Dias.DOMINGO, label: 'Domingo', codigo: 6 }
+];

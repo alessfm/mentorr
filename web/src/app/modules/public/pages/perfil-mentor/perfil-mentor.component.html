@@ -13,8 +13,9 @@
       </div>
       <div class="flex gap-1 items-center">
         <p class="font-bold text-md">
-          <i class="fa-solid fa-star text-yellow"></i> {{ mentor?.nota || '0.0' }}
-          <span class="font-light"> ({{ mentor?.nota || '0' }} avaliações) </span>
+          <span><i class="fa-solid text-yellow fa-{{mentor?.nota ? 'star' : 'star-half-alt'}}"></i></span>
+          <span class="font-bold"> {{ mentor?.nota || '0.0' }} </span>
+          <span class="font-light"> ({{ mentor?.avaliacoes?.length }} avaliações) </span>
         </p>
       </div>
       <div class="flex flex-col gap-1">
@@ -46,34 +47,42 @@
     <div class="main">
       <div class="flex flex-col gap-1">
         <h2 class="font-bold text-2xl md:text-3xl">Sobre mim</h2>
-        <textarea class="text-gray-800 text-lg mt-4" rows="16" [value]="mentor.descricao" readonly></textarea>
+        <textarea class="text-gray-800 text-lg mt-4" rows="14" [value]="mentor.descricao" readonly></textarea>
         <!-- <p class="text-gray-800 text-lg mt-4">{{ mentor.descricao }}</p> -->
       </div>
       <div class="flex flex-col gap-1">
-        <h2 class="font-bold text-2xl md:text-3xl">Avaliações</h2>
+        <div class="flex py-2 justify-between">
+          <h2 class="font-bold text-2xl md:text-3xl">Avaliações</h2>
+          <div class="drop">
+            <a class="drop-btn cursor-pointer">
+              <i class="fa-solid fa-chevron-down"></i> Por nota
+            </a>
+          </div>
+        </div>
+
         <div class="grid grid-cols-1 gap-6 mt-4">
-          <ng-container *ngFor="let item of avaliacoes">
-            <div class="card">
-              <p class="font-bold text-lg">
-                <i class="fa-solid fa-star text-yellow"></i>
-                <i class="fa-solid fa-star text-yellow"></i>
-                <i class="fa-solid fa-star text-yellow"></i>
-                <i class="fa-solid fa-star text-yellow"></i>
-                <i class="fa-solid fa-star text-yellow"></i>
-              </p>
-
-              <p class="text-gray-600 font-400 w-full">{{ item.comentario }}</p>
-
-              <div class="flex gap-4 items-center">
+          <ng-container *ngFor="let avaliacao of mentor?.avaliacoes">
+            <div class="flex flex-col gap-6">
+              <div class="flex gap-4">
                 <div class="flex-none relative">
-                  <img class="w-16 rounded-full" [src]="item.fotoUsuario" alt="Foto">
+                  <img class="w-16 rounded-full" src="https://placehold.co/400" alt="Foto" loading="lazy">
                 </div>
-                <div class="flex flex-col">
-                  <p class="font-bold text-slate-600 text-lg">{{ item.nomeUsuario }}</p>
-                  <p class="text-slate-600">{{ item.cargoUsuario }}</p>
+                <div class="flex flex-col gap-1">
+                  <p class="font-400">{{ avaliacao.aluno }}</p>
+                  <div class="flex gap-1">
+                    <span *ngFor="let item of avaliacao.estrelas">
+                      <i class="fa-solid text-yellow fa-{{item.completa ? 'star' : 'star-half-stroke'}}"></i>
+                    </span>
+                    <span>-</span>
+                    <span class="font-light text-gray-600">{{ avaliacao.data | date: 'dd/MM/yyyy HH:mm:ss' }}</span>
+                  </div>
                 </div>
               </div>
+              <div class="flex gap-1">
+                <p class="text-gray-600 text-md w-full">{{ avaliacao.comentario }}</p>
+              </div>
             </div>
+            <hr />
           </ng-container>
         </div>
       </div>
@@ -123,8 +132,8 @@
                 </div>
 
                 <div class="flex gap-1">
-                  <i class="fa-solid fa-star text-yellow"></i>
-                  <span class="font-bold">{{ mentor?.nota || '0.0' }}</span>
+                  <span><i class="fa-solid fa-star text-yellow"></i></span>
+                  <span class="font-bold">{{ mentor?.nota }}</span>
                 </div>
               </div>
             </div>

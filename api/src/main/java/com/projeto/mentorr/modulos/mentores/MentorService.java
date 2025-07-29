@@ -10,7 +10,7 @@ public interface MentorService {
 
 	ListaPaginacaoDTO buscarMentores(String texto, String cargo, String empresa, List<Long> tags, Integer pagina, Integer totalPorPagina);
 	
-	List<MentorDTO> buscarRecomendados();
+	List<MentorDTO> buscarMentoresDestaque();
 	
 	MentorDTO buscarPorApelido(String apelido);
 	

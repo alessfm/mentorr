@@ -53,7 +53,8 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom {
 			mentor.get("descricao"),
 			mentor.get("cargo"),
 			mentor.get("empresa"),
-			mentor.get("dataInicio")
+			mentor.get("dataInicio"),
+			mentor.get("nota")
 		).distinct(true);
 		
 		cq.where(predicates.toArray(new Predicate[0]));
@@ -154,6 +155,7 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom {
 			mentor.get("cargo"),
 			mentor.get("empresa"),
 			mentor.get("dataInicio"),
+			mentor.get("nota"),
 			mentor.get("ativo")
 		);
 		
@@ -184,6 +186,7 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom {
 			mentor.get("cargo"),
 			mentor.get("empresa"),
 			mentor.get("dataInicio"),
+			mentor.get("nota"),
 			mentor.get("ativo")
 		);
 		
@@ -200,7 +203,7 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom {
 	}
 	
 	@Override
-	public List<MentorDTO> buscarMentoresRecomendados() {
+	public List<MentorDTO> buscarMentoresDestaque() {
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 		CriteriaQuery<MentorDTO> cq = cb.createQuery(MentorDTO.class);
 		Root<Mentor> mentor = cq.from(Mentor.class);
@@ -211,10 +214,12 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom {
 			usuario.get("nome"),
 			usuario.get("apelido"),
 			mentor.get("foto"),
-			mentor.get("cargo")
+			mentor.get("cargo"),
+			mentor.get("nota")
 		);
 		
 		cq.where(cb.isTrue(mentor.get("ativo")));
+		cq.orderBy(cb.desc(mentor.get("nota")));
 		
 		return entityManager.createQuery(cq).setMaxResults(6).getResultList();
 	}

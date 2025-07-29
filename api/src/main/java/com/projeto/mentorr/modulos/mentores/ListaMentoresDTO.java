@@ -22,20 +22,33 @@ public class ListaMentoresDTO {
 	private String apelido;
 	private String foto;
 	private String descricao;
+	
 	private String cargo;
 	private String empresa;
 	private LocalDate dataInicio;
-	private List<Tag> tags;
 	
-	public ListaMentoresDTO(String nome, String apelido, String foto, String descricao, String cargo, String empresa, LocalDate dataInicio) {
+	private List<Tag> tags;
+//	private PlanoMentor plano;
+	private Float nota;
+	
+	/**
+	 * @apiNote Construtor do buscarMentores().
+	 */
+	public ListaMentoresDTO(
+		String nome, String apelido, String foto, String descricao, 
+		String cargo, String empresa, LocalDate dataInicio, Float nota
+	) {
 		this.nome = nome;
 		this.apelido = apelido;
 		this.foto = foto;
 		this.descricao = Util.resumirTexto(descricao);
+		
 		this.cargo = cargo;
 		this.empresa = empresa;
 		this.dataInicio = dataInicio;
+		
 //		this.plano = plano;
+		this.nota = nota;
 	}
 
 }
