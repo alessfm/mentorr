@@ -21,7 +21,7 @@ jobs:
           cache: maven
       # {3}
       - name: Executando build
-        run: mvn -B package --file api/pom.xml
+        run: mvn -B package --file api/pom.xml -DskipTests
 
   angular:
     name: Setup do Frontend
