@@ -5,9 +5,11 @@ export interface MentorBusca {
   apelido: string;
   foto: string;
   descricao: string;
+
   cargo: string;
   empresa: string;
   dataInicio: string;
+
   tags: Tag[];
   nota?: number;
   valor?: number;
@@ -18,14 +20,19 @@ export interface MentorPublic {
   apelido: string;
   foto: string;
   descricao: string;
+
   cargo: string;
   empresa: string;
   dataInicio: string;
+
   ativo: boolean;
+
   planos: Plano[];
   horarios: Horario[];
   tags: Tag[];
+
   nota?: number;
+  avaliacoes: Avaliacao[];
 }
 
 export interface Plano {
@@ -36,4 +43,11 @@ export interface Horario {
   dia: string;
   horaInicio: Date;
   horaFim: Date;
+}
+
+export interface Avaliacao {
+  nota: number;
+  data: string;
+  comentario: string;
+  aluno: string;
 }
