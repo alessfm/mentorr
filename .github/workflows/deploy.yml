@@ -51,5 +51,7 @@ jobs:
         working-directory: web
       # {6}
       - name: Atualizando gh-pages
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: npm run deploy
         working-directory: web
