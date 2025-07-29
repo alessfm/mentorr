@@ -8,7 +8,7 @@ import { UtilService } from '@core/services/util.service';
 
 import { Loading } from '@core/models/loading.model';
 import { Mentor } from '../../../models/mentor.model';
-import { Dias } from '@shared/enums/dias.enum';
+import { EnumDias } from '@shared/enums/dias.enum';
 
 @Component({
   selector: 'app-cadastro-horarios',
@@ -18,7 +18,7 @@ export class CadastroHorariosComponent implements OnInit {
 
   carregar = new Loading();
   form: FormGroup;
-  enumDias = new Dias().lista;
+  enumDias = EnumDias;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -42,7 +42,7 @@ export class CadastroHorariosComponent implements OnInit {
     this.horarios.push(
       this.formBuilder.group({
         dia: [dia, Validators.required],
-        descricaoDia: [this.enumDias.find(d => d.codigo == dia)!.nome],
+        descricaoDia: [this.enumDias.find(d => d.codigo == dia)!.label],
         horaInicio: [null, Validators.required],
         horaFim: [null, Validators.required]
       })
