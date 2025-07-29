@@ -50,4 +50,9 @@ export interface Avaliacao {
   data: string;
   comentario: string;
   aluno: string;
+  estrelas?: Estrela[];
+}
+
+export interface Estrela {
+  completa?: boolean;
 }
