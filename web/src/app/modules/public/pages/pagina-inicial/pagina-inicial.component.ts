@@ -71,14 +71,14 @@ export class PaginaInicialComponent implements OnInit {
   private buscarDadosTela(): void {
     const $tags = this.tagService.buscarDestaques();
     const $totais = this.mentorPublicService.buscarTotais();
-    const $mentores = this.mentorPublicService.buscarRecomendados();
+    const $mentores = this.mentorPublicService.buscarDestaques();
 
     forkJoin([$tags, $totais, $mentores])
       .pipe(finalize(() => this.carregar.load = false))
       .subscribe(([tags, totais, mentores]) => {
         this.tags = tags;
         this.montarTotais(totais);
-        this.mentores = mentores;
+        this.mentores = mentores.filter(m => m.nota != null);
       })
   }
 
