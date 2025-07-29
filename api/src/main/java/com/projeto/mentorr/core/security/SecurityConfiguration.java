@@ -45,7 +45,7 @@ public class SecurityConfiguration {
             		"/v3/api-docs/**",
             		"/api/mentores/busca",
             		"/api/mentores/totais",
-            		"/api/mentores/recomendados",
+            		"/api/mentores/destaque",
             		"/api/mentores/apelido/**",
             		"/api/tags/busca",
             		"/api/tags/destaque"

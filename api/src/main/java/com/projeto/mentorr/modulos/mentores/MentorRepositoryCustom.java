@@ -12,6 +12,6 @@ public interface MentorRepositoryCustom {
 	
 	MentorDTO buscarMentorLogado(String apelido);
 	
-	List<MentorDTO> buscarMentoresRecomendados();
+	List<MentorDTO> buscarMentoresDestaque();
 
 }

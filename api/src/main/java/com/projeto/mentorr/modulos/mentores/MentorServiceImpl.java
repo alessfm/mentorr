@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.projeto.mentorr.modulos.usuarios.Usuario;
 import com.projeto.mentorr.modulos.usuarios.UsuarioService;
 import com.projeto.mentorr.core.exception.NotFoundException;
+import com.projeto.mentorr.modulos.mentores.avaliacoes.AvaliacaoMentorRepository;
 import com.projeto.mentorr.modulos.mentores.horarios.HorarioMentorService;
 import com.projeto.mentorr.modulos.mentores.planos.PlanoMentorService;
 import com.projeto.mentorr.modulos.tags.Tag;
@@ -23,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class MentorServiceImpl implements MentorService {
 	
+	private final AvaliacaoMentorRepository avaliacaoMentorRepository;
 	private final TagMentorRepository tagMentorRepository;
 	private final MentorRepository mentorRepository;
 	private final UsuarioService usuarioService;
@@ -53,8 +55,8 @@ public class MentorServiceImpl implements MentorService {
 	}
 	
 	@Override
-	public List<MentorDTO> buscarRecomendados() {
-		List<MentorDTO> mentores = mentorRepository.buscarMentoresRecomendados();
+	public List<MentorDTO> buscarMentoresDestaque() {
+		List<MentorDTO> mentores = mentorRepository.buscarMentoresDestaque();
 		
 		for(MentorDTO mentor: mentores) {
 			mentor.setTags(tagMentorRepository.buscarTagsPorApelidoMentor(mentor.getApelido(), 4));
@@ -70,6 +72,7 @@ public class MentorServiceImpl implements MentorService {
 		mentorDTO.setHorarios(horarioMentorService.buscarHorariosPorApelidoMentor(apelido));
 		mentorDTO.setPlanos(planoMentorService.buscarPlanosPorApelidoMentor(apelido));
 		mentorDTO.setTags(tagMentorRepository.buscarTagsPorApelidoMentor(apelido, 12));
+		mentorDTO.setAvaliacoes(avaliacaoMentorRepository.buscarAvaliacoesPorApelidoMentor(apelido));
 		
 		return mentorDTO;
 	}
