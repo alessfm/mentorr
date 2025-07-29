@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.5.3</version>
+		<version>3.3.2</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.projeto.mentorr</groupId>
@@ -14,7 +14,7 @@
 	<name>mentorr</name>
 	<description>mentorr</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>17</java.version>
 		<spring-boot.run.jvmArguments>-Duser.timezone=America/Fortaleza</spring-boot.run.jvmArguments>
 	</properties>
 	<dependencies>
