@@ -4,7 +4,7 @@
   <section class="flex flex-col md:flex-row">
     <form class="busca" [formGroup]="form" (submit)="atualizarParams()">
       <div class="flex flex-col">
-        <input type="text" class="form-control" placeholder="Busque por habilidades, cargos..."
+        <input id="busca" type="text" class="form-control" placeholder="Busque por habilidades, cargos..."
           formControlName="texto" />
         <em class="text-sm text-gray-600">Digite para buscar automaticamente</em>
       </div>
@@ -21,13 +21,13 @@
       <div class="flex flex-col gap-4 hidden md:flex">
         <div class="form-group">
           <label class="font-bold text-lg">Cargos</label>
-          <input type="text" class="form-control" placeholder="Digite..." formControlName="cargo" />
+          <input id="cargo" type="text" class="form-control" placeholder="Digite..." formControlName="cargo" />
         </div>
       </div>
       <div class="flex flex-col gap-4 hidden md:flex">
         <div class="form-group">
           <label class="font-bold text-lg">Empresas</label>
-          <input type="text" class="form-control" placeholder="Digite..." formControlName="empresa" />
+          <input id="empresa" type="text" class="form-control" placeholder="Digite..." formControlName="empresa" />
         </div>
       </div>
       <div class="flex flex-col gap-4 hidden md:flex">
@@ -44,10 +44,11 @@
             <i class="fa-solid fa-chevron-down"></i> Mostrando (máx.: {{totalPorPagina}})
           </a>
           <div class="dropdown" [ngClass]="{'show':mostrarDrop}">
-            <a [ngClass]="{'text-primary':totalPorPagina == 6}" (click)="trocarTotalPorPagina(6)">6 mentores</a>
-            <a [ngClass]="{'text-primary':totalPorPagina == 12}" (click)="trocarTotalPorPagina(12)">12 mentores</a>
-            <a [ngClass]="{'text-primary':totalPorPagina == 24}" (click)="trocarTotalPorPagina(24)">24 mentores</a>
-            <a [ngClass]="{'text-primary':totalPorPagina == totalRegistros}" (click)="trocarTotalPorPagina(totalRegistros)">
+            <a [ngClass]="{'text-primary':totalPorPagina === 6}" (click)="trocarTotalPorPagina(6)">6 mentores</a>
+            <a [ngClass]="{'text-primary':totalPorPagina === 12}" (click)="trocarTotalPorPagina(12)">12 mentores</a>
+            <a [ngClass]="{'text-primary':totalPorPagina === 24}" (click)="trocarTotalPorPagina(24)">24 mentores</a>
+            <a [ngClass]="{'text-primary':totalPorPagina === totalRegistros}"
+              (click)="trocarTotalPorPagina(totalRegistros)">
               Todos os mentores
             </a>
           </div>
@@ -55,7 +56,8 @@
       </div>
 
       <ng-container *ngIf="mentores.lista.length; else semDados">
-        <ng-container *ngFor="let mentor of mentores.lista | paginate: {itemsPerPage: totalPorPagina, currentPage: mentores.pagina, totalItems: totalRegistros}">
+        <ng-container
+          *ngFor="let mentor of mentores.lista | paginate: {itemsPerPage: totalPorPagina, currentPage: mentores.pagina, totalItems: totalRegistros}">
           <app-card-mentor [mentor]="mentor"></app-card-mentor>
         </ng-container>
 

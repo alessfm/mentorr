@@ -50,7 +50,7 @@ export class UtilService {
   /*/ FORMS /*/
 
   /**
-   * @description 
+   * @description
    * Valida todos os campos do formulário, exceto:
    * - Os que estão `disabled`
    * - Os que estão num `FormArray`

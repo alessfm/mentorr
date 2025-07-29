@@ -14,7 +14,7 @@
 	<name>mentorr</name>
 	<description>mentorr</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>17</java.version>
 		<spring-boot.run.jvmArguments>-Duser.timezone=America/Fortaleza</spring-boot.run.jvmArguments>
 	</properties>
 	<dependencies>
@@ -99,6 +99,13 @@
 				<profileActive>dev</profileActive>
 			</properties>
 		</profile>
+		<profile>
+			<id>prod</id>
+			<properties>
+				<build.profile.id>prod</build.profile.id>
+				<profileActive>prod</profileActive>
+			</properties>
+		</profile>
 	</profiles>
 	<build>
 		<plugins>
@@ -113,6 +120,7 @@
 					</jvmArguments>
 					<profiles>
 						<profile>dev</profile>
+						<profile>prod</profile>
 					</profiles>
 					<excludes>
 						<exclude>

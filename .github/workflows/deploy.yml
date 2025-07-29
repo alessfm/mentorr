@@ -1,0 +1,57 @@
+name: Mentorr - Build & Deploy
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  maven:
+    name: Setup do Backend
+    runs-on: ubuntu-latest
+    steps:
+      # {1}
+      - name: Validando código
+        uses: actions/checkout@v3
+      # {2}
+      - name: Configurando JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: "17"
+          distribution: "temurin"
+          cache: maven
+      # {3}
+      - name: Executando build
+        run: mvn -B package --file api/pom.xml -DskipTests
+
+  angular:
+    name: Setup do Frontend
+    runs-on: ubuntu-latest
+    steps:
+      # {1}
+      - name: Validando código
+        uses: actions/checkout@v3
+      # {2}
+      - name: Validando cache do Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14.17.0
+          cache: "npm"
+          cache-dependency-path: web/package-lock.json
+      # {3}
+      - name: Instalando dependências
+        run: npm ci
+        working-directory: web
+      # {4}
+      - name: Executando lint
+        run: npm run lint
+        working-directory: web
+      # {5}
+      - name: Executando build
+        run: npm run build:prod
+        working-directory: web
+      # {6}
+      - name: Atualizando gh-pages
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: npm run deploy
+        working-directory: web
