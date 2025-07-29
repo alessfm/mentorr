@@ -7,10 +7,11 @@ import { MentorPublicService } from '../../services/mentor-public.service';
 import { UtilService } from '@core/services/util.service';
 
 import { Loading } from '@core/models/loading.model';
-import { MentorBusca, MentorPublic } from '../../models/mentor-public.model';
+import { Avaliacao, Estrela, MentorBusca, MentorPublic } from '../../models/mentor-public.model';
 import { Paginacao } from '@shared/models/paginacao.model';
 import { Usuario } from '@shared/models/usuario.model';
-import { Dias } from '@shared/enums/dias.enum';
+
+import { EnumDias } from '@shared/enums/dias.enum';
 
 @Component({
   selector: 'app-perfil-mentor',
@@ -23,10 +24,9 @@ export class PerfilMentorComponent {
   mentor!: MentorPublic;
   private apelido = '';
 
-  enumDias = new Dias().lista;
+  enumDias = EnumDias;
 
   resumo: any[] = [];
-  avaliacoes: any[] = [];
   similares: Paginacao<MentorBusca> = {
     lista: [],
     pagina: 1,
@@ -57,7 +57,7 @@ export class PerfilMentorComponent {
 
   private montarTela(): void {
     this.gerarResumo();
-    this.buscarAvaliacoes();
+    this.tratarAvaliacoes();
     this.buscarMentoresSimilares();
   }
 
@@ -65,7 +65,7 @@ export class PerfilMentorComponent {
     this.resumo = [];
 
     const diaAtual = (new Date().getDay() - 1);
-    const nomeDia = this.enumDias.find(d => d.codigo == diaAtual)!.nome;
+    const nomeDia = this.enumDias.find(d => d.codigo == diaAtual)!.label;
     const horarioAtivo = this.mentor.horarios.find(h => h.dia == nomeDia);
 
     this.resumo.push(
@@ -87,26 +87,22 @@ export class PerfilMentorComponent {
     }
   }
 
-  private buscarAvaliacoes(): void {
-    this.avaliacoes = [
-      {
-        nota: 5,
-        nomeUsuario: 'Alessandro Figueiredo Malheiro',
-        cargoUsuario: 'Desenvolvedor Web Júnior',
-        fotoUsuario: 'https://avatars.githubusercontent.com/u/66129133?v=4',
-        comentario: 'Codificar o Mentorr é uma baita experiência.\
-        A base de muitas idas e vindas ao Stack Overflow, tira-dúvidas com professores, compilações sem fim e\
-        bugs por todo lado. A cada dia, sinto-me muito mais confiante em terminar essa jornada, ou, pelo menos, um MVP 😎'
-      },
-      {
-        nota: 4.5,
-        nomeUsuario: 'Aluno Genérico',
-        cargoUsuario: 'Cargo Básico',
-        fotoUsuario: 'https://placehold.co/400',
-        comentario: 'Codificar o Mentorr é uma baita experiência.\
-        A base de muitas idas e vindas ao Stack Overflow, tira-dúvidas com professores'
-      }
-    ];
+  private tratarAvaliacoes(): void {
+    this.mentor.avaliacoes.forEach(a => this.montarEstrelas(a));
+  }
+
+  private montarEstrelas(avaliacao: Avaliacao): void {
+    const nota = avaliacao.nota;
+    const estrelas: Estrela[] = avaliacao.estrelas = [];
+
+    if (nota == null) {
+      return;
+    }
+
+    for (let i = 0.5; i <= nota; i = i + 0.5) {
+      const index = estrelas.findIndex(e => e.completa == false);
+      (index != -1) ? estrelas[index].completa = true : estrelas.push({ completa: false });
+    }
   }
 
   private buscarMentoresSimilares(): void {

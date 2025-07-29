@@ -22,10 +22,10 @@ export class MentorPublicService extends GenericService<MentorBusca> {
       .pipe(this.configMapAndLoading(loading));
   }
 
-  buscarRecomendados(loading?: Loading): Observable<MentorBusca[]> {
+  buscarDestaques(loading?: Loading): Observable<MentorBusca[]> {
     this.startLoading(loading);
     return this.getHttpClient()
-      .get<MentorBusca[]>(`${this.api}/recomendados`)
+      .get<MentorBusca[]>(`${this.api}/destaque`)
       .pipe(this.configMapAndLoading(loading));
   }
 
