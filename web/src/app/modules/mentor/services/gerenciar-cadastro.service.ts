@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Mentor } from '../models/mentor.model';
 
 import { forkJoin } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
-import { HorariosService } from './horarios.service';
+import { HorariosMentorService } from './horarios-mentor.service';
 import { MentorService } from './mentor.service';
-import { PlanosService } from './planos.service';
+import { PlanosMentorService } from './planos-mentor.service';
 
+import { Mentor } from '../models/mentor.model';
 import { Loading } from '@core/models/loading.model';
 
 @Injectable()
@@ -18,9 +18,9 @@ export class GerenciarCadastroService {
   private _mentor: Mentor | null = null;
 
   constructor(
-    private horariosService: HorariosService,
+    private horariosService: HorariosMentorService,
     private mentorService: MentorService,
-    private planosService: PlanosService
+    private planosService: PlanosMentorService
   ) { }
 
   get etapa(): string {
@@ -41,19 +41,19 @@ export class GerenciarCadastroService {
 
   buscarMentor(): void {
     this.carregar.load = true;
-    this.mentorService.buscarLogado().subscribe({
+    this.mentorService.buscarDados().subscribe({
       next: _ => this._mentor = _,
       error: () => {
         this._etapa = 'INICIAL';
         this.carregar.load = false;
       },
-      complete: () => this.buscarDadosMentor()
+      complete: () => this.buscarPlanosHorarios()
     });
   }
 
-  private buscarDadosMentor(): void {
-    const planos$ = this.planosService.buscarTodos(this.mentor.id);
-    const horarios$ = this.horariosService.buscarTodos(this.mentor.id);
+  private buscarPlanosHorarios(): void {
+    const planos$ = this.planosService.getList();
+    const horarios$ = this.horariosService.getList();
 
     forkJoin([planos$, horarios$])
       .pipe(finalize(() => this.carregar.load = false))
@@ -79,4 +79,5 @@ export class GerenciarCadastroService {
     this._etapa = 'INICIAL';
     this._mentor = null;
   }
+
 }

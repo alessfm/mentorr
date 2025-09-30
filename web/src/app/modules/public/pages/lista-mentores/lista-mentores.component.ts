@@ -4,9 +4,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { debounceTime, filter, distinctUntilChanged } from 'rxjs/operators';
 
-import { MentorPublicService } from '../../services/mentor-public.service';
-import { TagService } from '@shared/services/tag.service';
-import { UtilService } from '@core/services/util.service';
+import { PublicMentoresService } from '../../services/public-mentores.service';
+import { PublicTagsService } from '@shared/services/public-tags.service';
 
 import { Loading } from '@core/models/loading.model';
 import { MentorBusca } from '../../models/mentor-public.model';
@@ -28,6 +27,7 @@ export class ListaMentoresComponent implements OnInit {
   tags: Paginacao<Tag> = {
     lista: [],
     pagina: 1,
+    totalPorPagina: 10,
     totalPaginas: 0,
     totalRegistros: 0
   };
@@ -35,17 +35,17 @@ export class ListaMentoresComponent implements OnInit {
   mentores: Paginacao<MentorBusca> = {
     lista: [],
     pagina: 1,
+    totalPorPagina: 10,
     totalPaginas: 0,
     totalRegistros: 0
   };
 
   constructor(
     private formBuilder: FormBuilder,
-    private mentorPublicService: MentorPublicService,
+    private publicMentoresService: PublicMentoresService,
     private route: ActivatedRoute,
     private router: Router,
-    private tagService: TagService,
-    private utilService: UtilService
+    private publicTagsService: PublicTagsService
   ) {
     this.form = this.formBuilder.group({
       texto: [null],
@@ -94,11 +94,11 @@ export class ListaMentoresComponent implements OnInit {
   }
 
   private buscarTags(): void {
-    this.tagService.getWithParams({ pagina: 1, totalPorPagina: 999 }, this.carregarTags).subscribe(_ => this.tags = _);
+    this.publicTagsService.getWithParams({ pagina: 1, totalPorPagina: 999 }, this.carregarTags).subscribe(_ => this.tags = _);
   }
 
   private buscarMentores(): void {
-    this.mentorPublicService.getWithParams(this.form.value, this.carregar).subscribe(_ => this.mentores = _);
+    this.publicMentoresService.getWithParams(this.form.value, this.carregar).subscribe(_ => this.mentores = _);
   }
 
   atualizarParams(texto?: string): void {
@@ -108,7 +108,7 @@ export class ListaMentoresComponent implements OnInit {
 
     for (const c in this.form.controls) {
       const campo = this.form.controls[c];
-      const valor = this.utilService.validarNull(campo.value) ? null : campo.value;
+      const valor = campo.value ?? null;
       campo.setValue(valor);
     }
 

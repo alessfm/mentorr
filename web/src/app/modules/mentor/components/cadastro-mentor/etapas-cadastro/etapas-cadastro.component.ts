@@ -4,7 +4,7 @@ import { CookiesService } from '@core/services/cookies.service';
 import { GerenciarCadastroService } from '../../../services/gerenciar-cadastro.service';
 import { MensagemService } from '@core/services/mensagem.service';
 import { MentorService } from '../../../services/mentor.service';
-import { UtilService } from '@core/services/util.service';
+import { DOMService } from '@core/services/dom.service';
 
 import { Usuario } from '@shared/models/usuario.model';
 import { Mentor } from '../../../models/mentor.model';
@@ -52,12 +52,12 @@ export class EtapasCadastroComponent implements OnInit {
     private gerenciarService: GerenciarCadastroService,
     private mensagemService: MensagemService,
     private mentorService: MentorService,
-    private utilService: UtilService
+    private domService: DOMService
   ) { }
 
   ngOnInit(): void {
     if (this.etapa == 'FINAL' && this.mentor.ativo) {
-      this.redirecionar();
+      this.domService.redirecionar('/mentor/mentorias');
     } else {
       this.gerirEtapas();
     }
@@ -74,7 +74,7 @@ export class EtapasCadastroComponent implements OnInit {
 
   acessar(etapa: Etapa): void {
     if (etapa.ativa) {
-      this.utilService.redirecionar(`/mentor/cadastro/${etapa.rota}`);
+      this.domService.redirecionar(`/mentor/cadastro/${etapa.rota}`);
     }
   }
 
@@ -84,18 +84,14 @@ export class EtapasCadastroComponent implements OnInit {
         `Bem-vindo(a) a sua página, ${this.usuario.nome}!`,
         'Se desejar fazer alguma alteração, acesse "Minha Conta" pelo menu superior'
       );
-      this.redirecionar();
+      this.domService.redirecionar(`/mentores/${this.usuario.apelido}`);
     })
-  }
-
-  private redirecionar(): void {
-    this.utilService.redirecionar(`/mentores/${this.usuario.apelido}`);
   }
 
   deslogar(): void {
     this.mensagemService.confirmacaoAlerta({ titulo: 'Deseja sair da conta?' }, () => {
       sessionStorage.clear();
-      this.utilService.redirecionar('entrar');
+      this.domService.redirecionar('entrar');
     });
   }
 

@@ -13,15 +13,17 @@ import { FooterModule } from '@shared/components/footer/footer.module';
 import { HeaderModule } from '@shared/components/header/header.module';
 
 import { AuthService } from '@shared/services/auth.service';
+import { PublicMentoresService } from './services/public-mentores.service';
+import { PublicTagsService } from '@shared/services/public-tags.service';
+import { PublicUsuariosService } from './services/public-usuarios.service';
 import { UsuarioService } from '@shared/services/usuario.service';
-import { MentorPublicService } from './services/mentor-public.service';
-import { TagService } from '@shared/services/tag.service';
 
 import { PublicRoutingModule } from './public.routing';
 import { CadastroComponent } from './pages/cadastro/cadastro.component';
 import { CardMentorComponent } from './components/card-mentor/card-mentor.component';
 import { Erro404Component } from './pages/erro-404/erro-404.component';
 import { ListaMentoresComponent } from './pages/lista-mentores/lista-mentores.component';
+import { ListaTagsComponent } from './components/lista-tags/lista-tags.component';
 import { LoginComponent } from './pages/login/login.component';
 import { PaginaInicialComponent } from './pages/pagina-inicial/pagina-inicial.component';
 import { PerfilMentorComponent } from './pages/perfil-mentor/perfil-mentor.component';
@@ -63,6 +65,7 @@ const spinnerConfig: NgxLoadingXConfig = {
     CardMentorComponent,
     Erro404Component,
     ListaMentoresComponent,
+    ListaTagsComponent,
     LoginComponent,
     PaginaInicialComponent,
     PerfilMentorComponent,
@@ -70,8 +73,9 @@ const spinnerConfig: NgxLoadingXConfig = {
   ],
   providers: [
     AuthService,
-    MentorPublicService,
-    TagService,
+    PublicMentoresService,
+    PublicTagsService,
+    PublicUsuariosService,
     UsuarioService
   ]
 })
