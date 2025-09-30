@@ -4,22 +4,23 @@ import java.util.List;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 
-@PreAuthorize("hasAnyRole('ROLE_MENTOR')")
+@PreAuthorize("hasAnyRole('ROLE_GESTAO')")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/mentor/avaliacoes")
-public class AvaliacaoMentorController {
+@RequestMapping("/api/gestao/mentor/{idMentor}/avaliacoes")
+public class AvaliacaoMentorGestaoController {
 
 	private final AvaliacaoMentorService avaliacaoMentorService;
 
 	@GetMapping
-    public List<AvaliacaoMentorDTO> buscarAvaliacoesMentorLogado() {
-        return avaliacaoMentorService.buscarAvaliacoesMentorLogado();
+    public List<AvaliacaoMentorDTO> buscarAvaliacoesMentor(@PathVariable Long idMentor) {
+        return avaliacaoMentorService.buscarAvaliacoesMentor(idMentor);
     }
 
 }

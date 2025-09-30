@@ -13,11 +13,12 @@ import { FooterModule } from '@shared/components/footer/footer.module';
 import { FormModule } from '@shared/components/form/form.module';
 import { HeaderModule } from '@shared/components/header/header.module';
 
-import { MentorService } from './services/mentor.service';
 import { GerenciarCadastroService } from './services/gerenciar-cadastro.service';
-import { HorariosService } from './services/horarios.service';
-import { PlanosService } from './services/planos.service';
-import { TagService } from '@shared/services/tag.service';
+import { HorariosMentorService } from './services/horarios-mentor.service';
+import { MentorService } from './services/mentor.service';
+import { PlanosMentorService } from './services/planos-mentor.service';
+import { PublicTagsService } from '@shared/services/public-tags.service';
+import { TagsMentorService } from './services/tags-mentor.service';
 
 import { MentorRoutingModule } from './mentor.routing';
 import { CadastroMentorComponent } from './pages/cadastro-mentor/cadastro-mentor.component';
@@ -69,11 +70,12 @@ const spinnerConfig: NgxLoadingXConfig = {
     CadastroHorariosComponent,
   ],
   providers: [
-    MentorService,
     GerenciarCadastroService,
-    HorariosService,
-    PlanosService,
-    TagService
+    HorariosMentorService,
+    MentorService,
+    PlanosMentorService,
+    PublicTagsService,
+    TagsMentorService
   ]
 })
 export class MentorModule { }

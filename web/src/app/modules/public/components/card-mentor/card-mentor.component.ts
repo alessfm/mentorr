@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
-import { UtilService } from '@core/services/util.service';
+import { DOMService } from '@core/services/dom.service';
 import { MentorBusca } from '../../models/mentor-public.model';
 
 @Component({
@@ -13,7 +13,7 @@ export class CardMentorComponent implements OnChanges {
   @Input() mentor!: MentorBusca;
   estrelas: any[] = [];
 
-  constructor(private utilService: UtilService) { }
+  constructor(private domService: DOMService) { }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.mentor && this.mentor) {
@@ -22,7 +22,7 @@ export class CardMentorComponent implements OnChanges {
   }
 
   verMentor(apelido: string): void {
-    this.utilService.redirecionar(`/mentores/${apelido}`);
+    this.domService.redirecionar(`/mentores/${apelido}`);
   }
 
   private montarEstrelas(): void {

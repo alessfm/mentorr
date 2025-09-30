@@ -16,22 +16,22 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/gestao/mentores")
 public class MentorGestaoController {
-	
+
 	private final MentorService mentorService;
-	
-	@GetMapping("/{idMentor}")
-	public Mentor buscarPorId(@PathVariable Long idMentor) {	
-		return mentorService.buscarPorId(idMentor);
+
+	@GetMapping("/{id}")
+	public Mentor buscarPorId(@PathVariable Long id) {	
+		return mentorService.buscarPorId(id);
 	}
 
-	@PutMapping("/{idMentor}")
-	public Mentor atualizarPorId(@PathVariable Long idMentor, @RequestBody @Valid CadastroMentorDTO DTO) {
-		return mentorService.atualizarPorId(idMentor, DTO);
+	@PutMapping("/{id}")
+	public Mentor atualizar(@PathVariable Long id, @RequestBody @Valid CadastroMentorDTO mentorDTO) {
+		return mentorService.atualizar(id, mentorDTO);
 	}
-	
-	@PutMapping("/{idMentor}/status")
-	public void alterarStatusPorId(@PathVariable Long idMentor) {
-		mentorService.alterarStatusPorId(idMentor);
+
+	@PutMapping("/{id}/status")
+	public void ativarDesativar(@PathVariable Long id) {
+		mentorService.ativarDesativar(id);
 	}
-	
+
 }

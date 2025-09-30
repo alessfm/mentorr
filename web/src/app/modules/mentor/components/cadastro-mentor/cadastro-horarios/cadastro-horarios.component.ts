@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
+import { DOMService } from '@core/services/dom.service';
+import { FormService } from '@core/services/form.service';
 import { GerenciarCadastroService } from '../../../services/gerenciar-cadastro.service';
 import { MensagemService } from '@core/services/mensagem.service';
-import { HorariosService } from '../../../services/horarios.service';
-import { UtilService } from '@core/services/util.service';
+import { HorariosMentorService } from '../../../services/horarios-mentor.service';
 
 import { Loading } from '@core/models/loading.model';
-import { Mentor } from '../../../models/mentor.model';
 import { EnumDias } from '@shared/enums/dias.enum';
 
 @Component({
@@ -22,10 +22,11 @@ export class CadastroHorariosComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
+    private formService: FormService,
     private gerenciarService: GerenciarCadastroService,
     private mensagemService: MensagemService,
-    private horariosService: HorariosService,
-    private utilService: UtilService
+    private horariosService: HorariosMentorService,
+    private domService: DOMService
   ) {
     this.form = this.formBuilder.group({
       horarios: this.formBuilder.array([])
@@ -34,10 +35,10 @@ export class CadastroHorariosComponent implements OnInit {
 
   ngOnInit(): void {
     this.enumDias.forEach(d => this.criarHorario(d.codigo));
-    this.utilService.desabilitarCampos(this.form, Object.keys(this.form.controls));
+    this.formService.desabilitarCampos(this.form, Object.keys(this.form.controls));
   }
 
-  criarHorario(dia: number): void {
+  criarHorario(dia?: number): void {
     this.carregando();
     this.horarios.push(
       this.formBuilder.group({
@@ -56,25 +57,17 @@ export class CadastroHorariosComponent implements OnInit {
   }
 
   salvar(): void {
-    this.utilService.verificarForm(this.form);
-    if (this.form.invalid) {
-      return this.mensagemService.popupFormularioInvalido();
-    }
-
-    this.horariosService.salvarLote(this.mentor.id, this.form.value.horarios, this.carregar).subscribe(_ => {
+    this.formService.validarFormEChamarFuncao(this.form);
+    this.horariosService.salvarLote(this.form.value.horarios, this.carregar).subscribe(_ => {
       this.mensagemService.popupSucesso('Horários salvos com sucesso!', 'Vamos continuar o seu cadastro...');
       this.gerenciarService.buscarMentor();
-      this.utilService.redirecionar('/mentor/cadastro');
+      this.domService.redirecionar('/mentor/cadastro');
     });
   }
 
   private carregando(): void {
     this.carregar.load = true;
     setTimeout(() => this.carregar.load = false, 150);
-  }
-
-  get mentor(): Mentor {
-    return this.gerenciarService.mentor;
   }
 
   get horarios() {

@@ -17,46 +17,46 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
-@PreAuthorize("hasAnyRole('ROLE_MENTOR')")
+@PreAuthorize("hasAnyRole('ROLE_GESTAO')")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/mentor/horarios")
-public class HorarioMentorController {
+@RequestMapping("/api/gestao/mentor/{idMentor}/horarios")
+public class HorarioMentorGestaoController {
 
 	private final HorarioMentorService horarioMentorService;
 
 	@GetMapping
-    public List<HorarioMentorDTO> buscarHorariosMentorLogado() {
-        return horarioMentorService.buscarHorariosMentorLogado();
+    public List<HorarioMentorDTO> buscarHorariosMentor(@PathVariable Long idMentor) {
+        return horarioMentorService.buscarHorariosMentor(idMentor);
     }
 
 	@GetMapping("/{idHorario}")
-	public HorarioMentor buscarPorIdPorMentorLogado(@PathVariable Long idHorario) {
-		return horarioMentorService.buscarPorIdPorMentorLogado(idHorario);
+	public HorarioMentor buscarPorId(@PathVariable Long idMentor, @PathVariable Long idHorario) {
+		return horarioMentorService.buscarPorId(idMentor, idHorario);
 	}
 
 	@ResponseStatus(code = HttpStatus.CREATED)
 	@PostMapping
-	public HorarioMentor salvarPorMentorLogado(@RequestBody @Valid CadastroHorarioMentorDTO horarioDTO) {
-		return horarioMentorService.salvarPorMentorLogado(horarioDTO);
+	public HorarioMentor salvar(@PathVariable Long idMentor, @RequestBody @Valid CadastroHorarioMentorDTO horarioDTO) {
+		return horarioMentorService.salvar(idMentor, horarioDTO);
 	}
 
 	@ResponseStatus(code = HttpStatus.CREATED)
 	@PostMapping("/lote")
-	public void salvarLotePorMentorLogado( @RequestBody @Valid List<CadastroHorarioMentorDTO> horariosDTO) {
-		horarioMentorService.salvarLotePorMentorLogado(horariosDTO);
+	public void salvarLote(@PathVariable Long idMentor, @RequestBody @Valid List<CadastroHorarioMentorDTO> horariosDTO) {
+		horarioMentorService.salvarLote(idMentor, horariosDTO);
 	}
 
 	@ResponseStatus(code = HttpStatus.ACCEPTED)
 	@PutMapping("/{idHorario}")
-	public HorarioMentor atualizarPorMentorLogado( @PathVariable Long idHorario, @RequestBody @Valid CadastroHorarioMentorDTO horarioDTO) {
-		return horarioMentorService.atualizarPorMentorLogado(idHorario, horarioDTO);
+	public HorarioMentor atualizar(@PathVariable Long idMentor, @PathVariable Long idHorario, @RequestBody @Valid CadastroHorarioMentorDTO horarioDTO) {
+		return horarioMentorService.atualizar(idMentor, idHorario, horarioDTO);
 	}
 
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	@DeleteMapping("/{idHorario}")
-	public void excluirPorMentorLogado(@PathVariable Long idHorario) {
-		horarioMentorService.excluirPorMentorLogado(idHorario);
+	public void excluir(@PathVariable Long idMentor, @PathVariable Long idHorario) {
+		horarioMentorService.excluir(idMentor, idHorario);
 	}
 
 }

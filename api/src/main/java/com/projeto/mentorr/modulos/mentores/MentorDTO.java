@@ -7,19 +7,20 @@ import com.projeto.mentorr.modulos.mentores.avaliacoes.AvaliacaoMentorDTO;
 import com.projeto.mentorr.modulos.mentores.horarios.HorarioMentorDTO;
 import com.projeto.mentorr.modulos.mentores.planos.PlanoMentorDTO;
 import com.projeto.mentorr.modulos.tags.Tag;
+import com.projeto.mentorr.util.Util;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
-@Builder
 @Data
 @NoArgsConstructor
 public class MentorDTO {
 
 	private Long id;
+	private Boolean ativo;
+
 	private String nome;
 	private String apelido;
 	private String foto;
@@ -28,8 +29,6 @@ public class MentorDTO {
 	private String cargo;
 	private String empresa;
 	private LocalDate dataInicio;
-	
-	private Boolean ativo;
 
 	private List<Tag> tags;
 	private List<PlanoMentorDTO> planos;
@@ -37,7 +36,27 @@ public class MentorDTO {
 
 	private Float nota;
 	private List<AvaliacaoMentorDTO> avaliacoes;
-	
+
+	/**
+	 * @apiNote Construtor do buscarMentores().
+	 */
+	public MentorDTO(
+		String nome, String apelido, String foto, String descricao, 
+		String cargo, String empresa, LocalDate dataInicio, Float nota
+	) {
+		this.nome = nome;
+		this.apelido = apelido;
+		this.foto = foto;
+		this.descricao = Util.resumirTexto(descricao);
+
+		this.cargo = cargo;
+		this.empresa = empresa;
+		this.dataInicio = dataInicio;
+
+//		this.plano = plano;
+		this.nota = nota;
+	}
+
 	/**
 	 * @apiNote Construtor do buscarMentoresDestaque().
 	 */
@@ -48,44 +67,26 @@ public class MentorDTO {
 		this.cargo = cargo;
 		this.nota = nota;
 	}
-	
-	/**
-	 * @apiNote Construtor do buscarMentorLogado().
-	 */
-	public MentorDTO(
-		Long id, String foto, String descricao, String cargo, String empresa, 
-		LocalDate dataInicio, Float nota, Boolean ativo
-	) {
-		this.id = id;
-		this.foto = foto;
-		this.descricao = descricao;
-		
-		this.cargo = cargo;
-		this.empresa = empresa;
-		this.dataInicio = dataInicio;
-		
-		this.nota = nota;
-		this.ativo = ativo;
-	}
-	
+
 	/**
 	 * @apiNote Construtor do buscarPorApelido().
 	 */
 	public MentorDTO(
-		String nome, String apelido, String foto, String descricao, 
-		String cargo, String empresa, LocalDate dataInicio, Float nota, Boolean ativo
+		Long id, String nome, String apelido, String foto, String descricao, 
+		String cargo, String empresa, LocalDate dataInicio, Float nota
 	) {
+		this.id = id;
+
 		this.nome = nome;
 		this.apelido = apelido;
 		this.foto = foto;
 		this.descricao = descricao;
-		
+
 		this.cargo = cargo;
 		this.empresa = empresa;
 		this.dataInicio = dataInicio;
-		
+
 		this.nota = nota;
-		this.ativo = ativo;
 	}
 
 }

@@ -11,13 +11,13 @@ import { Mentor } from '../models/mentor.model';
 export class MentorService extends GenericService<Mentor> {
 
   constructor(http: HttpClient) {
-    super('api/mentores', http)
+    super('api/mentor', http)
   }
 
-  buscarLogado(loading?: Loading): Observable<Mentor> {
+  buscarDados(loading?: Loading): Observable<Mentor> {
     this.startLoading(loading);
     return this.getHttpClient()
-      .get<Mentor>(`${this.api}`, { headers: this.getHeadersPularErro() })
+      .get(`${this.api}`)
       .pipe(this.configMapAndLoading(loading));
   }
 

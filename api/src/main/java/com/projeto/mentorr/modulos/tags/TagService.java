@@ -5,17 +5,17 @@ import java.util.List;
 import com.projeto.mentorr.util.ListaPaginacaoDTO;
 
 public interface TagService {
-		
-	ListaPaginacaoDTO buscarTags(String nome, Integer pagina, Integer totalPorPagina);
-	
+
+	ListaPaginacaoDTO<Tag> buscarTags(String nome, Integer pagina, Integer totalPorPagina);
+
 	List<Tag> buscarTagsDestaque();
 
-	Tag buscarPorId(Long idTag);
+	Tag buscarPorId(Long id);
 
-	Tag salvar(CadastroTagDTO DTO);
+	Tag salvar(CadastroTagDTO tagDTO);
 
-	Tag atualizar(Long idTag, CadastroTagDTO DTO);
+	Tag atualizar(Long id, CadastroTagDTO tagDTO);
 
-	void excluir(Long idTag);
+	void excluir(Long id);
 
 }

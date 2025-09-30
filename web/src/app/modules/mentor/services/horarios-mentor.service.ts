@@ -5,19 +5,20 @@ import { Observable } from 'rxjs';
 import { GenericService } from '@core/services/generic.service';
 
 import { Loading } from '@core/models/loading.model';
-import { Tag } from '../models/tag.model';
+import { Horario } from '../models/horario.model';
 
 @Injectable()
-export class TagService extends GenericService<Tag> {
+export class HorariosMentorService extends GenericService<Horario> {
 
   constructor(http: HttpClient) {
-    super('api/tags', http)
+    super('api/mentor/horarios', http)
   }
 
-  buscarDestaques(loading?: Loading): Observable<Tag[]> {
+  salvarLote(entity: { horarios: Horario[] }, loading?: Loading): Observable<Horario[]> {
     this.startLoading(loading);
     return this.getHttpClient()
-      .get<Tag[]>(`${this.api}/destaque`)
+      .post(`${this.api}/lote`, entity)
       .pipe(this.configMapAndLoading(loading));
   }
+
 }

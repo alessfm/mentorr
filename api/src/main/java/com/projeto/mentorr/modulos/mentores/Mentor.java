@@ -38,38 +38,38 @@ public class Mentor {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@Column(name = "FOTO_URL", nullable = false)
 	private String foto;
 
 	@Column(name = "DESCRICAO", nullable = false, length = 1000)
 	private String descricao;
-	
+
 	@Column(name = "CARGO", nullable = false)
 	private String cargo;
 
 	@Column(name = "EMPRESA", nullable = false)
 	private String empresa;
-	
+
 	@Column(name = "DATA_INICIO", nullable = false)
 	private LocalDate dataInicio;
-	
+
 	@Column(name = "FLAG_ATIVO", columnDefinition = "boolean default false", nullable = false)
 	private Boolean ativo;
-	
+
 	@Column(name = "NOTA")
 	private Float nota;
-	
+
 	@JsonBackReference
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ID_USUARIO", unique = true)
 	private Usuario usuario;
-	
+
 	@JsonIgnore
 	@Fetch(FetchMode.SUBSELECT)
 	@OneToMany(mappedBy = "mentor", fetch = FetchType.LAZY)
 	private List<PlanoMentor> planos;
-	
+
 	@JsonIgnore
 	@Fetch(FetchMode.SUBSELECT)
 	@OneToMany(mappedBy = "mentor", fetch = FetchType.LAZY)

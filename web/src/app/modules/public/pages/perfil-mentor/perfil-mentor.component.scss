@@ -1,5 +1,5 @@
 .hero {
-  @apply flex flex-col gap-8 p-8 pt-12 md:flex-row;
+  @apply flex flex-col gap-8 p-8 pt-12 border-t-2 md:flex-row;
 }
 
 .section {

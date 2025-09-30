@@ -4,18 +4,28 @@ import java.util.List;
 
 public interface HorarioMentorService {
 
-	List<HorarioMentorDTO> buscarHorariosPorMentor(Long idMentor);
+	List<HorarioMentorDTO> buscarHorariosMentor(Long idMentor);
+
+	List<HorarioMentorDTO> buscarHorariosMentorLogado();
 
 	HorarioMentor buscarPorId(Long idMentor, Long idHorario);
 
-	HorarioMentor salvar(Long idMentor, CadastroHorarioMentorDTO DTO);
-	
-	void salvarLote(Long idMentor, List<CadastroHorarioMentorDTO> DTO);
+	HorarioMentor buscarPorIdPorMentorLogado(Long idHorario);
 
-	HorarioMentor atualizar(Long idMentor, Long idHorario, CadastroHorarioMentorDTO DTO);
+	HorarioMentor salvar(Long idMentor, CadastroHorarioMentorDTO horarioDTO);
+
+	HorarioMentor salvarPorMentorLogado(CadastroHorarioMentorDTO horarioDTO);
+
+	void salvarLote(Long idMentor, List<CadastroHorarioMentorDTO> horariosDTO);
+
+	void salvarLotePorMentorLogado(List<CadastroHorarioMentorDTO> horariosDTO);
+
+	HorarioMentor atualizar(Long idMentor, Long idHorario, CadastroHorarioMentorDTO horarioDTO);
+
+	HorarioMentor atualizarPorMentorLogado(Long idHorario, CadastroHorarioMentorDTO horarioDTO);
 
 	void excluir(Long idMentor, Long idHorario);
-	
-	List<HorarioMentorDTO> buscarHorariosPorApelidoMentor(String apelido);
+
+	void excluirPorMentorLogado(Long idHorario);
 
 }
