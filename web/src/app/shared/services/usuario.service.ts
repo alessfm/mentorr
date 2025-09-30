@@ -8,6 +8,6 @@ import { Usuario } from '../models/usuario.model';
 export class UsuarioService extends GenericService<Usuario> {
 
   constructor(http: HttpClient) {
-    super('api/usuarios', http)
+    super('api/usuario', http)
   }
 }

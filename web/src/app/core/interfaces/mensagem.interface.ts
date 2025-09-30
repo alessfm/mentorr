@@ -42,12 +42,6 @@ export interface MensagemInterface {
    */
   popupSenhasDiferentes(): void;
 
-  /**
-   * @description Popup de alerta sobre o Formulário Inválido
-   * @example if (this.form.invalid) return this.mensagemService.popupFormularioInvalido();
-   */
-  popupFormularioInvalido(): void;
-
   /*/ Notificações /*/
 
   /**

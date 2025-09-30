@@ -2,7 +2,6 @@ package com.projeto.mentorr.core.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -43,14 +42,8 @@ public class SecurityConfiguration {
             		"/actuator/health",
             		"/swagger-ui/**",
             		"/v3/api-docs/**",
-            		"/api/mentores/busca",
-            		"/api/mentores/totais",
-            		"/api/mentores/destaque",
-            		"/api/mentores/apelido/**",
-            		"/api/tags/busca",
-            		"/api/tags/destaque"
+            		"/api/public/**"
         		).permitAll();
-	            req.requestMatchers(HttpMethod.POST, "/api/usuarios").permitAll();
 	            req.anyRequest().authenticated();
 	        })
 	        .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

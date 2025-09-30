@@ -32,7 +32,7 @@ export class LogadoGuard implements CanActivate {
 
     if (new Date() > new Date(payload.exp * 1000)) {
       this.router.navigate(['entrar']);
-      this.mensagemService.notificarAlerta('', 'A sua sessão expirou...');
+      this.mensagemService.notificarAlerta('', 'Sessão expirada');
       return false;
     }
 
@@ -41,7 +41,7 @@ export class LogadoGuard implements CanActivate {
 
   private decodarToken(token: string | null): Payload | null {
     try {
-      token = token || '';
+      token = token ?? '';
       const payload = token.split('.')[1]; //* header.payload.secret
       return JSON.parse(atob(payload));
     } catch (error) {

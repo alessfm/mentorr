@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.projeto.mentorr.core.exception.BadRequestException;
+import com.projeto.mentorr.core.exception.InternalErrorException;
 import com.projeto.mentorr.core.exception.NotFoundException;
 import com.projeto.mentorr.modulos.usuarios.role.Role;
 import com.projeto.mentorr.modulos.usuarios.role.RoleRepository;
@@ -25,106 +26,99 @@ public class UsuarioServiceImpl implements UsuarioService {
 	private final UsuarioRepository usuarioRepository;
 
 	@Override
-	public ListaPaginacaoDTO buscarUsuarios(String nome, String apelido, TipoUsuario tipo, Boolean ativo, Integer pagina, Integer totalPorPagina) {
+	public ListaPaginacaoDTO<UsuarioDTO> buscarUsuarios(String nome, String apelido, TipoUsuario tipo, Boolean ativo, Integer pagina, Integer totalPorPagina) {
 		return usuarioRepository.buscarUsuarios(nome, apelido, tipo, ativo, pagina, totalPorPagina);
 	}
-	
+
 	@Override
-	public Usuario buscarPorId(Long idUsuario) {
-		return usuarioRepository.findById(idUsuario).orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
+	public Usuario buscarPorId(Long id) {
+		return usuarioRepository.findById(id).orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
 	}
 
 	@Override
-	public UsuarioDTO buscarUsuarioLogado() {
-		return usuarioRepository.buscarUsuarioPorApelido(UserUtil.retornarApelidoUsuarioLogado());
-	}
-	
-	@Override
-	public Usuario buscarUsuarioLogadoPorApelido() {
-		return usuarioRepository.findFirstByApelido(UserUtil.retornarApelidoUsuarioLogado()).orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
+	public Usuario buscarUsuarioLogado() {
+		String apelido = UserUtil.retornarApelidoUsuarioLogado();
+		return usuarioRepository.findFirstByApelido(apelido).orElseThrow(() -> new NotFoundException("Não foi possível buscar sua conta. Tente novamente."));
 	}
 
 	@Override
-	public Usuario salvar(CadastrarUsuarioDTO DTO) {
-		UsuarioDTO usuarioComApelido = usuarioRepository.buscarUsuarioPorApelido(DTO.getApelido());
-
-		if (usuarioComApelido != null) {
-			throw new BadRequestException("Já existe um usuário cadastrado com esse apelido, digite um diferente");
+	public Usuario salvar(CadastrarUsuarioDTO usuarioDTO, TipoUsuario tipo) {
+		if (usuarioRepository.existsByApelido(usuarioDTO.getApelido())) {
+			throw new BadRequestException("Já existe um usuário cadastrado com esse apelido");
 		}
-		
-		Long idRole = DTO.getTipo() == TipoUsuario.ALUNO ? 2L : 3L;
-		
+
+		Long ROLE = tipo.getId();
+
 		Set<Role> roles = new HashSet<>();
-		roles.addAll(roleRepository.findAllById(List.of(idRole)));
-		
+		roles.addAll(roleRepository.findAllById(List.of(ROLE)));
+
 		Usuario usuario = Usuario.builder()
-				.nome(DTO.getNome())
-				.apelido(DTO.getApelido())
-				.email(DTO.getEmail())
-				.senha(bCryptPasswordEncoder().encode(DTO.getSenha()))
-				.tipo(DTO.getTipo())
+				.nome(usuarioDTO.getNome())
+				.apelido(usuarioDTO.getApelido())
+				.email(usuarioDTO.getEmail())
+				.senha(bCryptPasswordEncoder().encode(usuarioDTO.getSenha()))
+				.tipo(tipo)
 				.ativo(true)
-				.excluido(false)
 				.roles(roles)
 				.build();
-		
+
 		return usuarioRepository.saveAndFlush(usuario);
 	}
-	
+
 	@Override
-	public Usuario atualizar(EditarUsuarioDTO DTO) {
-		Usuario usuario = buscarUsuarioLogadoPorApelido();
-		
-		return atualizacaoUsuario(usuario, DTO);
-	}
-	
-	@Override
-	public Usuario atualizarPorId(Long idUsuario, EditarUsuarioDTO DTO) {
-		Usuario usuario = buscarPorId(idUsuario);
-		
-		return atualizacaoUsuario(usuario, DTO);
-	}
-	
-	@Override
-	public void excluirRestaurar() {
-		Usuario usuario = buscarUsuarioLogadoPorApelido();
-		
-		usuario.setDataExclusao(!usuario.getExcluido() ? LocalDateTime.now() : null);
-		usuario.setExcluido(!usuario.getExcluido());
-		
-		usuarioRepository.save(usuario);
-	}
-	
-	@Override
-	public void alterarStatus(Long idUsuario) {
-		Usuario usuario = buscarPorId(idUsuario);
-		usuario.setAtivo(!usuario.getAtivo());
-		usuarioRepository.save(usuario);
-	}
-	
-	private Usuario atualizacaoUsuario(Usuario usuario, EditarUsuarioDTO DTO) {
-		if (DTO.getApelido() != null) {
-			UsuarioDTO usuarioComApelido = usuarioRepository.buscarUsuarioPorApelido(DTO.getApelido());
-			
-			if (usuarioComApelido != null) {
-				if (usuarioComApelido.getId() != usuario.getId()) {
-					throw new BadRequestException("Já existe um usuário cadastrado com esse apelido, digite um diferente");					
-				}
+	public Usuario atualizar(Long id, EditarUsuarioDTO usuarioDTO) {
+		Usuario usuario = buscarPorId(id);
+		usuario.setNome(usuarioDTO.getNome());
+		usuario.setEmail(usuarioDTO.getEmail());
+
+		if (usuarioDTO.getApelido() != null) {
+			if (usuarioRepository.existsByApelido(usuarioDTO.getApelido())) {
+				throw new BadRequestException("Já existe um usuário cadastrado com esse apelido");
 			}
-			
-			usuario.setApelido(DTO.getApelido());
+
+			usuario.setApelido(usuarioDTO.getApelido());
 		}
 
-		usuario.setNome(DTO.getNome());
-		usuario.setEmail(DTO.getEmail());
-		
-		if (DTO.getSenha() != null) {
-			usuario.setSenha(bCryptPasswordEncoder().encode(DTO.getSenha()));
+		if (usuarioDTO.getSenha() != null) {
+			usuario.setSenha(bCryptPasswordEncoder().encode(usuarioDTO.getSenha()));
 		}
-		
+
 		return usuarioRepository.save(usuario);
 	}
-	
+
+	@Override
+	public Usuario atualizarUsuarioLogado(EditarUsuarioDTO usuarioDTO) {
+		Usuario usuario = buscarUsuarioLogado();
+		return atualizar(usuario.getId(), usuarioDTO);
+	}
+
+	@Override
+	public void excluir(Long id) {
+		Usuario usuario = buscarPorId(id);
+
+		try {
+			usuarioRepository.delete(usuario);
+		} catch (Exception e) {
+			throw new InternalErrorException("Não é possível excluir o usuário, pois existem dados vinculados");
+		}
+	}
+
+	@Override
+	public void ativarDesativar(Long id) {
+		Usuario usuario = buscarPorId(id);
+
+		usuario.setAtivo(!usuario.getAtivo());
+		usuario.setDataDesativacao(!usuario.getAtivo() ? LocalDateTime.now() : null);
+
+		usuarioRepository.save(usuario);
+	}
+
+	@Override
+	public void ativarDesativarUsuarioLogado() {
+		Usuario usuario = buscarUsuarioLogado();
+		ativarDesativar(usuario.getId());
+	}
+
 	private BCryptPasswordEncoder bCryptPasswordEncoder() {
 		return new BCryptPasswordEncoder();
 	}

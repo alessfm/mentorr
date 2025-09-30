@@ -28,11 +28,19 @@ export class CookiesService {
 
   get roles(): string[] {
     const roles = sessionStorage.getItem('roles');
-    return roles ? roles.split(',') : [];
+    return !!roles ? roles.split(',') : [];
   }
 
   get usuario(): Usuario | null {
-    const usuario = sessionStorage.getItem('usuario')!;
-    return usuario ? JSON.parse(atob(usuario)) : null;
+    const usuario = sessionStorage.getItem('usuario');
+    return !!usuario ? JSON.parse(atob(usuario)) : null;
+  }
+
+  /**
+   * @description Valida se o usuário possui uma das roles desejadas
+   * @example this.cookiesService.compararRoles(['ROLE_ALUNO', 'ROLE_MENTOR', 'ROLE_GESTAO'])
+   */
+  compararRoles(lista: string[]): boolean {
+    return this.roles.some(r => lista.includes(r));
   }
 }
