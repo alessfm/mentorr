@@ -17,46 +17,46 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
-@PreAuthorize("hasAnyRole('ROLE_MENTOR')")
+@PreAuthorize("hasAnyRole('ROLE_GESTAO')")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/mentor/planos")
-public class PlanoMentorController {
+@RequestMapping("/api/gestao/mentor/{idMentor}/planos")
+public class PlanoMentorGestaoController {
 
 	private final PlanoMentorService planoMentorService;
 
 	@GetMapping
-    public List<PlanoMentorDTO> buscarPlanosMentorLogado() {
-        return planoMentorService.buscarPlanosMentorLogado();
+    public List<PlanoMentorDTO> buscarPlanosMentor(@PathVariable Long idMentor) {
+        return planoMentorService.buscarPlanosMentor(idMentor);
     }
 
 	@GetMapping("/{idPlano}")
-	public PlanoMentor buscarPorIdPorMentorLogado(@PathVariable Long idPlano) {
-		return planoMentorService.buscarPorIdPorMentorLogado(idPlano);
+	public PlanoMentor buscarPorId(@PathVariable Long idMentor, @PathVariable Long idPlano) {
+		return planoMentorService.buscarPorId(idMentor, idPlano);
 	}
 
 	@ResponseStatus(code = HttpStatus.CREATED)
 	@PostMapping
-	public PlanoMentor salvarPorMentorLogado(@RequestBody @Valid CadastroPlanoMentorDTO planoDTO) {
-		return planoMentorService.salvarPorMentorLogado(planoDTO);
+	public PlanoMentor salvar(@PathVariable Long idMentor, @RequestBody @Valid CadastroPlanoMentorDTO planoDTO) {
+		return planoMentorService.salvar(idMentor, planoDTO);
 	}
 
 	@ResponseStatus(code = HttpStatus.CREATED)
 	@PostMapping("/lote")
-	public void salvarLotePorMentorLogado(@RequestBody @Valid List<CadastroPlanoMentorDTO> planosDTO) {
-		planoMentorService.salvarLotePorMentorLogado(planosDTO);
+	public void salvarLote(@PathVariable Long idMentor, @RequestBody @Valid List<CadastroPlanoMentorDTO> planosDTO) {
+		planoMentorService.salvarLote(idMentor, planosDTO);
 	}
 
 	@ResponseStatus(code = HttpStatus.ACCEPTED)
 	@PutMapping("/{idPlano}")
-	public PlanoMentor atualizarPorMentorLogado(@PathVariable Long idPlano, @RequestBody @Valid CadastroPlanoMentorDTO planoDTO) {
-		return planoMentorService.atualizarPorMentorLogado(idPlano, planoDTO);
+	public PlanoMentor atualizar(@PathVariable Long idMentor, @PathVariable Long idPlano, @RequestBody @Valid CadastroPlanoMentorDTO planoDTO) {
+		return planoMentorService.atualizar(idMentor, idPlano, planoDTO);
 	}
 
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	@DeleteMapping("/{idPlano}")
-	public void excluirPorMentorLogado(@PathVariable Long idPlano) {
-		planoMentorService.excluirPorMentorLogado(idPlano);
+	public void excluir(@PathVariable Long idMentor, @PathVariable Long idPlano) {
+		planoMentorService.excluir(idMentor, idPlano);
 	}
 
 }

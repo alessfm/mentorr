@@ -1,5 +1,6 @@
 package com.projeto.mentorr.modulos.mentores.planos;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.context.annotation.Lazy;
@@ -15,70 +16,101 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(onConstructor_ = { @Lazy })
 @Service
 public class PlanoMentorServiceImpl implements PlanoMentorService {
-	
+
 	private final MentorService mentorService;
 	private final PlanoMentorRepository planoMentorRepository;
 
 	@Override
-	public List<PlanoMentorDTO> buscarPlanosPorMentor(Long idMentor) {
-		return planoMentorRepository.buscarPlanosPorMentor(idMentor);
+	public List<PlanoMentorDTO> buscarPlanosMentor(Long idMentor) {
+		return planoMentorRepository.buscarPlanosMentor(idMentor);
 	}
-	
+
+	@Override
+	public List<PlanoMentorDTO> buscarPlanosMentorLogado() {
+		Mentor mentor = mentorService.buscarMentorLogado();
+		return buscarPlanosMentor(mentor.getId());
+	}
+
 	@Override
 	public PlanoMentor buscarPorId(Long idMentor, Long idPlano) {
 		return planoMentorRepository.findByIdAndMentor_Id(idPlano, idMentor).orElseThrow(() -> new NotFoundException("Plano não encontrado"));
 	}
 
 	@Override
-	public PlanoMentor salvar(Long idMentor, CadastroPlanoMentorDTO DTO) {
+	public PlanoMentor buscarPorIdPorMentorLogado(Long idPlano) {
+		Mentor mentor = mentorService.buscarMentorLogado();
+		return buscarPorId(mentor.getId(), idPlano);
+	}
+
+	@Override
+	public PlanoMentor salvar(Long idMentor, CadastroPlanoMentorDTO planoDTO) {
 		Mentor mentor = mentorService.buscarPorId(idMentor);
-		
-		PlanoMentor planoMentor = PlanoMentor.builder()
-				.valor(DTO.getValor())
+
+		PlanoMentor plano = PlanoMentor.builder()
+				.valor(planoDTO.getValor())
 				.mentor(mentor)
 				.build();
-		
-		return planoMentorRepository.saveAndFlush(planoMentor);
+
+		return planoMentorRepository.saveAndFlush(plano);
 	}
-	
+
 	@Override
-	public void salvarLote(Long idMentor, List<CadastroPlanoMentorDTO> DTO) {
+	public PlanoMentor salvarPorMentorLogado(CadastroPlanoMentorDTO planoDTO) {
+		Mentor mentor = mentorService.buscarMentorLogado();
+		return salvar(mentor.getId(), planoDTO);
+	}
+
+	@Override
+	public void salvarLote(Long idMentor, List<CadastroPlanoMentorDTO> planosDTO) {
 		Mentor mentor = mentorService.buscarPorId(idMentor);
-		
-		for(CadastroPlanoMentorDTO item: DTO) {
-			PlanoMentor planoMentor = PlanoMentor.builder()
-					.valor(item.getValor())
-					.mentor(mentor)
-					.build();			
+		List<PlanoMentor> planos = new ArrayList<PlanoMentor>();
 
-			planoMentorRepository.saveAndFlush(planoMentor);			
+		for(CadastroPlanoMentorDTO p: planosDTO) {
+			PlanoMentor plano = PlanoMentor.builder()
+					.valor(p.getValor())
+					.mentor(mentor)
+					.build();
+
+			planos.add(plano);
 		}
+
+		planoMentorRepository.saveAllAndFlush(planos);			
 	}
 
 	@Override
-	public PlanoMentor atualizar(Long idMentor, Long idPlano, CadastroPlanoMentorDTO DTO) {
-		PlanoMentor planoMentor = buscarPorId(idMentor, idPlano);
+	public void salvarLotePorMentorLogado(List<CadastroPlanoMentorDTO> planosDTO) {
+		Mentor mentor = mentorService.buscarMentorLogado();
+		salvarLote(mentor.getId(), planosDTO);			
+	}
 
-		planoMentor.setValor(DTO.getValor());
-		
-		return planoMentorRepository.saveAndFlush(planoMentor);
+	@Override
+	public PlanoMentor atualizar(Long idMentor, Long idPlano, CadastroPlanoMentorDTO planoDTO) {
+		PlanoMentor plano = buscarPorId(idMentor, idPlano);
+		plano.setValor(planoDTO.getValor());
+		return planoMentorRepository.save(plano);
+	}
+
+	@Override
+	public PlanoMentor atualizarPorMentorLogado(Long idPlano, CadastroPlanoMentorDTO planoDTO) {
+		Mentor mentor = mentorService.buscarMentorLogado();
+		return atualizar(mentor.getId(), idPlano, planoDTO);
 	}
 
 	@Override
 	public void excluir(Long idMentor, Long idPlano) {
-		PlanoMentor planoMentor = buscarPorId(idMentor, idPlano);
-		
+		PlanoMentor plano = buscarPorId(idMentor, idPlano);
+
 		try {
-			planoMentorRepository.delete(planoMentor);
+			planoMentorRepository.delete(plano);
 		} catch (Exception e) {
-			throw new InternalErrorException("Não foi possivel excluir o plano");
+			throw new InternalErrorException("Não é possível excluir o plano, pois existem dados vinculados");
 		}
-		
 	}
-	
+
 	@Override
-	public List<PlanoMentorDTO> buscarPlanosPorApelidoMentor(String apelido) {
-		return planoMentorRepository.buscarPlanosPorApelidoMentor(apelido);
+	public void excluirPorMentorLogado(Long idPlano) {
+		Mentor mentor = mentorService.buscarMentorLogado();
+		excluir(mentor.getId(), idPlano);
 	}
 
 }
