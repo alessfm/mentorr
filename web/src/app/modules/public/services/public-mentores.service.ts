@@ -9,30 +9,31 @@ import { MentorBusca, MentorPublic } from '../models/mentor-public.model';
 import { TotaisMentores } from '../models/totais-mentores.model';
 
 @Injectable()
-export class MentorPublicService extends GenericService<MentorBusca> {
+export class PublicMentoresService extends GenericService<MentorBusca> {
 
   constructor(http: HttpClient) {
-    super('api/mentores', http)
+    super('api/public/mentores', http)
   }
 
   buscarTotais(loading?: Loading): Observable<TotaisMentores> {
     this.startLoading(loading);
     return this.getHttpClient()
-      .get<TotaisMentores>(`${this.api}/totais`)
+      .get(`${this.api}/totais`)
       .pipe(this.configMapAndLoading(loading));
   }
 
   buscarDestaques(loading?: Loading): Observable<MentorBusca[]> {
     this.startLoading(loading);
     return this.getHttpClient()
-      .get<MentorBusca[]>(`${this.api}/destaque`)
+      .get(`${this.api}/destaques`)
       .pipe(this.configMapAndLoading(loading));
   }
 
   buscarPorApelido(apelido: string, loading?: Loading): Observable<MentorPublic> {
     this.startLoading(loading);
     return this.getHttpClient()
-      .get<MentorPublic>(`${this.api}/apelido/${apelido}`, { headers: this.getHeadersPularErro() })
+      .get(`${this.api}/perfil/${apelido}`)
       .pipe(this.configMapAndLoading(loading));
   }
+
 }

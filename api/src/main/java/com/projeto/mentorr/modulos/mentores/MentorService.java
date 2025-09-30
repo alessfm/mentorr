@@ -5,27 +5,27 @@ import java.util.List;
 import com.projeto.mentorr.util.ListaPaginacaoDTO;
 
 public interface MentorService {
-	
+
 	TotaisMentoresDTO buscarTotais();
 
-	ListaPaginacaoDTO buscarMentores(String texto, String cargo, String empresa, List<Long> tags, Integer pagina, Integer totalPorPagina);
-	
+	ListaPaginacaoDTO<MentorDTO> buscarMentores(String texto, String cargo, String empresa, List<Long> tags, Integer pagina, Integer totalPorPagina);
+
 	List<MentorDTO> buscarMentoresDestaque();
-	
-	MentorDTO buscarPorApelido(String apelido);
-	
-	Mentor buscarPorId(Long idMentor);
-	
-	MentorDTO buscarMentorLogado();
-	
-	Mentor salvar(CadastroMentorDTO DTO);
-	
-	Mentor atualizar(CadastroMentorDTO DTO);
-	
-	Mentor atualizarPorId(Long idMentor, CadastroMentorDTO DTO);
-	
-	void alterarStatus();
-	
-	void alterarStatusPorId(Long idMentor);
+
+	Mentor buscarPorId(Long id);
+
+	Mentor buscarMentorLogado();
+
+	MentorDTO buscarPerfilMentor(String apelido);
+
+	Mentor salvar(CadastroMentorDTO mentorDTO);
+
+	Mentor atualizar(Long id, CadastroMentorDTO mentorDTO);
+
+	Mentor atualizarMentorLogado(CadastroMentorDTO mentorDTO);
+
+	void ativarDesativar(Long id);
+
+	void ativarDesativarMentorLogado();
 
 }

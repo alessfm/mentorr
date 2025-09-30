@@ -8,8 +8,11 @@ import org.springframework.stereotype.Service;
 import com.projeto.mentorr.modulos.usuarios.Usuario;
 import com.projeto.mentorr.modulos.usuarios.UsuarioService;
 import com.projeto.mentorr.core.exception.NotFoundException;
-import com.projeto.mentorr.modulos.mentores.avaliacoes.AvaliacaoMentorRepository;
+import com.projeto.mentorr.modulos.mentores.avaliacoes.AvaliacaoMentorDTO;
+import com.projeto.mentorr.modulos.mentores.avaliacoes.AvaliacaoMentorService;
+import com.projeto.mentorr.modulos.mentores.horarios.HorarioMentorDTO;
 import com.projeto.mentorr.modulos.mentores.horarios.HorarioMentorService;
+import com.projeto.mentorr.modulos.mentores.planos.PlanoMentorDTO;
 import com.projeto.mentorr.modulos.mentores.planos.PlanoMentorService;
 import com.projeto.mentorr.modulos.tags.Tag;
 import com.projeto.mentorr.modulos.tags.TagService;
@@ -23,187 +26,191 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Service
 public class MentorServiceImpl implements MentorService {
-	
-	private final AvaliacaoMentorRepository avaliacaoMentorRepository;
+
 	private final TagMentorRepository tagMentorRepository;
 	private final MentorRepository mentorRepository;
-	private final UsuarioService usuarioService;
-	private final TagService tagService;
+
+	private final AvaliacaoMentorService avaliacaoMentorService;
 	private final HorarioMentorService horarioMentorService;
 	private final PlanoMentorService planoMentorService;
-	
+	private final TagService tagService;
+	private final UsuarioService usuarioService;
+
 	@Override
 	public TotaisMentoresDTO buscarTotais() {
 		Long qtdMentores = mentorRepository.countByAtivoIsTrue();
 		Long qtdMentorias  = 0L;
 		Long qtdPaises = 1L;
-		
+
 		return new TotaisMentoresDTO(qtdMentores, qtdMentorias, qtdPaises);
 	}
 
 	@Override
-	public ListaPaginacaoDTO buscarMentores(String texto, String cargo, String empresa, List<Long> tags, Integer pagina, Integer totalPorPagina) {
-		ListaPaginacaoDTO busca = mentorRepository.buscarMentores(texto, cargo, empresa, tags, pagina, totalPorPagina);
-		
-		@SuppressWarnings("unchecked")
-		List<ListaMentoresDTO> mentores = (List<ListaMentoresDTO>) busca.getLista();
-		for(ListaMentoresDTO mentor: mentores) {
-			mentor.setTags(tagMentorRepository.buscarTagsPorApelidoMentor(mentor.getApelido(), 8));
+	public ListaPaginacaoDTO<MentorDTO> buscarMentores(String texto, String cargo, String empresa, List<Long> tags, Integer pagina, Integer totalPorPagina) {
+		ListaPaginacaoDTO<MentorDTO> busca = mentorRepository.buscarMentores(texto, cargo, empresa, tags, pagina, totalPorPagina);
+
+		for(MentorDTO mentor: busca.getLista()) {
+			mentor.setTags(tagMentorRepository.buscarTagsPorApelido(mentor.getApelido(), 8));
 		}
-		
+
 		return busca;
 	}
-	
+
 	@Override
 	public List<MentorDTO> buscarMentoresDestaque() {
 		List<MentorDTO> mentores = mentorRepository.buscarMentoresDestaque();
-		
+
 		for(MentorDTO mentor: mentores) {
-			mentor.setTags(tagMentorRepository.buscarTagsPorApelidoMentor(mentor.getApelido(), 4));
+			mentor.setTags(tagMentorRepository.buscarTagsPorApelido(mentor.getApelido(), 4));
 		}
-		
+
 		return mentores;
 	}
 
 	@Override
-	public MentorDTO buscarPorApelido(String apelido) {
-		MentorDTO mentorDTO = mentorRepository.buscarPorApelido(apelido);
-		
-		mentorDTO.setHorarios(horarioMentorService.buscarHorariosPorApelidoMentor(apelido));
-		mentorDTO.setPlanos(planoMentorService.buscarPlanosPorApelidoMentor(apelido));
-		mentorDTO.setTags(tagMentorRepository.buscarTagsPorApelidoMentor(apelido, 12));
-		mentorDTO.setAvaliacoes(avaliacaoMentorRepository.buscarAvaliacoesPorApelidoMentor(apelido));
-		
-		return mentorDTO;
-	}
-	
-	@Override
 	public Mentor buscarPorId(Long id) {
 		return mentorRepository.findById(id).orElseThrow(() -> new NotFoundException("Mentor não encontrado"));
 	}
-	
+
 	@Override
-	public MentorDTO buscarMentorLogado() {
+	public Mentor buscarMentorLogado() {
 		String apelido = UserUtil.retornarApelidoUsuarioLogado();
-		
-		MentorDTO mentorDTO = mentorRepository.buscarMentorLogado(apelido);
-		mentorDTO.setTags(tagMentorRepository.buscarTagsPorApelidoMentor(apelido, 12));
-		
+		return mentorRepository.findFirstByUsuario_Apelido(apelido).orElseThrow(() -> new NotFoundException("Complete o cadastro para acessar sua conta."));
+	}
+
+	@Override
+	public MentorDTO buscarPerfilMentor(String apelido) {
+		MentorDTO mentorDTO = mentorRepository.buscarMentorPorApelido(apelido);
+
+		List<Tag> tags = tagMentorRepository.buscarTagsMentor(mentorDTO.getId());
+		List<HorarioMentorDTO> horarios = horarioMentorService.buscarHorariosMentor(mentorDTO.getId());
+		List<PlanoMentorDTO> planos = planoMentorService.buscarPlanosMentor(mentorDTO.getId());
+		List<AvaliacaoMentorDTO> avaliacoes = avaliacaoMentorService.buscarAvaliacoesMentor(mentorDTO.getId());
+
+		mentorDTO.setId(null);
+		mentorDTO.setTags(tags);
+		mentorDTO.setHorarios(horarios);
+		mentorDTO.setPlanos(planos);
+		mentorDTO.setAvaliacoes(avaliacoes);
+
 		return mentorDTO;
 	}
 
 	@Override
-	public Mentor salvar(CadastroMentorDTO DTO) {
-		Usuario usuario = usuarioService.buscarUsuarioLogadoPorApelido();
-		
+	public Mentor salvar(CadastroMentorDTO mentorDTO) {
+		Usuario usuario = usuarioService.buscarUsuarioLogado();
+
 		Mentor mentor = Mentor.builder()
-				.foto(DTO.getFoto())
-				.descricao(DTO.getDescricao())
-				.cargo(DTO.getCargo())
-				.empresa(DTO.getEmpresa())
-				.dataInicio(DTO.getDataInicio())
+				.foto(mentorDTO.getFoto())
+				.descricao(mentorDTO.getDescricao())
+				.cargo(mentorDTO.getCargo())
+				.empresa(mentorDTO.getEmpresa())
+				.dataInicio(mentorDTO.getDataInicio())
 				.ativo(false)
 				.usuario(usuario)
 				.build();
-		
+
 		mentor = mentorRepository.saveAndFlush(mentor);
-		
-		this.salvarTags(mentor, DTO.getTags());
-		
+		this.salvarTags(mentor, mentorDTO.getTags());
 		return mentor;
 	}
 
 	@Override
-	public Mentor atualizar(CadastroMentorDTO DTO) {
-		Usuario usuario = usuarioService.buscarUsuarioLogadoPorApelido();
-		Mentor mentor = mentorRepository.findByUsuario_Id(usuario.getId());
-		
-		return atualizacaoMentor(mentor, DTO);
-	}
-	
-	@Override
-	public Mentor atualizarPorId(Long idMentor, CadastroMentorDTO DTO) {
+	public Mentor atualizar(Long idMentor, CadastroMentorDTO DTO) {
 		Mentor mentor = buscarPorId(idMentor);
-		
-		return atualizacaoMentor(mentor, DTO);
+
+		manipularMentor(mentor, DTO);
+		mentor = mentorRepository.save(mentor);
+
+		this.atualizarTags(mentor, DTO.getTags());
+		return mentor;
 	}
 	
 	@Override
-	public void alterarStatus() {
-		Usuario usuario = usuarioService.buscarUsuarioLogadoPorApelido();
-		Mentor mentor = mentorRepository.findByUsuario_Id(usuario.getId());
-		
+	public Mentor atualizarMentorLogado(CadastroMentorDTO DTO) {
+		Mentor mentor = buscarMentorLogado();
+
+		manipularMentor(mentor, DTO);
+		mentor = mentorRepository.save(mentor);
+
+		this.atualizarTags(mentor, DTO.getTags());
+		return mentor;
+	}
+
+	@Override
+	public void ativarDesativar(Long id) {
+		Mentor mentor = buscarPorId(id);
 		mentor.setAtivo(!mentor.getAtivo());
 		mentorRepository.save(mentor);
 	}
-	
+
 	@Override
-	public void alterarStatusPorId(Long idMentor) {
-		Mentor mentor = buscarPorId(idMentor);
-		
+	public void ativarDesativarMentorLogado() {
+		Mentor mentor = buscarMentorLogado();
 		mentor.setAtivo(!mentor.getAtivo());
 		mentorRepository.save(mentor);
 	}
-	
-	private Mentor atualizacaoMentor(Mentor mentor, CadastroMentorDTO DTO) {
+
+	private void manipularMentor(Mentor mentor, CadastroMentorDTO DTO) {
 		mentor.setFoto(DTO.getFoto());
 		mentor.setDescricao(DTO.getDescricao());
 		mentor.setCargo(DTO.getCargo());
 		mentor.setEmpresa(DTO.getEmpresa());
 		mentor.setDataInicio(DTO.getDataInicio());
-		
-		mentor = mentorRepository.saveAndFlush(mentor);
-		
-		this.atualizarTags(mentor, DTO.getTags());
-		
-		return mentor;
 	}
-	
-	private void salvarTags(Mentor mentor, List<Long> tags) {
-		for (Long idTag: tags) {
-			Tag tag = tagService.buscarPorId(idTag);
-			
+
+	private void salvarTags(Mentor mentor, List<Long> idsTags) {
+		List<TagMentor> tagsMentor = new ArrayList<TagMentor>();
+
+		for (Long id: idsTags) {
+			Tag tag = tagService.buscarPorId(id);
+
 			TagMentor tagMentor = TagMentor.builder()
 					.mentor(mentor)
 					.tag(tag)
-					.ordem((long) tags.indexOf(idTag))
+					.ordem((long) idsTags.indexOf(id))
 					.build();
-			
-			tagMentorRepository.saveAndFlush(tagMentor);
+
+			tagsMentor.add(tagMentor);
 		}
+
+		tagMentorRepository.saveAllAndFlush(tagsMentor);
 	}
-	
-	private void atualizarTags(Mentor mentor, List<Long> tags) {
-		List<Long> ordens = new ArrayList<Long>(tags);
+
+	private void atualizarTags(Mentor mentor, List<Long> idsTags) {
+		List<Long> ordens = new ArrayList<Long>(idsTags);
 		List<TagMentor> tagsMentor = tagMentorRepository.findByMentor_Id(mentor.getId());
-		
-//		Filtrar removidas e atualizar ordem das antigas
+
+//		Remover tags não listadas e atualizar ordens das já adicionadas
 		for (TagMentor tagMentor: tagsMentor) {
 			Long idTag = tagMentor.getTag().getId();
-			Boolean tagJaAdicionada = tags.contains(idTag);
-			
+			Boolean tagJaAdicionada = idsTags.contains(idTag);
+
 			if (tagJaAdicionada) { 
 				tagMentor.setOrdem((long) ordens.indexOf(idTag));
 				tagMentorRepository.save(tagMentor);
-				
-				tags.remove(idTag);
+				idsTags.remove(idTag);
 			} else {
 				tagMentorRepository.delete(tagMentor);
 			}
 		}
-		
-//		Adicionar novas
-		for (Long idTag: tags) {
-			Tag tag = tagService.buscarPorId(idTag);
-			
+
+//		Adicionar novas tags
+		List<TagMentor> tags = new ArrayList<TagMentor>();
+
+		for (Long id: idsTags) {
+			Tag tag = tagService.buscarPorId(id);
+
 			TagMentor tagMentor = TagMentor.builder()
 					.mentor(mentor)
 					.tag(tag)
-					.ordem((long) ordens.indexOf(idTag))
+					.ordem((long) ordens.indexOf(id))
 					.build();
-			
-			tagMentorRepository.saveAndFlush(tagMentor);
+
+			tags.add(tagMentor);
 		}
+
+		tagMentorRepository.saveAllAndFlush(tags);
 	}
 
 }
