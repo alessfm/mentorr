@@ -31,21 +31,21 @@ public class AvaliacaoMentor {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@Column(name = "DATA")
 	private LocalDateTime data;
 
 	@Column(name = "NOTA")
 	private Long nota;
-	
+
 	@Column(name = "COMENTARIO", length = 1000)
 	private String comentario;
-	
+
 	@JsonBackReference
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "ID_MENTOR", nullable = false)
 	private Mentor mentor;
-	
+
 	@JsonBackReference
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "ID_ALUNO", nullable = false)
