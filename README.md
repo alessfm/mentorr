@@ -1,77 +1,94 @@
-# mentorr
-**Projeto de Pós-graduação na UniFAP** 
+<h1 align="center">Mentorr - Conectando experiências</h1>
 
-Um MVP de uma plataforma web que possibilita a conexão entre alunos e mentores.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/alessfm/mentorr/main/web/src/assets/images/logo-m.svg" width="160px" alt="Logo do Mentorr">
+  <br>
+  <em>Projeto de Pós-graduação na UniFAP</em>
+</p>
+
+<p align="center">
+  <a href="https://alessfm.github.io/mentorr/"><strong>alessfm.github.io/mentorr/</strong></a>
+</p>
+
+<p align="center">
+  <a href="https://www.npmjs.com/@angular/core">
+    <img alt="GitHub package.json version" src="https://img.shields.io/github/package-json/v/alessfm/mentorr?filename=web%2Fpackage.json&style=flat-square&label=release&labelColor=2f363d&color=396ef1">
+  </a>
+  <a href="https://github.com/alessfm/mentorr/actions/workflows/deploy.yml">
+    <img alt="GitHub deploy status" src="https://github.com/alessfm/mentorr/actions/workflows/deploy.yml/badge.svg">
+  </a>
+  <a href="https://www.npmjs.com/@angular/core">
+    <img alt="GitHub Created At" src="https://img.shields.io/github/created-at/alessfm/mentorr?style=flat-square&labelColor=2f363d&color=396ef1">
+  </a>
+</p>
+
+<hr>
+
+## Descrição
+Website no qual pode-se obter orientação personalizada, com mentores experientes, acerca de dúvidas relacionadas ao ambiente de trabalho.
+A missão é auxiliar as pessoas a alcançarem seus objetivos profissionais, seja na busca por uma promoção, numa mudança de emprego, na criação de uma startup, ou em outras dificuldades enfrentadas na carreira.
 
 ## Tecnologias utilizadas
 
-### Front-end
+| Área            | Linguagem        | Framework                   |
+|-----------------|------------------|-----------------------------|
+| Front-end       | TypeScript       | Angular                     |
+| Back-end        | Java             | Spring Boot                 |
+| Banco de dados  | SQL              | [PostgreSQL][postgresql]    |
 
-* [Node.js 14.17.0](https://nodejs.org/pt/download)
-* [Angular 12](https://www.npmjs.com/package/@angular/cli/v/14.2.7)
+## Execução do Front-end
 
-### Back-end
+### Pré-requisitos
+Instale o [**Node.js 14.17.0**][node].
 
-* [Java 11](https://www.oracle.com/java/technologies/downloads/#java11-windows)
-
-### Banco de dados
-
-* [PostgreSQL 12](https://sbp.enterprisedb.com/getfile.jsp?fileid=1259097)
-
-## Instalação
-
-### Front-end
-
-1. Instale o **node.js** na versão recomendada;
-2. Execute os comandos:
+### Etapas
+1. Acesse a pasta `web`:
     ```bash
     cd web
+    ```
+
+2. Instale as dependências:
+    ```bash
     npm install
-    # Aguarde...
+    ```
+
+3. Execute a aplicação:
+    ```bash
     npm start
     ```
 
-3. **Pronto!** O site estará disponível em [localhost:4200](http://localhost:4200/).
+4. Acesse [localhost:4200](http://localhost:4200/) para ver a interface.
 
-### Back-end
+## Execução do Back-end
 
-1. Instale o **Java** na versão recomendada;
-2. Instale e abra o [**Spring Tools Suite**](https://spring.io/tools);
+### Pré-requisitos
+Instale o [**Java 11**][java] e o [**Spring Tools Suite**][spring].
 
-3. Selecione o _workspace_ como a pasta do **mentorr**;
+### Etapas
+1. Abra o Spring Tools Suite e selecione a pasta do repositório `mentorr` como _workspace_. Em seguida, clique em `Launch`;
+2. Vá em **File > Import**, selecione **Maven > Existing Maven Projects** e clique em `Next`. Selecione a pasta `api` como _Root Directory_ e clique em `Finish`;
+3. Vá em **Help > Install New Software** e cole o link (https://projectlombok.org/p2) no _Work with_, clique em `Select All` e `Next`. Novamente, clique em `Next`. Aceite os termos de uso e clique em `Finish`;
+4. Clique com o botão direito na pasta `api`, localizada na barra lateral, e vá em **Run As > Run Configurations**;
+5. Na campo _Main type_, selecione `com.projeto.mentorr.MentorrApplication`;
+6. Na campo _Profile_, selecione `dev`;
+7. Na aba _Enviroment_, adicione os segredos abaixo:
 
-4. Vá em **File > Import > Maven > Existing Maven Projects** e no '_browse_', selecione a pasta **api** e clique em **Finish**;
-5. Vá em **Help > Install New Software** e adicione o **lombok** colando o link do [website](https://projectlombok.org/p2) dele no campo de texto;
-
-6. Clique com o botão direito no projeto e vá em **Run As** > **Run Configurations**;
-
-7. Na aba `Main type`, selecione _com.projeto.mentorr.MentorrApplication_;
-8. Na aba `Profile`, coloque '_dev_';
-9. Na aba `Enviroment`, adicione os _secrets_. Exemplo abaixo com o **PostgreSQL**:
-    
     ![print_segredos](image.png)
 
-10. Clique **Apply** > **Run**;
-11. **Pronto!** As rotas estarão visíveis em [localhost:8780](http://localhost:8780/swagger-ui/index.html).
+8. Clique em `Apply` e `Run`;
+9. Acesse [localhost:8780](http://localhost:8780/swagger-ui/index.html) para ver as rotas.
 
 ### Banco de Dados
 
-> Eu ainda vou adicionar um arquivo de importação para auxiliar nessa etapa...
+1. Crie um banco de dados chamado `mentorr`, com esquema `public`;
+2. Após executar o `back-end`, as tabelas serão criadas automaticamente;
+2. Popule as tabelas:
+    ```sql
+    INSERT INTO public.roles (name) VALUES ('ROLE_GESTAO', 'ROLE_ALUNO', 'ROLE_MENTOR');
+    INSERT INTO public.tags (nome) VALUES ('ux/ui design', 'back-end', 'front-end', 'devops', 'agile');
+    ```
 
-1. Popule a tabela `roles`, com os dados:
-    | id | name        |
-    |----|-------------|
-    | 1  | ROLE_GESTAO |
-    | 2  | ROLE_ALUNO  |
-    | 3  | ROLE_MENTOR |
-
-2. Popule a tabela `tags`, com alguns dados. Exemplos:
-    | id | nome         |
-    |----|--------------|
-    | 1  | ux/ui design |
-    | 2  | back-end     |
-    | 3  | front-end    |
-    | 4  | devops       |
-    | 5  | agile        |
-
-3. **Pronto!** Agora você pode criar contas de usuários, como aluno ou mentor e explorar o sistema. **Valeu!!!**
+[postgresql]: https://sbp.enterprisedb.com/getfile.jsp?fileid=1259097
+[node]: https://nodejs.org/pt/download
+[java]: https://www.oracle.com/java/technologies/downloads/#java11-windows
+[spring]: https://spring.io/tools
