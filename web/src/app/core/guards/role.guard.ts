@@ -17,7 +17,7 @@ export class RoleGuard implements CanActivate {
     const profile = this.cookiesService.profile;
 
     if (!profile) {
-      this.router.navigate(['login']);
+      this.router.navigate(['entrar']);
       this.mensagemService.notificarErro('', 'Você não está autenticado no Mentorr');
       return false;
     }

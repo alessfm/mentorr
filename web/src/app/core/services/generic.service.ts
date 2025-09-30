@@ -30,11 +30,18 @@ export abstract class GenericService<T> {
       .pipe(this.configMapAndLoading(loading));
   }
 
+  getList(loading?: Loading): Observable<T[]> {
+    this.startLoading(loading);
+    return this.getHttpClient()
+      .get<T[]>(`${this._api}`)
+      .pipe(this.configMapAndLoading(loading));
+  }
+
   getWithParams(filter?: {}, loading?: Loading): Observable<Paginacao<T>> {
     this.startLoading(loading);
     const params = new AddHttpParams(filter).createParams();
     return this.getHttpClient()
-      .get<T[]>(`${this._api}/busca`, { params })
+      .get<T[]>(`${this._api}`, { params })
       .pipe(this.configMapAndLoading(loading));
   }
 

@@ -23,7 +23,7 @@ export class ErrorInterceptor implements HttpInterceptor {
           console.log(erro);
           if (erro.status == 0) {
             !navigator.onLine ?
-              this.mensagemService.notificarErro('Sem conexão com a Internet') :
+              this.mensagemService.popupErro('Sem conexão com a Internet') :
               this.mensagemService.popupErro('Ocorreu um erro desconhecido');
           } else if (erro.status >= 400) {
             this.mensagemService.popupAlerta('', `${erro.error.message || erro.error[0].mensagem}`);
