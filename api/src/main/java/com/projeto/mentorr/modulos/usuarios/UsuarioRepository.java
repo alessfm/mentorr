@@ -11,7 +11,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 public interface UsuarioRepository extends JpaRepository<Usuario, Long>, UsuarioRepositoryCustom {
 
 	UserDetails findByApelido(String apelido);
-	
+
 	Optional<Usuario> findFirstByApelido(String apelido);
+
+	Boolean existsByApelido(String apelido);
 
 }
