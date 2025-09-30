@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { UtilService } from '@core/services/util.service';
+import { DOMService } from '@core/services/dom.service';
 
 @Component({
   selector: 'app-erro-404',
@@ -9,10 +9,10 @@ import { UtilService } from '@core/services/util.service';
 })
 export class Erro404Component {
 
-  constructor(private utilService: UtilService) { }
+  constructor(private domService: DOMService) { }
 
   voltar(): void {
-    this.utilService.voltar();
+    this.domService.redirecionar('');
   }
 
 }

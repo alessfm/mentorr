@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { UtilService } from '@core/services/util.service';
+import { DOMService } from '@core/services/dom.service';
 
 @Component({
   selector: 'app-footer',
@@ -25,10 +25,10 @@ export class FooterComponent {
     }
   ];
 
-  constructor(private utilService: UtilService) { }
+  constructor(private domService: DOMService) { }
 
   irPara(rota: string): void {
-    this.utilService.redirecionar(`/${rota}`);
+    this.domService.redirecionar(`/${rota}`);
   }
 
 }
