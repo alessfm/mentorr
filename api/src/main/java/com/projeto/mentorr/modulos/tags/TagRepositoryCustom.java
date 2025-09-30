@@ -6,8 +6,8 @@ import com.projeto.mentorr.util.ListaPaginacaoDTO;
 
 public interface TagRepositoryCustom {
 
-	ListaPaginacaoDTO buscarTags(String nome, Integer pagina, Integer totalPorPagina);
-	
+	ListaPaginacaoDTO<Tag> buscarTags(String nome, Integer pagina, Integer totalPorPagina);
+
 	List<Tag> buscarTagsDestaque();
-	
+
 }

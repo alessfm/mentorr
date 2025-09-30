@@ -5,19 +5,20 @@ import { Observable } from 'rxjs';
 import { GenericService } from '@core/services/generic.service';
 
 import { Loading } from '@core/models/loading.model';
-import { Tag } from '../models/tag.model';
+import { Tag } from '@shared/models/tag.model';
 
 @Injectable()
-export class TagService extends GenericService<Tag> {
+export class PublicTagsService extends GenericService<Tag> {
 
   constructor(http: HttpClient) {
-    super('api/tags', http)
+    super('api/public/tags', http)
   }
 
   buscarDestaques(loading?: Loading): Observable<Tag[]> {
     this.startLoading(loading);
     return this.getHttpClient()
-      .get<Tag[]>(`${this.api}/destaque`)
+      .get(`${this.api}/destaques`)
       .pipe(this.configMapAndLoading(loading));
   }
+
 }

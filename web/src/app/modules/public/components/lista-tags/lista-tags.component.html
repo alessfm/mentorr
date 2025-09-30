@@ -1,0 +1,11 @@
+<div class="hidden md:flex items-center p-4 border-t-2 border-b-2">
+  <nav class="container mx-auto">
+    <ul class="flex justify-between">
+      <li class="cursor-pointer" *ngFor="let tag of tags">
+        <a class="font-light text-gray-600 hover:text-blue-600" (click)="buscarMentoresPorTag(tag.id)">
+          {{ tag.nome }}
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>
