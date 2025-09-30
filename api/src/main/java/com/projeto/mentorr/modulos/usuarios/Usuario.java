@@ -42,13 +42,13 @@ public class Usuario implements UserDetails {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "NOME", nullable = false)
+	@Column(name = "NOME", nullable = false, length = 150)
 	private String nome;
-	
-	@Column(name = "APELIDO", unique = true, nullable = false)
+
+	@Column(name = "APELIDO", unique = true, nullable = false, length = 25)
 	private String apelido;
 
-	@Column(name = "EMAIL", unique = true, nullable = false)
+	@Column(name = "EMAIL", unique = true, nullable = false, length = 150)
 	private String email;
 
 	@JsonIgnore
@@ -61,22 +61,23 @@ public class Usuario implements UserDetails {
 
 	@Column(name = "FLAG_ATIVO", columnDefinition = "boolean default false", nullable = false)
 	private Boolean ativo;
-	
-	@Column(name = "DATA_EXCLUSAO")
-	private LocalDateTime dataExclusao;
-	
-	@Column(name = "FLAG_EXCLUIDO")
-	private Boolean excluido;
-	
+
+	@Column(name = "DATA_DESATIVACAO")
+	private LocalDateTime dataDesativacao;
+
 	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "roles_usuario", joinColumns = @JoinColumn(name = "id_usuario", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "id_role", referencedColumnName = "id"))
+	@JoinTable(
+		name = "roles_usuario", 
+		joinColumns = @JoinColumn(name = "id_usuario", referencedColumnName = "id"), 
+		inverseJoinColumns = @JoinColumn(name = "id_role", referencedColumnName = "id")
+	)
 	private Set<Role> roles;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
 	}
-	
+
 	@JsonIgnore
 	@Override
 	public String getPassword() {
