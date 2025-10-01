@@ -6,4 +6,6 @@ public interface HorarioMentorRepositoryCustom {
 
 	List<HorarioMentorDTO> buscarHorariosMentor(Long idMentor);
 
+	List<HorarioMentorDTO> buscarHorariosMentorPublic(String apelido);
+
 }

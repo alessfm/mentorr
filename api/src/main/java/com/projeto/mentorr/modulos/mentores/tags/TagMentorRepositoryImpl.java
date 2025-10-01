@@ -40,7 +40,7 @@ public class TagMentorRepositoryImpl implements TagMentorRepositoryCustom {
 	}
 
 	@Override
-	public List<Tag> buscarTagsPorApelido(String apelido, Integer totalTags) {
+	public List<Tag> buscarTagsMentorPublic(String apelido, Integer totalTags) {
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Tag> cq = cb.createQuery(Tag.class);
 		Root<TagMentor> tagMentor = cq.from(TagMentor.class);

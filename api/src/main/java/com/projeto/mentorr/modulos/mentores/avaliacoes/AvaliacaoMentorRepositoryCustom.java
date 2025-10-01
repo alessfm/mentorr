@@ -6,4 +6,6 @@ public interface AvaliacaoMentorRepositoryCustom {
 
 	List<AvaliacaoMentorDTO> buscarAvaliacoesMentor(Long idMentor);
 
+	List<AvaliacaoMentorDTO> buscarAvaliacoesMentorPublic(String apelido);
+
 }

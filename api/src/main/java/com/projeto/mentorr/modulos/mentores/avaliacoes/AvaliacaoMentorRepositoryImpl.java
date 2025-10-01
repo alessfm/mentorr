@@ -43,4 +43,27 @@ public class AvaliacaoMentorRepositoryImpl implements AvaliacaoMentorRepositoryC
 		return entityManager.createQuery(cq).getResultList();
 	}
 
+	@Override
+	public List<AvaliacaoMentorDTO> buscarAvaliacoesMentorPublic(String apelido) {
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		CriteriaQuery<AvaliacaoMentorDTO> cq = cb.createQuery(AvaliacaoMentorDTO.class);
+		Root<AvaliacaoMentor> avaliacao = cq.from(AvaliacaoMentor.class);
+
+		Join<AvaliacaoMentor, Usuario> aluno = avaliacao.join("aluno", JoinType.INNER);
+		Join<AvaliacaoMentor, Mentor> mentor = avaliacao.join("mentor", JoinType.INNER);
+		Join<Mentor, Usuario> usuario = mentor.join("usuario", JoinType.INNER);
+
+		cq.multiselect(
+			aluno.get("nome"),
+			avaliacao.get("nota"),
+			avaliacao.get("data"),
+			avaliacao.get("comentario")
+		);
+
+		cq.where(cb.equal(usuario.get("apelido"), apelido));
+		cq.orderBy(cb.desc(avaliacao.get("nota")));
+
+		return entityManager.createQuery(cq).getResultList();
+	}
+
 }

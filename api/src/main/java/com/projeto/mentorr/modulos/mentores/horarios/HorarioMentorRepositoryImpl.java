@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.projeto.mentorr.modulos.mentores.Mentor;
+import com.projeto.mentorr.modulos.usuarios.Usuario;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -36,6 +37,27 @@ public class HorarioMentorRepositoryImpl implements HorarioMentorRepositoryCusto
 		);
 
 		cq.where(cb.equal(mentor.get("id"), idMentor));
+		cq.orderBy(cb.asc(horario.get("dia")));
+
+		return entityManager.createQuery(cq).getResultList();
+	}
+
+	@Override
+	public List<HorarioMentorDTO> buscarHorariosMentorPublic(String apelido) {
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		CriteriaQuery<HorarioMentorDTO> cq = cb.createQuery(HorarioMentorDTO.class);
+		Root<HorarioMentor> horario = cq.from(HorarioMentor.class);
+
+		Join<HorarioMentor, Mentor> mentor = horario.join("mentor", JoinType.INNER);
+		Join<Mentor, Usuario> usuario = mentor.join("usuario", JoinType.INNER);
+
+		cq.multiselect(
+			horario.get("dia"),
+			horario.get("horaInicio"),
+			horario.get("horaFim")
+		);
+
+		cq.where(cb.equal(usuario.get("apelido"), apelido));
 		cq.orderBy(cb.asc(horario.get("dia")));
 
 		return entityManager.createQuery(cq).getResultList();

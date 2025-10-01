@@ -20,6 +20,9 @@ public class HorarioMentorDTO {
 	private LocalTime horaInicio;
 	private LocalTime horaFim;
 
+	/**
+	 * @apiNote Construtor do buscarHorariosMentor().
+	 */
 	public HorarioMentorDTO(Long id, DayOfWeek dia, LocalTime horaInicio, LocalTime horaFim) {
 		this.id = id;
 		this.dia = dia;
@@ -28,6 +31,9 @@ public class HorarioMentorDTO {
 		this.horaFim = horaFim;
 	}
 
+	/**
+	 * @apiNote Construtor do buscarHorariosMentorPublic().
+	 */
 	public HorarioMentorDTO(DayOfWeek dia, LocalTime horaInicio, LocalTime horaFim) {
 		this.dia = dia;
 		this.descricaoDia = Util.retornarDiaEnumFormatado(dia);

@@ -8,6 +8,6 @@ public interface TagMentorRepositoryCustom {
 
 	List<Tag> buscarTagsMentor(Long idMentor);
 
-	List<Tag> buscarTagsPorApelido(String apelido, Integer totalTags);
+	List<Tag> buscarTagsMentorPublic(String apelido, Integer totalTags);
 
 }
