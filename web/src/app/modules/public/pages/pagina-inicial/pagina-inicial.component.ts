@@ -4,9 +4,9 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { forkJoin } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
-import { MentorPublicService } from '../../services/mentor-public.service';
-import { TagService } from '@shared/services/tag.service';
-import { UtilService } from '@core/services/util.service';
+import { PublicMentoresService } from '../../services/public-mentores.service';
+import { PublicTagsService } from '@shared/services/public-tags.service';
+import { DOMService } from '@core/services/dom.service';
 
 import { Loading } from '@core/models/loading.model';
 import { MentorBusca } from '../../models/mentor-public.model';
@@ -41,9 +41,9 @@ export class PaginaInicialComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private mentorPublicService: MentorPublicService,
-    private tagService: TagService,
-    private utilService: UtilService
+    private publicMentoresService: PublicMentoresService,
+    private publicTagsService: PublicTagsService,
+    private domService: DOMService
   ) {
     this.form = this.formBuilder.group({
       texto: [null],
@@ -57,28 +57,28 @@ export class PaginaInicialComponent implements OnInit {
   }
 
   buscarMentores(): void {
-    this.utilService.redirecionar('/mentores/busca', this.form.value);
+    this.domService.redirecionar('/mentores/busca', this.form.value);
   }
 
   buscarMentoresPorTag(idTag: number): void {
-    this.utilService.redirecionar('/mentores/busca', { tags: idTag, pagina: 1, totalPorPagina: 6 });
+    this.domService.redirecionar('/mentores/busca', { tags: idTag, pagina: 1, totalPorPagina: 6 });
   }
 
   verMentor(apelido: string): void {
-    this.utilService.redirecionar(`/mentores/${apelido}`);
+    this.domService.redirecionar(`/mentores/${apelido}`);
   }
 
   private buscarDadosTela(): void {
-    const $tags = this.tagService.buscarDestaques();
-    const $totais = this.mentorPublicService.buscarTotais();
-    const $mentores = this.mentorPublicService.buscarDestaques();
+    const $tags = this.publicTagsService.buscarDestaques();
+    const $totais = this.publicMentoresService.buscarTotais();
+    const $mentores = this.publicMentoresService.buscarDestaques();
 
     forkJoin([$tags, $totais, $mentores])
       .pipe(finalize(() => this.carregar.load = false))
       .subscribe(([tags, totais, mentores]) => {
         this.tags = tags;
         this.montarTotais(totais);
-        this.mentores = mentores.filter(m => m.nota != null);
+        this.mentores = mentores;
       })
   }
 
@@ -91,7 +91,7 @@ export class PaginaInicialComponent implements OnInit {
       },
       {
         valor: totais.qtdMentorias,
-        descricao: 'Parcerias Firmadas',
+        descricao: 'Mentorias Ativas',
         icone: 'fa-handshake-angle'
       },
       {

@@ -4,8 +4,8 @@ import java.util.List;
 
 public interface HorarioMentorRepositoryCustom {
 
-	List<HorarioMentorDTO> buscarHorariosPorMentor(Long idMentor);
+	List<HorarioMentorDTO> buscarHorariosMentor(Long idMentor);
 
-	List<HorarioMentorDTO> buscarHorariosPorApelidoMentor(String apelido);
+	List<HorarioMentorDTO> buscarHorariosMentorPublic(String apelido);
 
 }

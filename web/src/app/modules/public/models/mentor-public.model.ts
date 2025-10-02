@@ -12,7 +12,7 @@ export interface MentorBusca {
 
   tags: Tag[];
   nota?: number;
-  valor?: number;
+  valorMinimo?: number;
 }
 
 export interface MentorPublic {
@@ -36,7 +36,14 @@ export interface MentorPublic {
 }
 
 export interface Plano {
+  codigo: string;
+  tipo: string;
+  descricaoTipo: string;
   valor: number;
+  descricao: string;
+  totalChamadas: number;
+  duracaoChamada: number;
+  tempoResposta: number;
 }
 
 export interface Horario {

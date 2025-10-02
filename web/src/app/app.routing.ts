@@ -13,6 +13,12 @@ const routes: Routes = [
     data: { profile: 'MENTOR' }
   },
   {
+    path: 'aluno',
+    canActivate: [LogadoGuard, RoleGuard],
+    loadChildren: () => import('@app/modules/aluno/aluno.module').then(m => m.AlunoModule),
+    data: { profile: 'ALUNO' }
+  },
+  {
     path: '**', redirectTo: '404'
   }
 ];

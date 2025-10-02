@@ -13,52 +13,49 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Service
 public class TagServiceImpl implements TagService {
-	
+
 	private final TagRepository tagRepository;
-	
+
 	@Override
-	public ListaPaginacaoDTO buscarTags(String nome, Integer pagina, Integer totalPorPagina) {
+	public ListaPaginacaoDTO<Tag> buscarTags(String nome, Integer pagina, Integer totalPorPagina) {
 		return tagRepository.buscarTags(nome, pagina, totalPorPagina);
 	}
-	
+
 	@Override
-	public List<Tag> buscarTagsDestaque(){
+	public List<Tag> buscarTagsDestaque() {
 		return tagRepository.buscarTagsDestaque();
 	}
-	
+
 	@Override
 	public Tag buscarPorId(Long id) {
 		return tagRepository.findById(id).orElseThrow(() -> new NotFoundException("Tag não encontrada"));
 	}
-	
+
 	@Override
-	public Tag salvar(CadastroTagDTO DTO) {
+	public Tag salvar(CadastroTagDTO tagDTO) {
 		Tag tag = Tag.builder()
-				.nome(DTO.getNome())
+				.nome(tagDTO.getNome())
 				.build();
-		
+
 		return tagRepository.saveAndFlush(tag);
 	}
 
 	@Override
-	public Tag atualizar(Long idTag, CadastroTagDTO DTO) {
-		Tag tag = buscarPorId(idTag);
-
-		tag.setNome(DTO.getNome());
-		
+	public Tag atualizar(Long id, CadastroTagDTO tagDTO) {
+		Tag tag = buscarPorId(id);
+		tag.setNome(tagDTO.getNome());
 		return tagRepository.saveAndFlush(tag);
 	}
 
 	@Override
-	public void excluir(Long idTag) {
-		Tag tag = buscarPorId(idTag);
-		
+	public void excluir(Long id) {
+		Tag tag = buscarPorId(id);
+
 		try {
 			tagRepository.delete(tag);
 		} catch (Exception e) {
-			throw new InternalErrorException("Não foi possivel excluir a tag");
+			throw new InternalErrorException("Não é possível excluir a tag, pois existem dados vinculados");
 		}
-		
 	}
 
 }

@@ -1,15 +1,13 @@
 import { ActivatedRoute } from '@angular/router';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 
-import { CookiesService } from '@core/services/cookies.service';
-import { MensagemService } from '@core/services/mensagem.service';
-import { MentorPublicService } from '../../services/mentor-public.service';
-import { UtilService } from '@core/services/util.service';
+import { PublicMentoresService } from '../../services/public-mentores.service';
+import { DOMService } from '@core/services/dom.service';
+
+import { ModalSolicitacaoComponent } from '../../components/modal-solicitacao/modal-solicitacao.component';
 
 import { Loading } from '@core/models/loading.model';
-import { Avaliacao, Estrela, MentorBusca, MentorPublic } from '../../models/mentor-public.model';
-import { Paginacao } from '@shared/models/paginacao.model';
-import { Usuario } from '@shared/models/usuario.model';
+import { Avaliacao, Estrela, MentorBusca, MentorPublic, Plano } from '../../models/mentor-public.model';
 
 import { EnumDias } from '@shared/enums/dias.enum';
 
@@ -20,26 +18,23 @@ import { EnumDias } from '@shared/enums/dias.enum';
 })
 export class PerfilMentorComponent {
 
-  carregar = new Loading();
+  @ViewChild('modal') modal!: ModalSolicitacaoComponent;
+
+  carregar = new Loading(true);
   mentor!: MentorPublic;
-  private apelido = '';
+  apelido = '';
 
   enumDias = EnumDias;
+  tipoOrdemAvaliacoes = 'NOTA';
+  mostrarDrop = false;
 
   resumo: any[] = [];
-  similares: Paginacao<MentorBusca> = {
-    lista: [],
-    pagina: 1,
-    totalPaginas: 0,
-    totalRegistros: 0
-  };
+  similares: MentorBusca[] = [];
 
   constructor(
-    private cookiesService: CookiesService,
-    private mensagemService: MensagemService,
-    private mentorPublicService: MentorPublicService,
+    private publicMentoresService: PublicMentoresService,
     private route: ActivatedRoute,
-    private utilService: UtilService
+    private domService: DOMService
   ) {
     this.route.params.subscribe(params => {
       this.apelido = params.apelido;
@@ -48,10 +43,10 @@ export class PerfilMentorComponent {
   }
 
   private obterMentor(): void {
-    this.mentorPublicService.buscarPorApelido(this.apelido, this.carregar).subscribe({
+    this.publicMentoresService.buscarPorApelido(this.apelido, this.carregar).subscribe({
       next: _ => this.mentor = _,
-      error: () => this.redirecionar(),
-      complete: () => !this.mentor.ativo ? this.redirecionar() : this.montarTela()
+      error: () => this.domService.redirecionar('404'),
+      complete: () => this.montarTela()
     });
   }
 
@@ -65,7 +60,7 @@ export class PerfilMentorComponent {
     this.resumo = [];
 
     const diaAtual = (new Date().getDay() - 1);
-    const nomeDia = this.enumDias.find(d => d.codigo == diaAtual)!.label;
+    const nomeDia = this.enumDias.find(d => d.codigo == diaAtual)!.valor;
     const horarioAtivo = this.mentor.horarios.find(h => h.dia == nomeDia);
 
     this.resumo.push(
@@ -74,8 +69,8 @@ export class PerfilMentorComponent {
         descricao: 'Brasil'
       },
       {
-        icone: 'fa-star',
-        descricao: 'Novo Mentor!'
+        icone: 'fa-comment-dots',
+        descricao: 'Fala português e inglês'
       }
     );
 
@@ -106,41 +101,32 @@ export class PerfilMentorComponent {
   }
 
   private buscarMentoresSimilares(): void {
-    const params = { tags: this.mentor.tags.map(t => t.id) };
-    this.mentorPublicService.getWithParams(params).subscribe(busca => {
-      busca.lista = busca.lista.filter(m => m.apelido != this.apelido);
-      this.similares = busca;
-    });
+    const params = {
+      cargo: this.mentor.cargo,
+      empresa: this.mentor.empresa
+    };
+    this.publicMentoresService.buscarSimilares(this.mentor.apelido, params).subscribe(_ => this.similares = _);
   }
 
   verMentor(apelido: string): void {
-    this.utilService.redirecionar(`/mentores/${apelido}`);
+    this.domService.redirecionar(`/mentores/${apelido}`);
   }
 
-  private redirecionar(): void {
-    this.carregar.load = true;
-    this.visitaMentor ? this.redirecionarMentor() : this.redirecionarUsuario();
+  ordenarAvaliacoes(tipo: string): void {
+    this.mostrarDrop = false;
+    this.tipoOrdemAvaliacoes = tipo;
+    switch (tipo) {
+      case 'DATA':
+        this.mentor.avaliacoes.sort((a, b) => a.data < b.data ? -1 : 1);
+        break;
+      case 'NOTA':
+        this.mentor.avaliacoes.sort((a, b) => a.nota > b.nota ? -1 : 1);
+        break;
+    }
   }
 
-  private redirecionarMentor(): void {
-    this.mensagemService.notificarAlerta('Cadastro incompleto', 'Finalize as etapas restantes...');
-    this.utilService.redirecionar('/mentor/cadastro');
+  abrirModal(plano: Plano): void {
+    this.modal.abrirModal(plano);
   }
 
-  private redirecionarUsuario(): void {
-    this.mensagemService.popupAlerta('', 'Mentor não encontrado ou inativo');
-    setTimeout(() => this.utilService.voltar(), 2000);
-  }
-
-  get usuario(): Usuario | null {
-    return this.cookiesService.usuario;
-  }
-
-  get profile(): string | null {
-    return this.cookiesService.profile;
-  }
-
-  get visitaMentor(): boolean {
-    return this.profile == 'MENTOR' && this.apelido == this.usuario?.apelido;
-  }
 }

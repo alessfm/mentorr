@@ -4,22 +4,22 @@ import com.projeto.mentorr.util.ListaPaginacaoDTO;
 
 public interface UsuarioService {
 
-	ListaPaginacaoDTO buscarUsuarios(String nome, String apelido, TipoUsuario tipo, Boolean ativo, Integer pagina, Integer totalPorPagina);
+	ListaPaginacaoDTO<UsuarioDTO> buscarUsuarios(String nome, String apelido, TipoUsuario tipo, Boolean ativo, Integer pagina, Integer totalPorPagina);
 
-	Usuario buscarPorId(Long idUsuario);
-	
-	UsuarioDTO buscarUsuarioLogado();
-	
-	Usuario buscarUsuarioLogadoPorApelido();
+	Usuario buscarPorId(Long id);
 
-	Usuario salvar(CadastrarUsuarioDTO DTO);
+	Usuario buscarUsuarioLogado();
 
-	Usuario atualizar(EditarUsuarioDTO DTO);
-	
-	Usuario atualizarPorId(Long idUsuario, EditarUsuarioDTO DTO);
-	
-	void excluirRestaurar();
-	
-	void alterarStatus(Long idUsuario);
+	Usuario salvar(CadastrarUsuarioDTO usuarioDTO, TipoUsuario tipo);
+
+	Usuario atualizar(Long id, EditarUsuarioDTO usuarioDTO);
+
+	Usuario atualizarUsuarioLogado(EditarUsuarioDTO usuarioDTO);
+
+	void excluir(Long id);
+
+	void ativarDesativar(Long id);
+
+	void ativarDesativarUsuarioLogado();
 
 }

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { UtilService } from '@core/services/util.service';
+import { DOMService } from '@core/services/dom.service';
 
 @Component({
   selector: 'app-secao-propaganda',
@@ -9,9 +9,9 @@ import { UtilService } from '@core/services/util.service';
 })
 export class SecaoPropagandaComponent {
 
-  constructor(private utilService: UtilService) { }
+  constructor(private domService: DOMService) { }
 
   irParaCadastro(tipo: string): void {
-    this.utilService.redirecionar(`/cadastro/${tipo}`);
+    this.domService.redirecionar(`/cadastro/${tipo}`);
   }
 }

@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 public interface TagMentorRepository extends JpaRepository<TagMentor, Long>, TagMentorRepositoryCustom {
 
 	List<TagMentor> findByMentor_Id(Long idMentor);
-	
+
 }

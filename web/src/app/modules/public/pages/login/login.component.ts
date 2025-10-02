@@ -3,9 +3,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { AuthService } from '@shared/services/auth.service';
 import { CookiesService } from '@core/services/cookies.service';
-import { MensagemService } from '@core/services/mensagem.service';
+import { DOMService } from '@core/services/dom.service';
+import { FormService } from '@core/services/form.service';
 import { UsuarioService } from '@shared/services/usuario.service';
-import { UtilService } from '@core/services/util.service';
 
 import { Loading } from '@core/models/loading.model';
 
@@ -22,10 +22,10 @@ export class LoginComponent {
   constructor(
     private authService: AuthService,
     private cookiesService: CookiesService,
+    private domService: DOMService,
     private formBuilder: FormBuilder,
-    private mensagemService: MensagemService,
-    private usuarioService: UsuarioService,
-    private utilService: UtilService
+    private formService: FormService,
+    private usuarioService: UsuarioService
   ) {
     this.form = this.formBuilder.group({
       apelido: [null, Validators.required],
@@ -34,11 +34,7 @@ export class LoginComponent {
   }
 
   entrar(): void {
-    this.utilService.verificarForm(this.form);
-    if (this.form.invalid) {
-      return this.mensagemService.popupFormularioInvalido();
-    }
-
+    this.formService.validarFormEChamarFuncao(this.form);
     this.authService.entrarNaConta(this.form.value, this.carregar).subscribe(_ => {
       this.cookiesService.salvarDados(_);
       this.buscarConta();
@@ -50,17 +46,14 @@ export class LoginComponent {
       this.cookiesService.salvarUsuario(usuario);
 
       switch (usuario.tipo) {
-        case 'Aluno':
-          this.utilService.redirecionar('/');
+        case 'ALUNO':
+          this.domService.redirecionar('/aluno/mentorias');
           break;
-        case 'Mentor':
-          this.utilService.redirecionar(`/mentores/${usuario.apelido}`);
-          break;
-        case 'Gestor':
-          this.utilService.redirecionar('/');
+        case 'MENTOR':
+          this.domService.redirecionar('/mentor/cadastro');
           break;
         default:
-          this.utilService.redirecionar('/');
+          this.domService.redirecionar('/');
       }
     });
   }

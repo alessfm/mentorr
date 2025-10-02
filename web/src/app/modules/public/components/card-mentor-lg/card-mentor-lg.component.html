@@ -1,0 +1,51 @@
+<div class="card">
+  <div class="flex flex-row md:flex-col justify-between">
+    <div class="flex flex-col items-center md:flex-row gap-4">
+      <div class="flex-none relative">
+        <img class="w-64 rounded-lg" [src]="mentor.foto" alt="Foto" loading="lazy">
+      </div>
+      <div class="flex flex-col gap-6">
+        <div class="flex flex-col gap-1">
+          <h2 class="font-bold text-slate-900 text-2xl md:text-3xl">{{ mentor.nome }}</h2>
+          <h3 class="text-gray-600 text-xl">{{ mentor.cargo }} @ {{ mentor.empresa }}</h3>
+          <ul class="flex flex-wrap gap-4 leading-8">
+            <li>
+              <a class="badge badge-primary">
+                <em class="fa-solid fa-fire"></em> Novo Mentor
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <p class="text-gray-800 text-md">{{ mentor.descricao }}</p>
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <ul class="flex flex-wrap items-center gap-2 leading-6 mt-4">
+            <li *ngFor="let tag of mentor?.tags">
+              <a class="badge badge-gray text-md">{{ tag.nome }}</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="hidden md:flex gap-1">
+      <ng-container *ngIf="mentor?.nota; else semNota">
+        <span><i class="fa-solid fa-star text-yellow"></i></span>
+        <span class="font-bold text-lg"> {{ mentor?.nota }} </span>
+      </ng-container>
+
+      <ng-template #semNota>
+        <span><i class="fa-regular fa-star text-yellow"></i></span>
+        <span class="font-bold text-lg"> 0.0 </span>
+      </ng-template>
+    </div>
+  </div>
+
+  <div class="flex flex-col gap-4 md:flex-row justify-between items-center">
+    <h2 class="font-black text-xl md:text-2xl">A partir de {{ mentor?.valorMinimo | currency }}/mês</h2>
+    <button class="bg-primary btn-perfil" (click)="verMentor(mentor.apelido)">Ver perfil completo</button>
+  </div>
+</div>

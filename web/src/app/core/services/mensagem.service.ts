@@ -68,13 +68,6 @@ export class MensagemService implements MensagemInterface {
     this.popup({ titulo, corpo, tipo: TipoMensagem.ALERTA });
   }
 
-  popupFormularioInvalido(): void {
-    const titulo = 'Formulário inválido';
-    const corpo = 'Preencha os campos obrigatórios e verifique os valores digitados';
-
-    this.popup({ titulo, corpo, tipo: TipoMensagem.ALERTA });
-  }
-
   /*/ Notificações /*/
 
   private notificacao(mensagem: Mensagem): void {

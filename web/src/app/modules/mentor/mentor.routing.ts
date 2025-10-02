@@ -2,12 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { CadastroMentorComponent } from './pages/cadastro-mentor/cadastro-mentor.component';
-import {
-  EtapasCadastroComponent,
-  CadastroDadosComponent,
-  CadastroPlanosComponent,
-  CadastroHorariosComponent
-} from './components/cadastro-mentor';
+import * as CADASTRO from './components/cadastro-mentor';
+import { MentoriasMentorComponent } from './pages/mentorias-mentor/mentorias-mentor.component';
 
 const routes: Routes = [
   {
@@ -21,21 +17,25 @@ const routes: Routes = [
       },
       {
         path: 'etapas',
-        component: EtapasCadastroComponent
+        component: CADASTRO.EtapasCadastroComponent
       },
       {
         path: 'dados',
-        component: CadastroDadosComponent
+        component: CADASTRO.CadastroDadosComponent
       },
       {
         path: 'planos',
-        component: CadastroPlanosComponent
+        component: CADASTRO.CadastroPlanosComponent
       },
       {
         path: 'horarios',
-        component: CadastroHorariosComponent
+        component: CADASTRO.CadastroHorariosComponent
       }
     ]
+  },
+  {
+    path: 'mentorias',
+    component: MentoriasMentorComponent
   }
 ];
 

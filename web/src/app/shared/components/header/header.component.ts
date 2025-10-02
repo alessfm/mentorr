@@ -1,59 +1,44 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { CookiesService } from '@core/services/cookies.service';
+import { DOMService } from '@core/services/dom.service';
 import { MensagemService } from '@core/services/mensagem.service';
-import { TagService } from '@shared/services/tag.service';
-import { UtilService } from '@core/services/util.service';
 
 import { Loading } from '@core/models/loading.model';
-import { Paginacao } from '@shared/models/paginacao.model';
-import { Tag } from '@shared/models/tag.model';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
 
   carregar = new Loading();
   mostrarDrop = false;
-  tags: Paginacao<Tag> = {
-    lista: [],
-    pagina: 1,
-    totalPaginas: 0,
-    totalRegistros: 0
-  };
 
   constructor(
     private cookiesService: CookiesService,
     private mensagemService: MensagemService,
-    private tagService: TagService,
-    private utilService: UtilService
+    private domService: DOMService
   ) { }
 
-  ngOnInit(): void {
-    const params = { pagina: 1, totalPorPagina: 10 };
-    this.tagService.getWithParams(params, this.carregar).subscribe(_ => this.tags = _);
-  }
-
   irParaCadastro(): void {
-    this.utilService.redirecionar('/cadastro/aluno');
-  }
-
-  buscarMentoresPorTag(idTag: number): void {
-    this.utilService.redirecionar('/mentores/busca', { tags: idTag, pagina: 1, totalPorPagina: 6 });
+    this.domService.redirecionar('/cadastro/aluno');
   }
 
   deslogar(): void {
     this.mensagemService.confirmacaoAlerta({ titulo: 'Deseja sair da conta?' }, () => {
       sessionStorage.clear();
-      this.utilService.redirecionar('entrar');
+      this.domService.redirecionar('entrar');
     });
   }
 
   get usuario() {
     return this.cookiesService.usuario;
+  }
+
+  get profile() {
+    return this.cookiesService.profile;
   }
 
 }

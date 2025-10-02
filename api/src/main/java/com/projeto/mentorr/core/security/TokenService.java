@@ -15,14 +15,14 @@ import com.projeto.mentorr.modulos.usuarios.Usuario;
 
 @Service
 public class TokenService {
-	
+
 	@Value("${jwt.secret}")
 	private String secret;
-	
+
 	public String gerarToken(Usuario usuario) {
 		try {
 		    Algorithm algorithm = Algorithm.HMAC256(secret);
-		    
+
 		    return JWT.create()
 		        .withIssuer("API")
 		        .withSubject(usuario.getApelido())
@@ -33,17 +33,17 @@ public class TokenService {
 			throw new RuntimeException("Erro ao gerar o token do usuário. Por favor, tente novamente");
 		}
 	}
-	
+
 	public String getSubject(String token) {
 		try {
 			Algorithm algorithm = Algorithm.HMAC256(secret);
-			
+
 			return JWT.require(algorithm)
 					 .withIssuer("API")
 					 .build()
 					 .verify(token)
 					 .getSubject();
-		} catch (JWTCreationException exception){
+		} catch (Exception exception){
 			throw new RuntimeException("Token inválido");
 		}
 	}

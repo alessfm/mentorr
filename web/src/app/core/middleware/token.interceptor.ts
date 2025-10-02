@@ -36,7 +36,7 @@ export class TokenInterceptor implements HttpInterceptor {
           .post<any>(`${this.API_URL}/refresh`, {}, { withCredentials: true, headers: this.getHeadersPularErro() })
           .subscribe();
         this.userSubject.next(null);
-        this.router.navigate(['/login']);
+        this.router.navigate(['/entrar']);
       }
 
       const error = (err && err.error && err.error.message) || err.statusText;
