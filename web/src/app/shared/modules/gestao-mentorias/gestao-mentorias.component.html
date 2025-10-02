@@ -3,7 +3,7 @@
     <h2 class="font-bold text-xl md:text-2xl">{{ lista | titlecase }}</h2>
     <div class="grid grid-cols-1 gap-6" *ngIf="mentorias.length; else semMentorias">
       <ng-container *ngFor="let mentoria of mentorias">
-        <div class="card cursor-pointer" [ngClass]="{'fundo-azul': mentoria?.id == idMentoria}"
+        <div class="card cursor-pointer" [ngClass]="{'fundo-azul': mentoria?.id === idMentoria}"
           (click)="buscarDadosMentoria(mentoria)">
           <div class="flex justify-between">
             <div class="flex gap-4">
@@ -52,7 +52,7 @@
         <h2 class="font-bold text-xl md:text-2xl">
           Chat com {{ mentoriaAberta?.nomeAluno || mentoriaAberta?.nomeMentor }}
         </h2>
-        <div class="drop" *ngIf="lista == 'ALUNOS'">
+        <div class="drop" *ngIf="lista === 'ALUNOS'">
           <a class="drop-btn cursor-pointer" (click)="mostrarDrop = !mostrarDrop">
             <i class="fa-solid fa-chevron-down"></i> Ações da mentoria
           </a>
@@ -76,7 +76,7 @@
       </div>
       <div class="grid grid-cols-1 gap-6">
         <ng-container *ngFor="let msg of mentoriaAberta?.mensagens">
-          <div class="card border-none" [ngClass]="{'fundo-azul': msg?.apelidoUsuario == usuario?.apelido}">
+          <div class="card border-none" [ngClass]="{'fundo-azul': msg?.apelidoUsuario === usuario?.apelido}">
             <div class="flex justify-between">
               <div class="flex gap-4">
                 <div class="flex-none relative">

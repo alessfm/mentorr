@@ -37,7 +37,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepositoryCustom {
 			usuario.get("email"),
 			usuario.get("tipo"),
 			usuario.get("ativo"),
-			usuario.get("excluido")
+			usuario.get("dataDesativacao")
 		).distinct(true);
 
 		cq.where(predicates.toArray(new Predicate[0]));

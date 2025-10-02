@@ -45,7 +45,7 @@
     </form>
 
     <div class="cards">
-      <div class="flex py-2 justify-between" *ngIf="totalRegistros != 0">
+      <div class="flex flex-col gap-4 items-center md:flex-row py-2 justify-between" *ngIf="totalRegistros !== 0">
         <h3 class="text-md md:text-xl">{{ totalRegistros }} mentor(es) encontrado(s) {{ filtroAtivo }}</h3>
         <div class="drop">
           <a class="drop-btn cursor-pointer" (click)="mostrarDrop = !mostrarDrop">
@@ -63,7 +63,7 @@
         </div>
       </div>
 
-      <ng-container *ngIf="totalRegistros != 0; else semDados">
+      <ng-container *ngIf="totalRegistros !== 0; else semDados">
         <ng-container
           *ngFor="let mentor of mentores.lista | paginate: {itemsPerPage: totalPorPagina, currentPage: mentores.pagina, totalItems: totalRegistros}">
           <app-card-mentor-lg [mentor]="mentor"></app-card-mentor-lg>

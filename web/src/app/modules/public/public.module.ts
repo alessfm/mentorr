@@ -14,6 +14,7 @@ import { FormModule } from '@shared/components/form/form.module';
 import { HeaderModule } from '@shared/components/header/header.module';
 
 import { AuthService } from '@shared/services/auth.service';
+import { MentoriasAlunoService } from '@shared/services/mentorias-aluno.service';
 import { PublicMentoresService } from './services/public-mentores.service';
 import { PublicTagsService } from '@shared/services/public-tags.service';
 import { PublicUsuariosService } from './services/public-usuarios.service';
@@ -79,6 +80,7 @@ const spinnerConfig: NgxLoadingXConfig = {
   ],
   providers: [
     AuthService,
+    MentoriasAlunoService,
     PublicMentoresService,
     PublicTagsService,
     PublicUsuariosService,
