@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 
 import { DOMService } from '@core/services/dom.service';
 
-import { EnumTipoTag } from '@shared/enums/tipo-tag.enum';
 import { Loading } from '@core/models/loading.model';
 import { Tag } from '@shared/models/tag.model';
 
@@ -14,7 +13,6 @@ import { Tag } from '@shared/models/tag.model';
 export class ListaTagsComponent {
 
   carregar = new Loading();
-  enumTipoTag = EnumTipoTag;
   tags: Tag[] = [
     { id: 5, nome: 'agile' },
     { id: 3, nome: 'back-end' },
