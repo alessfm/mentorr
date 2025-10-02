@@ -47,7 +47,12 @@ public class PlanoMentorServiceImpl implements PlanoMentorService {
 		Mentor mentor = mentorService.buscarPorId(idMentor);
 
 		PlanoMentor plano = PlanoMentor.builder()
+				.tipo(planoDTO.getTipo())
 				.valor(planoDTO.getValor())
+				.descricao(planoDTO.getDescricao())
+				.totalChamadas(planoDTO.getTotalChamadas())
+				.duracaoChamada(planoDTO.getDuracaoChamada())
+				.tempoResposta(planoDTO.getTempoResposta())
 				.mentor(mentor)
 				.build();
 
@@ -67,7 +72,12 @@ public class PlanoMentorServiceImpl implements PlanoMentorService {
 
 		for(CadastroPlanoMentorDTO p: planosDTO) {
 			PlanoMentor plano = PlanoMentor.builder()
+					.tipo(p.getTipo())
 					.valor(p.getValor())
+					.descricao(p.getDescricao())
+					.totalChamadas(p.getTotalChamadas())
+					.duracaoChamada(p.getDuracaoChamada())
+					.tempoResposta(p.getTempoResposta())
 					.mentor(mentor)
 					.build();
 
@@ -86,7 +96,12 @@ public class PlanoMentorServiceImpl implements PlanoMentorService {
 	@Override
 	public PlanoMentor atualizar(Long idMentor, Long idPlano, CadastroPlanoMentorDTO planoDTO) {
 		PlanoMentor plano = buscarPorId(idMentor, idPlano);
+//		plano.setTipo();
 		plano.setValor(planoDTO.getValor());
+		plano.setDescricao(planoDTO.getDescricao());
+		plano.setTotalChamadas(planoDTO.getTotalChamadas());
+		plano.setDuracaoChamada(planoDTO.getDuracaoChamada());
+		plano.setTempoResposta(planoDTO.getTempoResposta());
 		return planoMentorRepository.save(plano);
 	}
 

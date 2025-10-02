@@ -1,12 +1,13 @@
 import { ActivatedRoute } from '@angular/router';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 
 import { PublicMentoresService } from '../../services/public-mentores.service';
 import { DOMService } from '@core/services/dom.service';
 
+import { ModalSolicitacaoComponent } from '../../components/modal-solicitacao/modal-solicitacao.component';
+
 import { Loading } from '@core/models/loading.model';
-import { Avaliacao, Estrela, MentorBusca, MentorPublic } from '../../models/mentor-public.model';
-import { Paginacao } from '@shared/models/paginacao.model';
+import { Avaliacao, Estrela, MentorBusca, MentorPublic, Plano } from '../../models/mentor-public.model';
 
 import { EnumDias } from '@shared/enums/dias.enum';
 
@@ -17,20 +18,18 @@ import { EnumDias } from '@shared/enums/dias.enum';
 })
 export class PerfilMentorComponent {
 
-  carregar = new Loading();
+  @ViewChild('modal') modal!: ModalSolicitacaoComponent;
+
+  carregar = new Loading(true);
   mentor!: MentorPublic;
-  private apelido = '';
+  apelido = '';
 
   enumDias = EnumDias;
+  tipoOrdemAvaliacoes = 'NOTA';
+  mostrarDrop = false;
 
   resumo: any[] = [];
-  similares: Paginacao<MentorBusca> = {
-    lista: [],
-    pagina: 1,
-    totalPorPagina: 10,
-    totalPaginas: 0,
-    totalRegistros: 0
-  };
+  similares: MentorBusca[] = [];
 
   constructor(
     private publicMentoresService: PublicMentoresService,
@@ -61,7 +60,7 @@ export class PerfilMentorComponent {
     this.resumo = [];
 
     const diaAtual = (new Date().getDay() - 1);
-    const nomeDia = this.enumDias.find(d => d.codigo == diaAtual)!.label;
+    const nomeDia = this.enumDias.find(d => d.codigo == diaAtual)!.valor;
     const horarioAtivo = this.mentor.horarios.find(h => h.dia == nomeDia);
 
     this.resumo.push(
@@ -70,8 +69,8 @@ export class PerfilMentorComponent {
         descricao: 'Brasil'
       },
       {
-        icone: 'fa-star',
-        descricao: 'Novo Mentor!'
+        icone: 'fa-comment-dots',
+        descricao: 'Fala português e inglês'
       }
     );
 
@@ -102,14 +101,32 @@ export class PerfilMentorComponent {
   }
 
   private buscarMentoresSimilares(): void {
-    const params = { tags: this.mentor.tags.map(t => t.id) };
-    this.publicMentoresService.getWithParams(params).subscribe(busca => {
-      busca.lista = busca.lista.filter(m => m.apelido != this.apelido);
-      this.similares = busca;
-    });
+    const params = {
+      cargo: this.mentor.cargo,
+      empresa: this.mentor.empresa
+    };
+    this.publicMentoresService.buscarSimilares(this.mentor.apelido, params).subscribe(_ => this.similares = _);
   }
 
   verMentor(apelido: string): void {
     this.domService.redirecionar(`/mentores/${apelido}`);
   }
+
+  ordenarAvaliacoes(tipo: string): void {
+    this.mostrarDrop = false;
+    this.tipoOrdemAvaliacoes = tipo;
+    switch (tipo) {
+      case 'DATA':
+        this.mentor.avaliacoes.sort((a, b) => a.data < b.data ? -1 : 1);
+        break;
+      case 'NOTA':
+        this.mentor.avaliacoes.sort((a, b) => a.nota > b.nota ? -1 : 1);
+        break;
+    }
+  }
+
+  abrirModal(plano: Plano): void {
+    this.modal.abrirModal(plano);
+  }
+
 }

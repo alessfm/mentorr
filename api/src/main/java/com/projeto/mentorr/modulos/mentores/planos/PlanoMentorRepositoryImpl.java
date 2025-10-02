@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.projeto.mentorr.modulos.mentores.Mentor;
+import com.projeto.mentorr.modulos.usuarios.Usuario;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -30,10 +31,39 @@ public class PlanoMentorRepositoryImpl implements PlanoMentorRepositoryCustom {
 
 		cq.multiselect(
 			plano.get("id"),
-			plano.get("valor")
+			plano.get("tipo"),
+			plano.get("valor"),
+			plano.get("descricao"),
+			plano.get("totalChamadas"),
+			plano.get("duracaoChamada"),
+			plano.get("tempoResposta")
 		);
 
 		cq.where(cb.equal(mentor.get("id"), idMentor));
+		cq.orderBy(cb.asc(plano.get("valor")));
+
+		return entityManager.createQuery(cq).getResultList();
+	}
+
+	@Override
+	public List<PlanoMentorDTO> buscarPlanosMentorPublic(String apelido) {
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		CriteriaQuery<PlanoMentorDTO> cq = cb.createQuery(PlanoMentorDTO.class);
+		Root<PlanoMentor> plano = cq.from(PlanoMentor.class);
+
+		Join<PlanoMentor, Mentor> mentor = plano.join("mentor", JoinType.INNER);
+		Join<Mentor, Usuario> usuario = mentor.join("usuario", JoinType.INNER);
+
+		cq.multiselect(
+			plano.get("tipo"),
+			plano.get("valor"),
+			plano.get("descricao"),
+			plano.get("totalChamadas"),
+			plano.get("duracaoChamada"),
+			plano.get("tempoResposta")
+		);
+
+		cq.where(cb.equal(usuario.get("apelido"), apelido));
 		cq.orderBy(cb.asc(plano.get("valor")));
 
 		return entityManager.createQuery(cq).getResultList();

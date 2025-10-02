@@ -5,6 +5,8 @@ import com.projeto.mentorr.modulos.mentores.Mentor;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,8 +31,24 @@ public class PlanoMentor {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Enumerated(EnumType.STRING)
+	@Column(name = "TIPO", nullable = false)
+	private TipoPlano tipo;
+
 	@Column(name = "VALOR", nullable = false)
 	private Double valor;
+
+	@Column(name = "DESCRICAO", nullable = false, length = 150)
+	private String descricao;
+
+	@Column(name = "TOTAL_CHAMADAS")
+	private Long totalChamadas;
+
+	@Column(name = "DURACAO_CHAMADA")
+	private Long duracaoChamada;
+
+	@Column(name = "TEMPO_RESPOSTA", nullable = false)
+	private Long tempoResposta;
 
 	@JsonBackReference
 	@ManyToOne(fetch = FetchType.EAGER)

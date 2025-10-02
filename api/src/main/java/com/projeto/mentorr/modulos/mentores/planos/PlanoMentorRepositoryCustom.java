@@ -6,4 +6,6 @@ public interface PlanoMentorRepositoryCustom {
 
 	List<PlanoMentorDTO> buscarPlanosMentor(Long idMentor);
 
+	List<PlanoMentorDTO> buscarPlanosMentorPublic(String apelido);
+
 }

@@ -10,6 +10,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 
 import { BotoesModule } from '@shared/components/botoes/botoes.module';
 import { FooterModule } from '@shared/components/footer/footer.module';
+import { FormModule } from '@shared/components/form/form.module';
 import { HeaderModule } from '@shared/components/header/header.module';
 
 import { AuthService } from '@shared/services/auth.service';
@@ -20,7 +21,8 @@ import { UsuarioService } from '@shared/services/usuario.service';
 
 import { PublicRoutingModule } from './public.routing';
 import { CadastroComponent } from './pages/cadastro/cadastro.component';
-import { CardMentorComponent } from './components/card-mentor/card-mentor.component';
+import { CardMentorLgComponent } from './components/card-mentor-lg/card-mentor-lg.component';
+import { CardMentorSmComponent } from './components/card-mentor-sm/card-mentor-sm.component';
 import { Erro404Component } from './pages/erro-404/erro-404.component';
 import { ListaMentoresComponent } from './pages/lista-mentores/lista-mentores.component';
 import { ListaTagsComponent } from './components/lista-tags/lista-tags.component';
@@ -28,6 +30,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { PaginaInicialComponent } from './pages/pagina-inicial/pagina-inicial.component';
 import { PerfilMentorComponent } from './pages/perfil-mentor/perfil-mentor.component';
 import { SecaoPropagandaComponent } from './components/propaganda/secao-propaganda.component';
+import { ModalSolicitacaoComponent } from './components/modal-solicitacao/modal-solicitacao.component';
 
 const maskConfig: Partial<null | IConfig> | (() => Partial<IConfig>) = {
   validation: false,
@@ -49,6 +52,7 @@ const spinnerConfig: NgxLoadingXConfig = {
   imports: [
     BotoesModule,
     CommonModule,
+    FormModule,
     FormsModule,
     FooterModule,
     HeaderModule,
@@ -62,14 +66,16 @@ const spinnerConfig: NgxLoadingXConfig = {
   ],
   declarations: [
     CadastroComponent,
-    CardMentorComponent,
+    CardMentorLgComponent,
+    CardMentorSmComponent,
     Erro404Component,
     ListaMentoresComponent,
     ListaTagsComponent,
     LoginComponent,
     PaginaInicialComponent,
     PerfilMentorComponent,
-    SecaoPropagandaComponent
+    SecaoPropagandaComponent,
+    ModalSolicitacaoComponent
   ],
   providers: [
     AuthService,
