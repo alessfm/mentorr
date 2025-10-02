@@ -1,6 +1,7 @@
 package com.projeto.mentorr.modulos.mentores.planos;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface PlanoMentorService {
 
@@ -9,6 +10,8 @@ public interface PlanoMentorService {
 	List<PlanoMentorDTO> buscarPlanosMentorLogado();
 
 	PlanoMentor buscarPorId(Long idMentor, Long idPlano);
+
+	PlanoMentor buscarPorCodigo(Long idMentor, UUID codigoPlano);
 
 	PlanoMentor buscarPorIdPorMentorLogado(Long idPlano);
 

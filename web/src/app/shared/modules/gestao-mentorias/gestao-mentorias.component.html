@@ -1,0 +1,137 @@
+<div class="flex flex-col md:flex-row">
+  <div class="section">
+    <h2 class="font-bold text-xl md:text-2xl">{{ lista | titlecase }}</h2>
+    <div class="grid grid-cols-1 gap-6" *ngIf="mentorias.length; else semMentorias">
+      <ng-container *ngFor="let mentoria of mentorias">
+        <div class="card cursor-pointer" [ngClass]="{'fundo-azul': mentoria?.id == idMentoria}"
+          (click)="buscarDadosMentoria(mentoria)">
+          <div class="flex justify-between">
+            <div class="flex gap-4">
+              <div class="flex-none relative">
+                <img class="w-12 rounded-lg" [src]="mentoria?.fotoMentor || 'assets/images/avatar.svg'" alt="Foto"
+                  loading="lazy">
+              </div>
+              <div class="flex flex-col gap-1">
+                <h3 class="font-bold text-slate-900 text-xl">
+                  {{ mentoria?.nomeAluno || mentoria?.nomeMentor }}
+                </h3>
+                <p class="text-gray-600">
+                  <i class="fa-solid fa-clipboard-list text-primary"></i>
+                  <span class="text-gray-800">
+                    Plano {{ mentoria.plano.descricaoTipo }} ({{ mentoria.plano.valor | currency }}/mês)
+                  </span>
+                </p>
+              </div>
+            </div>
+            <div class="flex gap-1" [ngSwitch]="mentoria.status">
+              <ng-container *ngSwitchCase="'SOLICITADA'">
+                <span><i class="fa-2x fa-solid fa-circle-question text-primary"></i></span>
+              </ng-container>
+              <ng-container *ngSwitchCase="'RECUSADA'">
+                <span><i class="fa-2x fa-solid fa-circle-xmark text-red"></i></span>
+              </ng-container>
+              <ng-container *ngSwitchCase="'ATIVA'">
+                <span><i class="fa-2x fa-solid fa-circle-play text-green"></i></span>
+              </ng-container>
+              <ng-container *ngSwitchCase="'PAUSADA'">
+                <span><i class="fa-2x fa-solid fa-circle-pause text-yellow"></i></span>
+              </ng-container>
+              <ng-container *ngSwitchCase="'FINALIZADA'">
+                <span><i class="fa-2x fa-solid fa-circle-check text-green"></i></span>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="main">
+    <ng-container *ngIf="mentoriaAberta; else selecioneChat">
+      <div class="flex flex-col gap-4 md:flex-row justify-between items-center">
+        <h2 class="font-bold text-xl md:text-2xl">
+          Chat com {{ mentoriaAberta?.nomeAluno || mentoriaAberta?.nomeMentor }}
+        </h2>
+        <div class="drop" *ngIf="lista == 'ALUNOS'">
+          <a class="drop-btn cursor-pointer" (click)="mostrarDrop = !mostrarDrop">
+            <i class="fa-solid fa-chevron-down"></i> Ações da mentoria
+          </a>
+          <div class="dropdown" [ngClass]="{'show':mostrarDrop}">
+            <div [ngSwitch]="mentoriaAberta?.status">
+              <ng-container *ngSwitchCase="'SOLICITADA'">
+                <a (click)="abrirModal('ATIVA')">Aceitar</a>
+                <a (click)="abrirModal('RECUSADA')">Recusar</a>
+              </ng-container>
+              <ng-container *ngSwitchCase="'ATIVA'">
+                <a (click)="abrirModal('PAUSADA')">Pausar</a>
+                <a (click)="abrirModal('FINALIZADA')">Finalizar</a>
+              </ng-container>
+              <ng-container *ngSwitchCase="'PAUSADA'">
+                <a (click)="abrirModal('ATIVA')">Reativar</a>
+                <a (click)="abrirModal('FINALIZADA')">Finalizar</a>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 gap-6">
+        <ng-container *ngFor="let msg of mentoriaAberta?.mensagens">
+          <div class="card border-none" [ngClass]="{'fundo-azul': msg?.apelidoUsuario == usuario?.apelido}">
+            <div class="flex justify-between">
+              <div class="flex gap-4">
+                <div class="flex-none relative">
+                  <img class="w-4 rounded-lg" [src]="msg?.fotoUsuario || 'assets/images/avatar.svg'" alt="Foto"
+                    loading="lazy">
+                </div>
+                <div class="flex flex-col gap-1">
+                  <span class="font-light text-slate-900 text-sm">
+                    {{ msg?.nomeUsuario }} - {{ msg?.criadaEm | date: 'short' }}
+                  </span>
+                  <p class="whitespace-break-spaces text-gray-600 text-md mt-2">{{ msg?.corpo }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+        <div class="col-span-1" [formGroup]="form" (ngSubmit)="responder()">
+          <div class="form-group" *ngIf="podeDigitar; else campoBloqueado">
+            <input type="text" class="form-control" placeholder="Digite..." formControlName="corpo" />
+          </div>
+        </div>
+        <div class="col-span-1">
+          <div class="form-group">
+            <app-botao-azul estilo="w-full" type="submit" label="Enviar" (func)="responder()"></app-botao-azul>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>
+
+<ng-template #semMentorias>
+  <p class="text-gray-800 text-lg">Nenhuma mentoria encontrada</p>
+</ng-template>
+
+<ng-template #selecioneChat>
+  <h3 class="font-bold text-xl md:text-2xl">Chat</h3>
+  <p class="text-gray-800 text-lg text-center">Selecione um mentor para visualizar</p>
+</ng-template>
+
+<ng-template #campoBloqueado>
+  <div class="form-group" [ngSwitch]="mentoriaAberta?.status">
+    <ng-container *ngSwitchCase="'SOLICITADA'">
+      <input type="text" class="form-control" placeholder="Mentoria solicitada. Aguarde a resposta do mentor."
+        disabled />
+    </ng-container>
+    <ng-container *ngSwitchCase="'RECUSADA'">
+      <input type="text" class="form-control" placeholder="A solicitação de mentoria foi recusada pelo mentor."
+        disabled />
+    </ng-container>
+    <ng-container *ngSwitchCase="'FINALIZADA'">
+      <input type="text" class="form-control" placeholder="A mentoria foi finalizada." disabled />
+    </ng-container>
+  </div>
+</ng-template>
+
+<app-modal-troca-status #modal></app-modal-troca-status>

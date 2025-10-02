@@ -36,6 +36,7 @@ export interface MentorPublic {
 }
 
 export interface Plano {
+  codigo: string;
   tipo: string;
   descricaoTipo: string;
   valor: number;

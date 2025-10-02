@@ -9,6 +9,8 @@ $primary-darker: darken($primary, 10%);
 
 $black: #0f172a;
 $yellow: #f5bf14;
+$green: #096661;
+$red: #dc3545;
 
 $gray: #cbd5e1;
 $gray-darker: darken($gray, 10%);
@@ -84,8 +86,20 @@ hr {
   color: $primary;
 }
 
+.text-light {
+  color: $primary-lighter;
+}
+
 .text-yellow {
   color: $yellow;
+}
+
+.text-green {
+  color: $green;
+}
+
+.text-red {
+  color: $red;
 }
 
 .bg-primary {

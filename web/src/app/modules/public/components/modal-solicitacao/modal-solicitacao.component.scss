@@ -1,0 +1,11 @@
+.form {
+  @apply flex flex-col gap-6 w-full p-6 md:p-0 md:px-64;
+}
+
+.textarea {
+  @apply flex flex-col gap-6 w-full p-6 md:p-0 md:px-6;
+}
+
+.card {
+  @apply flex flex-col gap-6 border border-gray-300 rounded-lg p-6 hover:shadow;
+}

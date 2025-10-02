@@ -1,0 +1,34 @@
+<div class="modal" [ngClass]="{'show' : mostrarModal}">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h1 class="text-lg md:text-2xl font-bold">
+        <span class="text-primary">Alterar status</span> da mentoria
+      </h1>
+      <button class="bg-slate-200 btn" (click)="fecharModal()">
+        <em class="fa-solid fa-close"></em>
+      </button>
+    </div>
+    <div class="modal-body" *ngIf="!carregar.load; else carregando">
+      <div class="textarea" [formGroup]="form">
+        <div class="form-group">
+          <label class="font-semibold text-md" required>Envie uma reposta para {{ mentoria?.nomeAluno }}:</label>
+          <textarea class="form-control" rows="12" formControlName="corpo" maxlength="1000">
+          </textarea>
+          <app-contar-letras [form]="form" campo="corpo" [tamanhoMaximo]="1000"></app-contar-letras>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <app-botao-azul label="Enviar" (click)="enviar()"></app-botao-azul>
+    </div>
+  </div>
+</div>
+
+<ng-template #carregando>
+  <div class="form">
+    <div class="form-group fade-in-out">
+      <label class="font-light">Carregando...</label>
+      <input type="text" class="form-control" readonly />
+    </div>
+  </div>
+</ng-template>

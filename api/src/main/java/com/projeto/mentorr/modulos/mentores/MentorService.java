@@ -16,6 +16,8 @@ public interface MentorService {
 
 	Mentor buscarPorId(Long id);
 
+	Mentor buscarPorApelido(String apelido);
+
 	Mentor buscarMentorLogado();
 
 	MentorDTO buscarPerfilMentor(String apelido);

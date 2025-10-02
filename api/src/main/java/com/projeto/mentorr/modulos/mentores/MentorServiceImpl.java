@@ -14,6 +14,8 @@ import com.projeto.mentorr.modulos.mentores.planos.PlanoMentorDTO;
 import com.projeto.mentorr.modulos.mentores.planos.PlanoMentorRepository;
 import com.projeto.mentorr.modulos.mentores.tags.TagMentor;
 import com.projeto.mentorr.modulos.mentores.tags.TagMentorRepository;
+import com.projeto.mentorr.modulos.mentorias.MentoriaRepository;
+import com.projeto.mentorr.modulos.mentorias.StatusMentoria;
 import com.projeto.mentorr.modulos.tags.Tag;
 import com.projeto.mentorr.modulos.tags.TagService;
 import com.projeto.mentorr.modulos.usuarios.Usuario;
@@ -30,6 +32,7 @@ public class MentorServiceImpl implements MentorService {
 	private final AvaliacaoMentorRepository avaliacaoMentorRepository;
 	private final HorarioMentorRepository horarioMentorRepository;
 	private final MentorRepository mentorRepository;
+	private final MentoriaRepository mentoriaRepository;
 	private final PlanoMentorRepository planoMentorRepository;
 	private final TagMentorRepository tagMentorRepository;
 
@@ -39,7 +42,7 @@ public class MentorServiceImpl implements MentorService {
 	@Override
 	public TotaisMentoresDTO buscarTotais() {
 		Long qtdMentores = mentorRepository.countByAtivoIsTrue();
-		Long qtdMentorias  = 0L;
+		Long qtdMentorias = mentoriaRepository.countByStatus(StatusMentoria.ATIVA);
 		Long qtdPaises = 1L;
 
 		return new TotaisMentoresDTO(qtdMentores, qtdMentorias, qtdPaises);
@@ -84,9 +87,14 @@ public class MentorServiceImpl implements MentorService {
 	}
 
 	@Override
+	public Mentor buscarPorApelido(String apelido) {
+		return mentorRepository.findFirstByUsuario_Apelido(apelido).orElseThrow(() -> new NotFoundException("Mentor não encontrado"));
+	}
+
+	@Override
 	public Mentor buscarMentorLogado() {
 		String apelido = UserUtil.retornarApelidoUsuarioLogado();
-		return mentorRepository.findFirstByUsuario_Apelido(apelido).orElseThrow(() -> new NotFoundException("Complete o cadastro para acessar sua conta."));
+		return buscarPorApelido(apelido);
 	}
 
 	@Override

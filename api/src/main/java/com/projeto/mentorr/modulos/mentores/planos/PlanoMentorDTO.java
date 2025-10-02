@@ -1,5 +1,7 @@
 package com.projeto.mentorr.modulos.mentores.planos;
 
+import java.util.UUID;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class PlanoMentorDTO {
 
 	private Long id;
+	private UUID codigo;
 	private TipoPlano tipo;
 	private String descricaoTipo;
 
@@ -42,8 +45,9 @@ public class PlanoMentorDTO {
 	 * @apiNote Construtor do buscarPlanosMentorPublic().
 	 */
 	public PlanoMentorDTO(
-		TipoPlano tipo, Double valor, String descricao, Long totalChamadas, Long duracaoChamada, Long tempoResposta
+		UUID codigo, TipoPlano tipo, Double valor, String descricao, Long totalChamadas, Long duracaoChamada, Long tempoResposta
 	) {
+		this.codigo =codigo;
 		this.tipo = tipo;
 		this.descricaoTipo = tipo.getDescricao();
 

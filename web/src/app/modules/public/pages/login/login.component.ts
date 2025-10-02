@@ -50,7 +50,7 @@ export class LoginComponent {
           this.domService.redirecionar('/aluno/mentorias');
           break;
         case 'MENTOR':
-          this.domService.redirecionar('/mentor/mentorias');
+          this.domService.redirecionar('/mentor/cadastro');
           break;
         default:
           this.domService.redirecionar('/');

@@ -11,6 +11,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { BotoesModule } from '@shared/components/botoes/botoes.module';
 import { FooterModule } from '@shared/components/footer/footer.module';
 import { FormModule } from '@shared/components/form/form.module';
+import { GestaoMentoriasModule } from '@shared/modules/gestao-mentorias/gestao-mentorias.module';
 import { HeaderModule } from '@shared/components/header/header.module';
 
 import { GerenciarCadastroService } from './services/gerenciar-cadastro.service';
@@ -22,12 +23,8 @@ import { TagsMentorService } from './services/tags-mentor.service';
 
 import { MentorRoutingModule } from './mentor.routing';
 import { CadastroMentorComponent } from './pages/cadastro-mentor/cadastro-mentor.component';
-import {
-  EtapasCadastroComponent,
-  CadastroDadosComponent,
-  CadastroPlanosComponent,
-  CadastroHorariosComponent
-} from './components/cadastro-mentor';
+import * as CADASTRO from './components/cadastro-mentor';
+import { MentoriasMentorComponent } from './pages/mentorias-mentor/mentorias-mentor.component';
 
 const maskConfig: Partial<null | IConfig> | (() => Partial<IConfig>) = {
   validation: false,
@@ -52,6 +49,7 @@ const spinnerConfig: NgxLoadingXConfig = {
     FormModule,
     FormsModule,
     FooterModule,
+    GestaoMentoriasModule,
     HeaderModule,
     NgSelectModule,
     NgxMaskModule.forRoot(maskConfig),
@@ -64,10 +62,13 @@ const spinnerConfig: NgxLoadingXConfig = {
   declarations: [
     // Cadastro do Mentor
     CadastroMentorComponent,
-    EtapasCadastroComponent,
-    CadastroDadosComponent,
-    CadastroPlanosComponent,
-    CadastroHorariosComponent,
+    CADASTRO.EtapasCadastroComponent,
+    CADASTRO.CadastroDadosComponent,
+    CADASTRO.CadastroPlanosComponent,
+    CADASTRO.CadastroHorariosComponent,
+
+    // Gestão de Mentorias
+    MentoriasMentorComponent
   ],
   providers: [
     GerenciarCadastroService,

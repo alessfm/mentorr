@@ -2,6 +2,7 @@ package com.projeto.mentorr.modulos.mentores.planos;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,11 @@ public class PlanoMentorServiceImpl implements PlanoMentorService {
 	}
 
 	@Override
+	public PlanoMentor buscarPorCodigo(Long idMentor, UUID codigoPlano) {
+		return planoMentorRepository.findByCodigoAndMentor_Id(codigoPlano, idMentor).orElseThrow(() -> new NotFoundException("Plano não encontrado"));
+	}
+
+	@Override
 	public PlanoMentor buscarPorIdPorMentorLogado(Long idPlano) {
 		Mentor mentor = mentorService.buscarMentorLogado();
 		return buscarPorId(mentor.getId(), idPlano);
@@ -47,6 +53,7 @@ public class PlanoMentorServiceImpl implements PlanoMentorService {
 		Mentor mentor = mentorService.buscarPorId(idMentor);
 
 		PlanoMentor plano = PlanoMentor.builder()
+				.codigo(UUID.randomUUID())
 				.tipo(planoDTO.getTipo())
 				.valor(planoDTO.getValor())
 				.descricao(planoDTO.getDescricao())
@@ -72,6 +79,7 @@ public class PlanoMentorServiceImpl implements PlanoMentorService {
 
 		for(CadastroPlanoMentorDTO p: planosDTO) {
 			PlanoMentor plano = PlanoMentor.builder()
+					.codigo(UUID.randomUUID())
 					.tipo(p.getTipo())
 					.valor(p.getValor())
 					.descricao(p.getDescricao())

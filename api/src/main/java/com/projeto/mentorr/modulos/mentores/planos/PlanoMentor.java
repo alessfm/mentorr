@@ -1,5 +1,7 @@
 package com.projeto.mentorr.modulos.mentores.planos;
 
+import java.util.UUID;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.projeto.mentorr.modulos.mentores.Mentor;
 
@@ -30,6 +32,9 @@ public class PlanoMentor {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	@Column(name = "CODIGO", unique = true)
+    private UUID codigo;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "TIPO", nullable = false)

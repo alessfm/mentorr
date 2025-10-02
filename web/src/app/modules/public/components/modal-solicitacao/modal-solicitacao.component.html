@@ -1,0 +1,150 @@
+<div class="modal" [ngClass]="{'show' : mostrarModal}">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h1 class="text-lg md:text-2xl font-bold" *ngIf="usuario; else mostrarInstrucoes">
+        <span class="text-primary">{{ usuario?.nome }}</span>,
+        você selecionou o seguinte plano:
+      </h1>
+      <button class="bg-slate-200 btn" (click)="fecharModal()">
+        <em class="fa-solid fa-close"></em>
+      </button>
+    </div>
+    <div class="modal-body">
+      <ng-container *ngIf="usuario; else acessarConta">
+        <div class="card">
+          <div class="flex flex-col gap-2">
+            <h2 class="font-bold text-slate-900 text-lg md:text-2xl">
+              <em class="fa-solid fa-ci-check text-primary"></em>
+              {{ plano?.valor | currency }}/mês
+            </h2>
+            <p class="text-sm md:text-lg">
+              <span class="text-gray-800">
+                {{ plano?.totalChamadas }} chamadas por mês ({{ plano?.duracaoChamada }}min/chamada)
+              </span>
+              <span class="text-gray-800"> - Chat ilimitado </span>
+              <span class="text-gray-800"> - Responde em até {{ plano?.tempoResposta }}h </span>
+            </p>
+          </div>
+        </div>
+
+        <hr />
+
+        <div class="textarea" [formGroup]="formSolicitacao">
+          <div class="form-group">
+            <label class="font-semibold text-md" required>Apresente-se para {{ mentor?.nome }}:</label>
+            <textarea class="form-control" rows="12"
+              placeholder="Exemplo: Olá! Sou {{ usuario?.nome }}, trabalho com..., tenho experiência de... Gostaria de ter uma mentoria com você por que..."
+              formControlName="corpo" maxlength="1000">
+            </textarea>
+            <app-contar-letras [form]="formSolicitacao" campo="corpo" [tamanhoMaximo]="1000"></app-contar-letras>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    <div class="modal-footer" *ngIf="usuario">
+      <app-botao-azul label="Solicitar mentoria" (click)="solicitar()"></app-botao-azul>
+    </div>
+  </div>
+</div>
+
+<ng-template #acessarConta>
+  <div class="tabs">
+    <span class="tab cursor-pointer" [ngClass]="{'active' : tab === 1}" (click)="tab = 1">Entrar</span>
+    <span class="tab cursor-pointer" [ngClass]="{'active' : tab === 2}" (click)="tab = 2">Criar conta</span>
+  </div>
+
+  <div class="py-2 md:py-4" *ngIf="tab === 1">
+    <ng-container *ngIf="!carregar.load; else carregando">
+      <form [formGroup]="formEntrar" (ngSubmit)="entrar()" class="form">
+        <div class="form-group">
+          <label class="font-light" required>Nome de usuário</label>
+          <input id="apelido" type="text" class="form-control" formControlName="apelido" required />
+        </div>
+
+        <div class="form-group">
+          <label class="font-light" required>Senha de acesso</label>
+          <input id="senha" type="password" class="form-control" formControlName="senha" required />
+        </div>
+
+        <app-botao-azul label="Entrar" estilo="w-full" type="submit"></app-botao-azul>
+
+        <!-- <hr /> -->
+
+        <div class="google hidden">
+          <div id="g_id_onload" data-client_id="1" data-context="signup" data-ux_mode="popup"
+            data-login_uri="localhost:8780/login" data-auto_prompt="false">
+          </div>
+          <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="filled_black"
+            data-text="continue_with" data-size="large" data-logo_alignment="left">
+          </div>
+        </div>
+
+        <a class="text-blue-600 underline font-semibold" routerLink="/rec-senha">Esqueceu a senha?</a>
+      </form>
+    </ng-container>
+  </div>
+
+  <div class="py-2 md:py-4" *ngIf="tab === 2">
+    <ng-container *ngIf="!carregar.load; else carregando">
+      <form [formGroup]="formCadastro" (ngSubmit)="criarConta()" class="form">
+        <div class="form-group">
+          <label class="font-light" required>Nome completo</label>
+          <input id="nome" type="text" class="form-control" formControlName="nome" maxlength="60" required />
+        </div>
+
+        <div class="form-group">
+          <label class="font-light" required>Apelido (nome de usuário)</label>
+          <input id="apelido" type="text" class="form-control" formControlName="apelido" maxlength="16"
+            placeholder="ex.: alessfm, ermesonSilva, jhonattaP, caetanoV" required />
+          <p class="text-sm text-slate-600">Como você deseja ser identificado, único para cada usuário</p>
+        </div>
+
+        <div class="form-group">
+          <label class="font-light" required>Email</label>
+          <input id="email" type="text" class="form-control" formControlName="email" required />
+        </div>
+
+        <div class="form-group">
+          <label class="font-light" required>Senha de acesso</label>
+          <input id="senha" type="password" class="form-control" formControlName="senha" required />
+          <p class="text-sm text-slate-600">
+            No mínimo 8 caracteres, com pelo menos: 1 letra maiúscula, 1 número e 1 símbolo
+          </p>
+        </div>
+
+        <app-botao-azul label="Criar conta" estilo="w-full" type="submit"></app-botao-azul>
+
+        <!-- <hr /> -->
+
+        <div class="google hidden">
+          <div id="g_id_onload" data-client_id="1" data-context="signup" data-ux_mode="popup"
+            data-login_uri="localhost:8780/api/public/usuarios/aluno" data-auto_prompt="false">
+          </div>
+          <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="filled_black"
+            data-text="continue_with" data-size="large" data-logo_alignment="left">
+          </div>
+        </div>
+      </form>
+    </ng-container>
+  </div>
+</ng-template>
+
+<ng-template #mostrarInstrucoes>
+  <h1 class="text-xl md:text-2xl font-bold">
+    <span class="text-primary">Entre</span> ou
+    <span class="text-primary">crie uma conta</span> para continuar
+  </h1>
+</ng-template>
+
+<ng-template #carregando>
+  <div class="form">
+    <div class="form-group fade-in-out">
+      <label class="font-light">Carregando...</label>
+      <input type="text" class="form-control" readonly />
+    </div>
+    <div class="form-group fade-in-out">
+      <label class="font-light">Carregando...</label>
+      <input type="text" class="form-control" readonly />
+    </div>
+  </div>
+</ng-template>

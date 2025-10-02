@@ -17,7 +17,7 @@ export class MentorService extends GenericService<Mentor> {
   buscarDados(loading?: Loading): Observable<Mentor> {
     this.startLoading(loading);
     return this.getHttpClient()
-      .get(`${this.api}`)
+      .get(`${this.api}`, { headers: this.getHeadersPularErro() })
       .pipe(this.configMapAndLoading(loading));
   }
 
