@@ -5,19 +5,19 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.projeto.mentorr.modulos.usuarios.Usuario;
-import com.projeto.mentorr.modulos.usuarios.UsuarioService;
 import com.projeto.mentorr.core.exception.NotFoundException;
 import com.projeto.mentorr.modulos.mentores.avaliacoes.AvaliacaoMentorDTO;
-import com.projeto.mentorr.modulos.mentores.avaliacoes.AvaliacaoMentorService;
+import com.projeto.mentorr.modulos.mentores.avaliacoes.AvaliacaoMentorRepository;
 import com.projeto.mentorr.modulos.mentores.horarios.HorarioMentorDTO;
-import com.projeto.mentorr.modulos.mentores.horarios.HorarioMentorService;
+import com.projeto.mentorr.modulos.mentores.horarios.HorarioMentorRepository;
 import com.projeto.mentorr.modulos.mentores.planos.PlanoMentorDTO;
-import com.projeto.mentorr.modulos.mentores.planos.PlanoMentorService;
-import com.projeto.mentorr.modulos.tags.Tag;
-import com.projeto.mentorr.modulos.tags.TagService;
+import com.projeto.mentorr.modulos.mentores.planos.PlanoMentorRepository;
 import com.projeto.mentorr.modulos.mentores.tags.TagMentor;
 import com.projeto.mentorr.modulos.mentores.tags.TagMentorRepository;
+import com.projeto.mentorr.modulos.tags.Tag;
+import com.projeto.mentorr.modulos.tags.TagService;
+import com.projeto.mentorr.modulos.usuarios.Usuario;
+import com.projeto.mentorr.modulos.usuarios.UsuarioService;
 import com.projeto.mentorr.util.ListaPaginacaoDTO;
 import com.projeto.mentorr.util.UserUtil;
 
@@ -27,12 +27,12 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class MentorServiceImpl implements MentorService {
 
-	private final TagMentorRepository tagMentorRepository;
+	private final AvaliacaoMentorRepository avaliacaoMentorRepository;
+	private final HorarioMentorRepository horarioMentorRepository;
 	private final MentorRepository mentorRepository;
+	private final PlanoMentorRepository planoMentorRepository;
+	private final TagMentorRepository tagMentorRepository;
 
-	private final AvaliacaoMentorService avaliacaoMentorService;
-	private final HorarioMentorService horarioMentorService;
-	private final PlanoMentorService planoMentorService;
 	private final TagService tagService;
 	private final UsuarioService usuarioService;
 
@@ -50,7 +50,7 @@ public class MentorServiceImpl implements MentorService {
 		ListaPaginacaoDTO<MentorDTO> busca = mentorRepository.buscarMentores(texto, cargo, empresa, tags, pagina, totalPorPagina);
 
 		for(MentorDTO mentor: busca.getLista()) {
-			mentor.setTags(tagMentorRepository.buscarTagsPorApelido(mentor.getApelido(), 8));
+			mentor.setTags(tagMentorRepository.buscarTagsMentorPublic(mentor.getApelido(), 8));
 		}
 
 		return busca;
@@ -61,7 +61,18 @@ public class MentorServiceImpl implements MentorService {
 		List<MentorDTO> mentores = mentorRepository.buscarMentoresDestaque();
 
 		for(MentorDTO mentor: mentores) {
-			mentor.setTags(tagMentorRepository.buscarTagsPorApelido(mentor.getApelido(), 4));
+			mentor.setTags(tagMentorRepository.buscarTagsMentorPublic(mentor.getApelido(), 3));
+		}
+
+		return mentores;
+	}
+
+	@Override
+	public List<MentorDTO> buscarSimilaresMentor(String apelido, String cargo, String empresa) {
+		List<MentorDTO> mentores = mentorRepository.buscarSimilaresMentor(apelido, cargo, empresa);
+
+		for(MentorDTO mentor: mentores) {
+			mentor.setTags(tagMentorRepository.buscarTagsMentorPublic(mentor.getApelido(), 3));
 		}
 
 		return mentores;
@@ -82,12 +93,11 @@ public class MentorServiceImpl implements MentorService {
 	public MentorDTO buscarPerfilMentor(String apelido) {
 		MentorDTO mentorDTO = mentorRepository.buscarMentorPorApelido(apelido);
 
-		List<Tag> tags = tagMentorRepository.buscarTagsMentor(mentorDTO.getId());
-		List<HorarioMentorDTO> horarios = horarioMentorService.buscarHorariosMentor(mentorDTO.getId());
-		List<PlanoMentorDTO> planos = planoMentorService.buscarPlanosMentor(mentorDTO.getId());
-		List<AvaliacaoMentorDTO> avaliacoes = avaliacaoMentorService.buscarAvaliacoesMentor(mentorDTO.getId());
+		List<Tag> tags = tagMentorRepository.buscarTagsMentorPublic(apelido, 999);
+		List<HorarioMentorDTO> horarios = horarioMentorRepository.buscarHorariosMentorPublic(apelido);
+		List<PlanoMentorDTO> planos = planoMentorRepository.buscarPlanosMentorPublic(apelido);
+		List<AvaliacaoMentorDTO> avaliacoes = avaliacaoMentorRepository.buscarAvaliacoesMentorPublic(apelido);
 
-		mentorDTO.setId(null);
 		mentorDTO.setTags(tags);
 		mentorDTO.setHorarios(horarios);
 		mentorDTO.setPlanos(planos);

@@ -46,4 +46,13 @@ public class MentorPublicController {
 		return mentorService.buscarPerfilMentor(apelido);
 	}
 
+	@GetMapping("/similares/{apelido}")
+	public List<MentorDTO> buscarSimilaresMentor(
+		@PathVariable String apelido,
+		@RequestParam(required = false) String cargo,
+		@RequestParam(required = false) String empresa
+	) {	
+		return mentorService.buscarSimilaresMentor(apelido, cargo, empresa);
+	}
+
 }

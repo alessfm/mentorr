@@ -31,6 +31,8 @@ public class MentorDTO {
 	private LocalDate dataInicio;
 
 	private List<Tag> tags;
+
+	private Double valorMinimo;
 	private List<PlanoMentorDTO> planos;
 	private List<HorarioMentorDTO> horarios;
 
@@ -42,7 +44,7 @@ public class MentorDTO {
 	 */
 	public MentorDTO(
 		String nome, String apelido, String foto, String descricao, 
-		String cargo, String empresa, LocalDate dataInicio, Float nota
+		String cargo, String empresa, LocalDate dataInicio, Float nota, Double valorMinimo
 	) {
 		this.nome = nome;
 		this.apelido = apelido;
@@ -53,19 +55,33 @@ public class MentorDTO {
 		this.empresa = empresa;
 		this.dataInicio = dataInicio;
 
-//		this.plano = plano;
-		this.nota = nota;
+		this.nota = (nota == Float.MIN_VALUE) ? null : nota;
+		this.valorMinimo = valorMinimo;
 	}
 
 	/**
 	 * @apiNote Construtor do buscarMentoresDestaque().
 	 */
-	public MentorDTO(String nome, String apelido, String foto, String cargo, Float nota) {
+	public MentorDTO(String nome, String apelido, String foto, String cargo, String empresa, Float nota) {
 		this.nome = nome;
 		this.apelido = apelido;
 		this.foto = foto;
 		this.cargo = cargo;
+		this.empresa = empresa;
 		this.nota = nota;
+	}
+
+	/**
+	 * @apiNote Construtor do buscarSimilaresMentor().
+	 */
+	public MentorDTO(String nome, String apelido, String foto, String cargo, String empresa, Float nota, Double valorMinimo) {
+		this.nome = nome;
+		this.apelido = apelido;
+		this.foto = foto;
+		this.cargo = cargo;
+		this.empresa = empresa;
+		this.nota = nota;
+		this.valorMinimo = valorMinimo;
 	}
 
 	/**
@@ -75,8 +91,6 @@ public class MentorDTO {
 		Long id, String nome, String apelido, String foto, String descricao, 
 		String cargo, String empresa, LocalDate dataInicio, Float nota
 	) {
-		this.id = id;
-
 		this.nome = nome;
 		this.apelido = apelido;
 		this.foto = foto;

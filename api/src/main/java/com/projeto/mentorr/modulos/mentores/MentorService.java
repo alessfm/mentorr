@@ -12,6 +12,8 @@ public interface MentorService {
 
 	List<MentorDTO> buscarMentoresDestaque();
 
+	List<MentorDTO> buscarSimilaresMentor(String apelido, String cargo, String empresa);
+
 	Mentor buscarPorId(Long id);
 
 	Mentor buscarMentorLogado();

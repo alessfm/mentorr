@@ -12,4 +12,6 @@ public interface MentorRepositoryCustom {
 
 	MentorDTO buscarMentorPorApelido(String apelido);
 
+	List<MentorDTO> buscarSimilaresMentor(String apelido, String cargo, String empresa);
+
 }

@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 
 import com.projeto.mentorr.core.exception.InternalErrorException;
 import com.projeto.mentorr.core.exception.NotFoundException;
+import com.projeto.mentorr.modulos.mentores.planos.PlanoMentor;
+import com.projeto.mentorr.modulos.mentores.planos.TipoPlano;
 import com.projeto.mentorr.modulos.mentores.tags.TagMentor;
 import com.projeto.mentorr.modulos.tags.Tag;
 import com.projeto.mentorr.modulos.usuarios.Usuario;
@@ -17,10 +19,12 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Expression;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.Subquery;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -47,6 +51,21 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom {
 			predicates = criarFiltroPorParametros(cb, tag, mentor, cargo, empresa, tags);			
 		}
 
+		Expression<Float> nota = cb.coalesce(mentor.get("nota"), Float.MIN_VALUE);
+
+		Subquery<Double> valorMinimo = cq.subquery(Double.class);
+		Root<PlanoMentor> plano = valorMinimo.from(PlanoMentor.class);
+
+		Join<PlanoMentor, Mentor> subMentor = plano.join("mentor", JoinType.INNER);
+
+		List<Predicate> predicatesSubQuery = new ArrayList<>();
+
+		predicatesSubQuery.add(cb.equal(subMentor.get("id"), mentor.get("id")));
+		predicatesSubQuery.add(cb.equal(plano.get("tipo"), TipoPlano.BASE));
+
+		valorMinimo.select(plano.get("valor"));
+		valorMinimo.where(predicatesSubQuery.toArray(new Predicate[0]));
+
 		cq.multiselect(
 			usuario.get("nome"),
 			usuario.get("apelido"),
@@ -55,11 +74,12 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom {
 			mentor.get("cargo"),
 			mentor.get("empresa"),
 			mentor.get("dataInicio"),
-			mentor.get("nota")
+			nota,
+			valorMinimo
 		).distinct(true);
 
 		cq.where(predicates.toArray(new Predicate[0]));
-        cq.orderBy(cb.desc(mentor.get("nota")), cb.asc(usuario.get("nome")));
+        cq.orderBy(cb.desc(nota), cb.asc(usuario.get("nome")));
 
         Long totalRegistros = buscarTotalMentores(texto, cargo, empresa, tags);
 
@@ -159,11 +179,12 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom {
 			usuario.get("apelido"),
 			mentor.get("foto"),
 			mentor.get("cargo"),
+			mentor.get("empresa"),
 			mentor.get("nota")
 		);
 
 		cq.where(predicates.toArray(new Predicate[0]));
-		cq.orderBy(cb.desc(mentor.get("nota")));
+		cq.orderBy(cb.desc(mentor.get("nota")), cb.asc(usuario.get("nome")));
 
 		return entityManager.createQuery(cq).setMaxResults(6).getResultList();
 	}
@@ -203,6 +224,53 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom {
 			e.printStackTrace();
 			throw new InternalErrorException("Não foi possível exibir os dados do mentor");
 		}
+	}
+
+	@Override
+	public List<MentorDTO> buscarSimilaresMentor(String apelido, String cargo, String empresa) {
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		CriteriaQuery<MentorDTO> cq = cb.createQuery(MentorDTO.class);
+		Root<Mentor> mentor = cq.from(Mentor.class);
+
+		Join<Mentor, Usuario> usuario = mentor.join("usuario", JoinType.INNER);
+
+		List<Predicate> predicates = new ArrayList<Predicate>();
+		predicates.add(cb.isTrue(mentor.get("ativo")));
+		predicates.add(cb.notEqual(usuario.get("apelido"), apelido));
+		predicates.add(
+			cb.or(
+				cb.like(cb.lower(mentor.get("cargo")), "%" + cargo.toLowerCase() + "%"),
+				cb.like(cb.lower(mentor.get("empresa")), "%" + empresa.toLowerCase() + "%")
+			)
+		);
+
+		Subquery<Double> valorMinimo = cq.subquery(Double.class);
+		Root<PlanoMentor> plano = valorMinimo.from(PlanoMentor.class);
+
+		Join<PlanoMentor, Mentor> subMentor = plano.join("mentor", JoinType.INNER);
+
+		List<Predicate> predicatesSubQuery = new ArrayList<>();
+
+		predicatesSubQuery.add(cb.equal(subMentor.get("id"), mentor.get("id")));
+		predicatesSubQuery.add(cb.equal(plano.get("tipo"), TipoPlano.BASE));
+
+		valorMinimo.select(plano.get("valor"));
+		valorMinimo.where(predicatesSubQuery.toArray(new Predicate[0]));
+
+		cq.multiselect(
+			usuario.get("nome"),
+			usuario.get("apelido"),
+			mentor.get("foto"),
+			mentor.get("cargo"),
+			mentor.get("empresa"),
+			mentor.get("nota"),
+			valorMinimo
+		).distinct(true);
+
+		cq.where(predicates.toArray(new Predicate[0]));
+		cq.orderBy(cb.desc(mentor.get("nota")));
+
+		return entityManager.createQuery(cq).setMaxResults(3).getResultList();
 	}
 
 }
