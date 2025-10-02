@@ -91,7 +91,7 @@ export class PaginaInicialComponent implements OnInit {
       },
       {
         valor: totais.qtdMentorias,
-        descricao: 'Parcerias Firmadas',
+        descricao: 'Mentorias Ativas',
         icone: 'fa-handshake-angle'
       },
       {

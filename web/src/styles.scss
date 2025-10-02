@@ -75,6 +75,10 @@ hr {
   @apply hover:shadow-lg;
 }
 
+.whitespace-break-spaces {
+  white-space: break-spaces;
+}
+
 /*** 4.0 - Cores ***/
 .text-primary {
   color: $primary;
@@ -200,7 +204,20 @@ ng-select.ng-invalid.ng-touched .ng-select-container {
 
 /*** 8.0 - Global ***/
 .badge {
-  @apply bg-gray-200 text-gray-800 py-1 px-3 rounded-full hover:bg-blue-600 hover:text-white;
+  @apply py-1 px-3 rounded-full;
+}
+
+.badge-link {
+  cursor: pointer;
+  @apply bg-gray-200 text-gray-800 hover:bg-blue-600 hover:text-white;
+}
+
+.badge-gray {
+  @apply bg-gray-200 text-gray-800;
+}
+
+.badge-primary {
+  @apply bg-blue-600 text-white;
 }
 
 .tabs {
@@ -231,6 +248,11 @@ ng-select.ng-invalid.ng-touched .ng-select-container {
   border: 2px solid;
 }
 
+.breadcrumb {
+  background-color: #f1f5f9;
+  @apply hidden md:flex items-center p-4 border-t-2 border-b-2;
+}
+
 /*** 9.0 - Modal ***/
 .modal {
   top: 0;
@@ -257,6 +279,9 @@ ng-select.ng-invalid.ng-touched .ng-select-container {
   align-items: center;
   justify-content: space-between;
   background-color: white;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  padding: 1rem;
 }
 
 .modal-body {
@@ -264,13 +289,17 @@ ng-select.ng-invalid.ng-touched .ng-select-container {
   flex-direction: column;
   row-gap: 1rem;
   background-color: white;
+  padding: 1rem;
 }
 
 .modal-footer {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-end;
   background-color: white;
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+  padding: 1rem;
 }
 
 /*** 10.0 - Animações ***/
@@ -304,5 +333,19 @@ ng-select.ng-invalid.ng-touched .ng-select-container {
 @media (min-width: 1200px) {
   .modal-content {
     width: 50%;
+  }
+}
+
+@media (min-width: 900px) {
+  .modal-header {
+    padding: 2rem;
+  }
+
+  .modal-body {
+    padding: 1rem 2rem;
+  }
+
+  .modal-footer {
+    padding: 2rem;
   }
 }

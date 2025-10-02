@@ -1,0 +1,35 @@
+<div class="card cursor-pointer" (click)="verMentor(mentor.apelido)">
+  <div class="flex justify-between">
+    <div class="flex gap-4">
+      <div class="flex-none relative">
+        <img class="w-24 rounded-lg" [src]="mentor.foto" alt="Foto" loading="lazy">
+      </div>
+      <div class="flex flex-col gap-1">
+        <h4 class="font-bold text-slate-900 text-lg">{{ mentor.nome }}</h4>
+        <span class="text-gray-600">{{ mentor.cargo }} @ {{ mentor.empresa }}</span>
+        <ul class="flex flex-wrap items-center gap-2 leading-6 mt-2">
+          <li *ngFor="let tag of mentor?.tags">
+            <a class="badge badge-gray text-sm">{{ tag.nome }}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="flex gap-1">
+      <ng-container *ngIf="mentor?.nota; else semNota">
+        <span><i class="fa-solid fa-star text-yellow"></i></span>
+        <span class="font-bold"> {{ mentor?.nota }} </span>
+      </ng-container>
+
+      <ng-template #semNota>
+        <span><i class="fa-regular fa-star text-yellow"></i></span>
+        <span class="font-bold"> 0.0 </span>
+      </ng-template>
+    </div>
+  </div>
+
+  <div class="flex justify-between items-center" *ngIf="mentor?.valorMinimo">
+    <span class="font-bold text-lg">A partir de {{ mentor?.valorMinimo | currency }}/mês</span>
+    <button class="bg-primary btn-perfil" (click)="verMentor(mentor.apelido)">Ver perfil completo</button>
+  </div>
+</div>

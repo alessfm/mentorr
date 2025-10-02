@@ -1,0 +1,15 @@
+.card {
+  @apply col-span-1 flex flex-col gap-6 border border-gray-300 rounded-lg p-4 shadow hover:shadow-lg;
+}
+
+.w-24 {
+  width: 6rem;
+}
+
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
+.btn-perfil {
+  @apply text-white font-semibold rounded-lg px-6 py-2 shadow;
+}

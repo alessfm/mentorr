@@ -13,7 +13,3 @@
 .total {
   @apply flex flex-wrap flex-col md:flex-row items-center justify-center gap-16 md:gap-32;
 }
-
-.card {
-  @apply col-span-1 flex flex-col gap-2 border border-gray-300 rounded-lg p-4 shadow hover:shadow-lg;
-}

@@ -89,6 +89,7 @@ export class ListaMentoresComponent implements OnInit {
   }
 
   trocarTotalPorPagina(numero: number): void {
+    this.mostrarDrop = false;
     this.form.get('totalPorPagina')?.setValue(numero);
     this.buscarMentores();
   }
@@ -126,6 +127,11 @@ export class ListaMentoresComponent implements OnInit {
         queryParamsHandling: 'merge'
       }
     );
+  }
+
+  get filtroAtivo(): string {
+    const texto = this.form.get('texto')?.value;
+    return texto ? `para: "${texto}"` : 'com base nos filtros';
   }
 
   get totalPorPagina(): number {
